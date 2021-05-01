@@ -5,9 +5,7 @@ import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.jpa.BaseEntity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -16,7 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "recipe")
 public class Item extends BaseEntity {
 
     private String name;
@@ -28,4 +26,12 @@ public class Item extends BaseEntity {
     private Type type;
 
     private BigDecimal pricePerUnit;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "item")
+    private Recipe recipe;
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+        recipe.setItem(this);
+    }
 }

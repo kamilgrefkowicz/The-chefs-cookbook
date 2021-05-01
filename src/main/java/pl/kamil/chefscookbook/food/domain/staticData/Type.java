@@ -31,12 +31,12 @@ public class Type {
         return new Type (1, "podstawowy", "basic" );
     }
 
-    public static Unit INTERMEDIATE() {
-        return new Unit (2, "półprodukt", "intermediate" );
+    public static Type INTERMEDIATE() {
+        return new Type (2, "półprodukt", "intermediate" );
     }
 
-    public static Unit DISH() {
-        return new Unit (3, "danie", "dish" );
+    public static Type DISH() {
+        return new Type (3, "danie", "dish" );
     }
 }
 
