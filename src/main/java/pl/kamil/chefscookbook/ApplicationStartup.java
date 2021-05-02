@@ -56,7 +56,7 @@ public class ApplicationStartup implements CommandLineRunner {
                 .pricePerUnit(new BigDecimal(20))
                 .build();
 
-        puree.setRecipe(new Recipe("ugotuj i zmiel", puree, new BigDecimal(1)));
+        puree.setRecipe(new Recipe("ugotuj i zmiel", null,  puree, new BigDecimal(1)));
 
 
         createItemService.createItem(masło);
