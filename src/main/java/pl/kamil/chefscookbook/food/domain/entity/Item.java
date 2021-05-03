@@ -19,7 +19,7 @@ public class Item extends BaseEntity {
 
     private String name;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Unit unit;
 
     @ManyToOne(optional = false)
@@ -29,6 +29,8 @@ public class Item extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "item")
     private Recipe recipe;
+
+    boolean active = false;
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;

@@ -3,8 +3,9 @@ package pl.kamil.chefscookbook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import pl.kamil.chefscookbook.food.application.port.CreateItemUseCase;
-import pl.kamil.chefscookbook.food.application.port.QueryItemsUseCase;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
+import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.entity.Recipe;
 import pl.kamil.chefscookbook.food.domain.staticData.TypeRepository;
@@ -19,8 +20,8 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Unit.*;
 @RequiredArgsConstructor
 public class ApplicationStartup implements CommandLineRunner {
 
-    private final QueryItemsUseCase queryItemService;
-    private final CreateItemUseCase createItemService;
+    private final QueryItemUseCase queryItemService;
+    private final ModifyItemUseCase createItemService;
     private final UnitRepository unitRepository;
     private final TypeRepository typeRepository;
 
@@ -59,9 +60,9 @@ public class ApplicationStartup implements CommandLineRunner {
         puree.setRecipe(new Recipe("ugotuj i zmiel", null,  puree, new BigDecimal(1)));
 
 
-        createItemService.createItem(masło);
-        createItemService.createItem(ziemniak);
-        createItemService.createItem(puree);
+        createItemService.createItem(new CreateNewItemCommand("ziemniak", BASIC()));
+        createItemService.createItem(new CreateNewItemCommand("masło", BASIC()));
+        createItemService.createItem(new CreateNewItemCommand("puree", INTERMEDIATE()));
 
         System.out.println(queryItemService.findAll().toString());
 
