@@ -25,7 +25,7 @@ public class Recipe extends BaseEntity {
     @MapsId
     private Item parentItem;
 
-    private BigDecimal defaultYield;
+    private BigDecimal recipeYield;
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;

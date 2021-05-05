@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.UpdateDescriptionCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
@@ -86,8 +87,9 @@ class ModifyItemServiceTest {
     @Test
     void attemptingToFormALoopShouldThrowAnException() {
         var puree = givenItemCreated("Puree", INTERMEDIATE());
+        ModifyItemUseCase.AddIngredientCommand command = new ModifyItemUseCase.AddIngredientCommand(puree.getId(), puree.getId(), BigDecimal.ONE);
 
-        assertThrows(IllegalArgumentException.class, () -> modifyItem.addIngredientToRecipe(new ModifyItemUseCase.AddIngredientCommand(puree.getId(), puree.getId(), BigDecimal.ONE)));
+        assertThrows(IllegalArgumentException.class, () ->  modifyItem.addIngredientToRecipe(command));
 
     }
     @Test
@@ -101,7 +103,16 @@ class ModifyItemServiceTest {
         var queried = queryItem.findById(puree.getId());
 
         assertTrue(queried.isActive());
+    }
 
+    @Test
+    void canUpdateDescription() {
+        var puree = givenItemCreated("Puree", INTERMEDIATE());
+
+        modifyItem.updateDescription(new UpdateDescriptionCommand(puree.getId(), "description"));
+        var queried = queryItem.findById(puree.getId());
+
+        assertEquals("description", queried.getRecipe().getDescription());
     }
 
 

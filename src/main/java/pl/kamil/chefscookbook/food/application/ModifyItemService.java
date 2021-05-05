@@ -9,7 +9,6 @@ import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.entity.Recipe;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 import java.math.BigDecimal;
 
@@ -41,8 +40,6 @@ public class ModifyItemService implements ModifyItemUseCase {
         addIngredient(parentItem, childItem, command.getAmount());
         activateIfValid(parentItem);
 
-
-
         return toRichItem(itemRepository.save(parentItem));
     }
 
@@ -50,14 +47,22 @@ public class ModifyItemService implements ModifyItemUseCase {
     @Transactional
     public RichItem setYield(SetYieldCommand command) {
         Item item = itemRepository.getOne(command.getParentItemId());
-        item.getRecipe().setDefaultYield(command.getYield());
+        item.getRecipe().setRecipeYield(command.getItemYield());
         activateIfValid(item);
+        return toRichItem(itemRepository.save(item));
+    }
+
+    @Override
+    @Transactional
+    public RichItem updateDescription(UpdateDescriptionCommand command) {
+        Item item = itemRepository.getOne(command.getParentItemId());
+        item.getRecipe().setDescription(command.getDescription());
         return toRichItem(itemRepository.save(item));
     }
 
     private void activateIfValid(Item parentItem) {
         if (parentItem.isActive()) return;
-        if (!parentItem.getIngredients().isEmpty() && parentItem.getRecipe().getDefaultYield() != null)
+        if (!parentItem.getIngredients().isEmpty() && parentItem.getRecipe().getRecipeYield() != null)
             parentItem.setActive(true);
     }
 
@@ -76,9 +81,6 @@ public class ModifyItemService implements ModifyItemUseCase {
             throw new IllegalArgumentException();
     }
 
-    private void activateItemIfRecipeIsComplete(Recipe recipe) {
-
-    }
 
 
     private void generateRecipeIfApplicable(Item item) {
