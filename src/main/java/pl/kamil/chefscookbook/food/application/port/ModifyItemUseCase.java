@@ -19,6 +19,8 @@ public interface ModifyItemUseCase {
 
     RichItem addIngredientToRecipe(AddIngredientCommand command);
 
+    RichItem setYield(SetYieldCommand command);
+
 
     @Value
     class CreateNewItemCommand {
@@ -43,5 +45,13 @@ public interface ModifyItemUseCase {
         Long childItemId;
         @Positive
         BigDecimal amount;
+    }
+
+    @Value
+    class SetYieldCommand {
+        @NotNull
+        Long parentItemId;
+        @Positive
+        BigDecimal yield;
     }
 }

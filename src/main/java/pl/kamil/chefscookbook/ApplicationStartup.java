@@ -29,6 +29,14 @@ public class ApplicationStartup implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        initializeTypesAndUnits();
+
+//        initialize();
+
+
+    }
+
+    private void initializeTypesAndUnits() {
         unitRepository.save(KILOGRAM());
         unitRepository.save(LITRE());
         unitRepository.save(PIECE());
@@ -37,7 +45,9 @@ public class ApplicationStartup implements CommandLineRunner {
         typeRepository.save(INTERMEDIATE());
         typeRepository.save(DISH());
 
+    }
 
+    private void initialize() {
 
 
         RichItem ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", BASIC()));
@@ -52,8 +62,5 @@ public class ApplicationStartup implements CommandLineRunner {
 
 
         System.out.println(queryItemService.findAll().toString());
-
-
-
     }
 }

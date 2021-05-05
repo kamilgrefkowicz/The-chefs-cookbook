@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.PoorItem.toPoorItem;
+import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.RichItem.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +30,10 @@ public class QueryItemService implements QueryItemUseCase {
                 .collect(Collectors.toList());
     }
 
-
-
+    @Override
+    public RichItem findById(Long id) {
+        return toRichItem(itemRepository.findById(id).orElseThrow());
+    }
 
 
 }

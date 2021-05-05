@@ -15,6 +15,8 @@ import java.util.List;
 public interface QueryItemUseCase {
     List<PoorItem> findAll();
 
+    RichItem findById(Long id);
+
 
     @Value
     @Builder
