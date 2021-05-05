@@ -29,7 +29,12 @@ public class ModifyItemService implements ModifyItemUseCase {
     public RichItem createItem(CreateNewItemCommand command) {
         Item item = command.toItem();
         generateRecipeIfApplicable(item);
+        setToActiveIsBasic(item);
         return toRichItem(itemRepository.save(item));
+    }
+
+    private void setToActiveIsBasic(Item item) {
+        if (item.getType().equals(BASIC())) item.setActive(true);
     }
 
     @Transactional
@@ -38,11 +43,16 @@ public class ModifyItemService implements ModifyItemUseCase {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Item childItem = itemRepository.getOne(command.getChildItemId());
         //todo implement exceptions
+        ensureChildItemActive(childItem);
         checkForLoops(parentItem, childItem);
         addIngredient(parentItem, childItem, command.getAmount());
         activateIfValid(parentItem);
 
         return toRichItem(itemRepository.save(parentItem));
+    }
+
+    private void ensureChildItemActive(Item childItem) {
+        if (!childItem.isActive()) throw new IllegalArgumentException();
     }
 
     @Override
@@ -71,11 +81,17 @@ public class ModifyItemService implements ModifyItemUseCase {
     @Override
     @Transactional
     public RichItem removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command) {
-        Item parentItem = itemRepository.findById(command.getParentItemId()).get();
-        Ingredient ingredientToRemove = ingredientRepository.findById(command.getIngredientId()).get();
+        Item parentItem = itemRepository.getOne(command.getParentItemId());
+        Ingredient ingredientToRemove = ingredientRepository.getOne(command.getIngredientId());
+
         parentItem.getRecipe().getIngredients().remove(ingredientToRemove);
+        inactivateItemIfBecameInvalid(parentItem);
 
         return toRichItem(itemRepository.save(parentItem));
+    }
+
+    private void inactivateItemIfBecameInvalid(Item parentItem) {
+        if (parentItem.getIngredients().isEmpty()) parentItem.setActive(false);
     }
 
     private void activateIfValid(Item parentItem) {

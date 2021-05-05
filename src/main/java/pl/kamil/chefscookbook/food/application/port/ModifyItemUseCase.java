@@ -4,6 +4,7 @@ import lombok.Value;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.RichItem;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
+import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -31,11 +32,14 @@ public interface ModifyItemUseCase {
         String itemName;
         @NotNull
         Type itemType;
+        @NotNull
+        Unit itemUnit;
 
         public Item toItem() {
             return  Item.builder()
                     .name(itemName)
                     .type(itemType)
+                    .unit(itemUnit)
                     .build();
         }
     }
