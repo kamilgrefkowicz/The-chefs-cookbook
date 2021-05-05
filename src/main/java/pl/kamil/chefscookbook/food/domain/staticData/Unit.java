@@ -3,12 +3,9 @@ package pl.kamil.chefscookbook.food.domain.staticData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NaturalId;
-import pl.kamil.chefscookbook.jpa.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.StringJoiner;
 
 import static pl.kamil.chefscookbook.language.LanguageConfiguration.getLanguage;
 

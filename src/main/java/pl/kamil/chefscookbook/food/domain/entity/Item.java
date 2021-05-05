@@ -1,12 +1,18 @@
 package pl.kamil.chefscookbook.food.domain.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
-import pl.kamil.chefscookbook.jpa.BaseEntity;
+import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Builder
@@ -14,7 +20,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "recipe")
+@ToString(exclude = {"recipe", "dependencies"})
 public class Item extends BaseEntity {
 
     private String name;
@@ -22,18 +28,40 @@ public class Item extends BaseEntity {
     @ManyToOne
     private Unit unit;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Type type;
 
     private BigDecimal pricePerUnit;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "item")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentItem")
     private Recipe recipe;
 
     boolean active = false;
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
-        recipe.setItem(this);
+        recipe.setParentItem(this);
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return recipe.getIngredients();
+    }
+
+
+    public Set<Item> getDependencies() {
+        if (this.type.equals(Type.BASIC())) return Collections.emptySet();
+        Set<Item> dependencies = this.recipe.getIngredients()
+                .stream()
+                .map(Ingredient::getChildItem).collect(Collectors.toSet());
+
+        dependencies.stream()
+        .filter(item -> !item.getType().equals(Type.BASIC()))
+        .forEach(item -> dependencies.addAll(item.getDependencies()));
+
+        return dependencies;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.recipe.setIngredients(ingredients);
     }
 }

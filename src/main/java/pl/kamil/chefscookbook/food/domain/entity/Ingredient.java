@@ -1,21 +1,29 @@
 package pl.kamil.chefscookbook.food.domain.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import pl.kamil.chefscookbook.jpa.BaseEntity;
+import lombok.NoArgsConstructor;
+import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Ingredient extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "recipe_id")
-    private Recipe recipe;
+    Recipe recipe;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Item item;
+    @ManyToOne
+    private Item childItem;
 
     private BigDecimal amount;
+
+    public Ingredient(Item childItem, BigDecimal amount) {
+        this.childItem = childItem;
+        this.amount = amount;
+    }
 }

@@ -1,4 +1,4 @@
-package pl.kamil.chefscookbook.jpa;
+package pl.kamil.chefscookbook.shared.jpa;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
