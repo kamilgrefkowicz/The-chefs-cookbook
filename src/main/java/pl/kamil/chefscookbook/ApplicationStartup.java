@@ -7,7 +7,6 @@ import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.RichItem;
-import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.TypeRepository;
 import pl.kamil.chefscookbook.food.domain.staticData.UnitRepository;
 
@@ -54,11 +53,16 @@ public class ApplicationStartup implements CommandLineRunner {
         RichItem masło = modifyItemService.createItem(new CreateNewItemCommand("masło", BASIC()));
         RichItem puree = modifyItemService.createItem(new CreateNewItemCommand("puree", INTERMEDIATE()));
 
-        ModifyItemUseCase.AddIngredientCommand addZiemniak= new ModifyItemUseCase.AddIngredientCommand(3L, 2L, BigDecimal.valueOf(1));
+        ModifyItemUseCase.AddIngredientCommand addZiemniak= new ModifyItemUseCase.AddIngredientCommand(3L, 1L, BigDecimal.valueOf(1));
         ModifyItemUseCase.AddIngredientCommand addMasło = new ModifyItemUseCase.AddIngredientCommand(3L, 2L, BigDecimal.valueOf(1));
 
         modifyItemService.addIngredientToRecipe(addZiemniak);
         modifyItemService.addIngredientToRecipe(addMasło);
+
+        Long ingredientId = queryItemService.findById(puree.getId()).getRecipe().getIngredients().stream().findFirst().get().getId();
+
+        modifyItemService.removeIngredientFromRecipe(new ModifyItemUseCase.RemoveIngredientFromRecipeCommand(puree.getId(), ingredientId));
+
 
 
         System.out.println(queryItemService.findAll().toString());

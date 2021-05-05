@@ -3,6 +3,7 @@ package pl.kamil.chefscookbook.food.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
+import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
@@ -21,6 +22,7 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 public class ModifyItemService implements ModifyItemUseCase {
 
     private final ItemJpaRepository itemRepository;
+    private final IngredientJpaRepository ingredientRepository;
 
     @Override
     @Transactional
@@ -58,6 +60,22 @@ public class ModifyItemService implements ModifyItemUseCase {
         Item item = itemRepository.getOne(command.getParentItemId());
         item.getRecipe().setDescription(command.getDescription());
         return toRichItem(itemRepository.save(item));
+    }
+
+    @Override
+    @Transactional
+    public void deleteItem(DeleteItemCommand command) {
+        itemRepository.deleteById(command.getItemId());
+    }
+
+    @Override
+    @Transactional
+    public RichItem removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command) {
+        Item parentItem = itemRepository.findById(command.getParentItemId()).get();
+        Ingredient ingredientToRemove = ingredientRepository.findById(command.getIngredientId()).get();
+        parentItem.getRecipe().getIngredients().remove(ingredientToRemove);
+
+        return toRichItem(itemRepository.save(parentItem));
     }
 
     private void activateIfValid(Item parentItem) {

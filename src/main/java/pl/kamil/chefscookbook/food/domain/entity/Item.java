@@ -1,8 +1,6 @@
 package pl.kamil.chefscookbook.food.domain.entity;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
@@ -20,7 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"recipe", "dependencies"})
+@ToString(exclude = {"recipe"})
 public class Item extends BaseEntity {
 
     private String name;

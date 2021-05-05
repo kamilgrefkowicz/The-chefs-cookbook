@@ -18,7 +18,7 @@ public class Recipe extends BaseEntity {
 
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<Ingredient> ingredients = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)

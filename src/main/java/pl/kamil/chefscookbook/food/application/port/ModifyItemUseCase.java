@@ -20,6 +20,10 @@ public interface ModifyItemUseCase {
 
     RichItem updateDescription(UpdateDescriptionCommand command);
 
+    void deleteItem(DeleteItemCommand command);
+
+    RichItem removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command);
+
 
     @Value
     class CreateNewItemCommand {
@@ -60,5 +64,19 @@ public interface ModifyItemUseCase {
         Long parentItemId;
         @NotBlank
         String description;
+    }
+
+    @Value
+    class DeleteItemCommand {
+        @NotNull
+        Long itemId;
+    }
+
+    @Value
+    class RemoveIngredientFromRecipeCommand {
+        @NotNull
+        Long parentItemId;
+        @NotNull
+        Long ingredientId;
     }
 }

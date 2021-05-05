@@ -3,6 +3,7 @@ package pl.kamil.chefscookbook.shared.jpa;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Setter
 @MappedSuperclass
 @EqualsAndHashCode(of="uuid")
+@ToString
 public abstract class BaseEntity {
 
     @Id

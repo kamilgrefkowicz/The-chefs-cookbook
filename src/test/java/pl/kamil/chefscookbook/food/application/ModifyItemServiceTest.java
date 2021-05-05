@@ -6,16 +6,15 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.RemoveIngredientFromRecipeCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.UpdateDescriptionCommand;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
-import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
@@ -30,6 +29,9 @@ class ModifyItemServiceTest {
 
     @Autowired
     private QueryItemService queryItem;
+
+    @Autowired
+    IngredientJpaRepository ingredientJpaRepository;
 
 
     @Test
@@ -61,7 +63,7 @@ class ModifyItemServiceTest {
         var puree = givenItemCreated("Puree", INTERMEDIATE());
         var butter = givenItemCreated("Butter", BASIC());
 
-        modifyItem.addIngredientToRecipe(new ModifyItemUseCase.AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
+        modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
         var queried  = queryItem.findById(puree.getId());
 
         assertFalse(queried.getRecipe().getIngredients().isEmpty());
@@ -75,9 +77,9 @@ class ModifyItemServiceTest {
     void addingSameIngredientToRecipeShouldAggregateAmounts() {
         var puree = givenItemCreated("Puree", INTERMEDIATE());
         var butter = givenItemCreated("Butter", BASIC());
-        modifyItem.addIngredientToRecipe(new ModifyItemUseCase.AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
+        modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
 
-        modifyItem.addIngredientToRecipe(new ModifyItemUseCase.AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
+        modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
         var queried = queryItem.findById(puree.getId());
 
         assertEquals(1, queried.getRecipe().getIngredients().size());
@@ -87,7 +89,7 @@ class ModifyItemServiceTest {
     @Test
     void attemptingToFormALoopShouldThrowAnException() {
         var puree = givenItemCreated("Puree", INTERMEDIATE());
-        ModifyItemUseCase.AddIngredientCommand command = new ModifyItemUseCase.AddIngredientCommand(puree.getId(), puree.getId(), BigDecimal.ONE);
+        AddIngredientCommand command = new AddIngredientCommand(puree.getId(), puree.getId(), BigDecimal.ONE);
 
         assertThrows(IllegalArgumentException.class, () ->  modifyItem.addIngredientToRecipe(command));
 
@@ -97,7 +99,7 @@ class ModifyItemServiceTest {
         var puree = givenItemCreated("Puree", INTERMEDIATE());
         var butter = givenItemCreated("Butter", BASIC());
 
-        modifyItem.addIngredientToRecipe(new ModifyItemUseCase.AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
+        modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
         modifyItem.setYield(new ModifyItemUseCase.SetYieldCommand(puree.getId(), BigDecimal.valueOf(1)));
 
         var queried = queryItem.findById(puree.getId());
@@ -113,6 +115,28 @@ class ModifyItemServiceTest {
         var queried = queryItem.findById(puree.getId());
 
         assertEquals("description", queried.getRecipe().getDescription());
+    }
+    @Test
+    void canDeleteItem() {
+        var puree = givenItemCreated("Puree", INTERMEDIATE());
+
+        modifyItem.deleteItem(new ModifyItemUseCase.DeleteItemCommand(puree.getId()));
+
+        assertEquals(0, queryItem.findAll().size());
+    }
+
+    @Test
+    void canRemoveIngredientsFromRecipe() {
+        var puree = givenItemCreated("Puree", INTERMEDIATE());
+        var butter = givenItemCreated("Butter", BASIC());
+        var potato = givenItemCreated("Potato", BASIC());
+        modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
+        modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), potato.getId(), BigDecimal.ONE));
+
+        Long ingredientId = queryItem.findById(puree.getId()).getRecipe().getIngredients().stream().findFirst().get().getId();
+        modifyItem.removeIngredientFromRecipe(new RemoveIngredientFromRecipeCommand(puree.getId(), ingredientId));
+
+        assertEquals(1, queryItem.findById(puree.getId()).getRecipe().getIngredients().size());
     }
 
 

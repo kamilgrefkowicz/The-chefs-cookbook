@@ -2,7 +2,6 @@ package pl.kamil.chefscookbook.food.application.port;
 
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.entity.Recipe;
