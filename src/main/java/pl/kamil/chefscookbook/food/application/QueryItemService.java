@@ -4,16 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
+import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.shared.response.Response;
+import pl.kamil.chefscookbook.food.domain.staticData.Type;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.PoorItem.toPoorItem;
 import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.RichItem.*;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +34,46 @@ public class QueryItemService implements QueryItemUseCase {
     }
 
     @Override
+    @Transactional
     public RichItem findById(Long id) {
         return toRichItem(itemRepository.findById(id).orElseThrow());
+    }
+
+    @Override
+    @Transactional
+    public FullItem getFullItem(GetFullItemCommand command) {
+        Item item = itemRepository.getOne(command.getItemId());
+
+        Map<Item, BigDecimal> map = new LinkedHashMap<>();
+        createMapOfAllDependenciesWithAmounts(item, command.getTargetAmount(), map);
+
+        return FullItem.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .unit(item.getUnit())
+                .type(item.getType())
+                .pricePerUnit(item.getPricePerUnit())
+                .active(item.isActive())
+                .recipe(item.getRecipe())
+                .dependencyMapWithAmounts(map)
+                .build();
+
+
+    }
+
+    private Map<Item, BigDecimal> createMapOfAllDependenciesWithAmounts(Item item, BigDecimal targetAmount, Map<Item, BigDecimal> map) {
+        if (map.containsKey(item)) {
+            map.put(item, map.get(item).add(targetAmount));
+        } else map.put(item, targetAmount);
+
+        if (!item.getType().equals(BASIC())) {
+            for (Ingredient ingredient : item.getIngredients()) {
+                targetAmount = targetAmount.multiply(ingredient.getRatio());
+                createMapOfAllDependenciesWithAmounts(ingredient.getChildItem(), targetAmount, map);
+            }
+        }
+        return map;
+
     }
 
 

@@ -9,12 +9,16 @@ import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface QueryItemUseCase {
     List<PoorItem> findAll();
 
     RichItem findById(Long id);
+
+    FullItem getFullItem(GetFullItemCommand command);
 
 
     @Value
@@ -64,6 +68,30 @@ public interface QueryItemUseCase {
         }
 
     }
+    @Value
+    class GetFullItemCommand {
+        Long itemId;
+        BigDecimal targetAmount;
+
+        public GetFullItemCommand(Long itemId) {
+            this.itemId = itemId;
+            targetAmount = BigDecimal.valueOf(1);
+        }
+    }
+
+    @Value
+    @Builder
+    class FullItem {
+        Long id;
+        String name;
+        Unit unit;
+        Type type;
+        BigDecimal pricePerUnit;
+        boolean active;
+        Recipe recipe;
+        Map<Item, BigDecimal> dependencyMapWithAmounts;
+    }
+
 }
 
 

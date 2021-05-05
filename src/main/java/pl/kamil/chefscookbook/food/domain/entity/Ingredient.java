@@ -7,6 +7,7 @@ import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Data
@@ -22,8 +23,7 @@ public class Ingredient extends BaseEntity {
 
     private BigDecimal amount;
 
-    public Ingredient(Item childItem, BigDecimal amount) {
-        this.childItem = childItem;
-        this.amount = amount;
+    public BigDecimal getRatio() {
+        return this.amount.divide(this.getRecipe().getRecipeYield(), 4, RoundingMode.HALF_UP).setScale(4, RoundingMode.HALF_UP);
     }
 }

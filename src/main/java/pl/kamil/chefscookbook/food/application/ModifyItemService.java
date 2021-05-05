@@ -33,9 +33,6 @@ public class ModifyItemService implements ModifyItemUseCase {
         return toRichItem(itemRepository.save(item));
     }
 
-    private void setToActiveIsBasic(Item item) {
-        if (item.getType().equals(BASIC())) item.setActive(true);
-    }
 
     @Transactional
     @Override
@@ -49,6 +46,9 @@ public class ModifyItemService implements ModifyItemUseCase {
         activateIfValid(parentItem);
 
         return toRichItem(itemRepository.save(parentItem));
+    }
+    private void setToActiveIsBasic(Item item) {
+        if (item.getType().equals(BASIC())) item.setActive(true);
     }
 
     private void ensureChildItemActive(Item childItem) {
