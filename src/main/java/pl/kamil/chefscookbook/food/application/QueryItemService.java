@@ -10,6 +10,8 @@ import pl.kamil.chefscookbook.food.domain.staticData.Type;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,6 @@ public class QueryItemService implements QueryItemUseCase {
     @Transactional
     public FullItem getFullItem(GetFullItemCommand command) {
         Item item = itemRepository.findById(command.getItemId()).orElseThrow();
-        if (!item.isActive()) throw new IllegalArgumentException();
 
         Map<PoorItem, BigDecimal> map = new LinkedHashMap<>();
         createMapOfAllDependenciesWithAmounts(item, command.getTargetAmount(), map);
@@ -55,7 +56,6 @@ public class QueryItemService implements QueryItemUseCase {
                 .unit(item.getUnit())
                 .type(item.getType())
                 .pricePerUnit(item.getPricePerUnit())
-                .active(item.isActive())
                 .recipe(item.getRecipe())
                 .dependencyMapWithAmounts(map)
                 .build();
@@ -71,8 +71,8 @@ public class QueryItemService implements QueryItemUseCase {
         return map;
 
     }
-
     private void placeItemInMap(Item item, BigDecimal targetAmount, Map<PoorItem, BigDecimal> map) {
+        targetAmount = targetAmount.setScale(3, RoundingMode.HALF_EVEN);
         PoorItem toPlace = toPoorItem(item);
         if (map.containsKey(toPlace)) map.put(toPlace, map.get(toPlace).add(targetAmount));
         else map.put(toPlace, targetAmount);

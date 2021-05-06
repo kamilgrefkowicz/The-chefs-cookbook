@@ -34,8 +34,6 @@ public class Item extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentItem")
     private Recipe recipe;
 
-    boolean active = false;
-
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
         recipe.setParentItem(this);
@@ -59,7 +57,4 @@ public class Item extends BaseEntity {
         return dependencies;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients) {
-        this.recipe.setIngredients(ingredients);
-    }
 }

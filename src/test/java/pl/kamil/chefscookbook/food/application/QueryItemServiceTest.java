@@ -41,12 +41,6 @@ class QueryItemServiceTest {
     @Autowired
     ItemJpaRepository itemRepository;
 
-    @Test
-    void attemptingToGetFullItemInfoOnInactiveItemShouldThrowAnException() {
-        var puree = givenItemCreated("Puree", INTERMEDIATE(), KILOGRAM());
-
-        assertThrows(IllegalArgumentException.class, ()-> queryItem.getFullItem(new GetFullItemCommand(puree.getId())));
-    }
 
     @Test
     void gettingFullItemShouldProvideACorrectMapOfItsDependencies () {
@@ -59,14 +53,38 @@ class QueryItemServiceTest {
 
         Map<PoorItem, BigDecimal> map = queryItem.getFullItem(new GetFullItemCommand(ribeyeWithPuree.getId())).getDependencyMapWithAmounts();
 
-        assertEquals(4, map.size());
-        assertEquals("0.3", map.get(ribeye).toPlainString());
-        assertEquals("0.4", map.get(puree).toPlainString());
-        assertEquals("0.1727", map.get(butter).toPlainString());
-        assertEquals("1", map.get(ribeyeWithPuree).toPlainString());
-        assertEquals("0.3636", map.get(potato).toPlainString());
+        assertEquals(5, map.size());
+        assertEquals("0.300", map.get(ribeye).toPlainString());
+        assertEquals("0.400", map.get(puree).toPlainString());
+        assertEquals("0.173", map.get(butter).toPlainString());
+        assertEquals("1.000", map.get(ribeyeWithPuree).toPlainString());
+        assertEquals("0.364", map.get(potato).toPlainString());
 
     }
+    @Test
+    void gettingFullItemWithMultipliedTargetShouldMultiplyAllDependencies() {
+        givenSteakDishAndDependencies();
+        PoorItem potato = toPoorItem(itemRepository.findFirstByNameContaining("potato"));
+        PoorItem butter = toPoorItem(itemRepository.findFirstByNameContaining("butter"));
+        PoorItem ribeye = toPoorItem(itemRepository.findFirstByNameContaining("ribeye steak"));
+        PoorItem puree = toPoorItem(itemRepository.findFirstByNameContaining("puree"));
+        PoorItem ribeyeWithPuree = toPoorItem(itemRepository.findFirstByNameContaining("ribeye with"));
+
+        Map<PoorItem, BigDecimal> map = queryItem.getFullItem(new GetFullItemCommand(ribeyeWithPuree.getId(), BigDecimal.valueOf(4))).getDependencyMapWithAmounts();
+
+        assertEquals(5, map.size());
+        assertEquals("1.200", map.get(ribeye).toPlainString());
+        assertEquals("1.600", map.get(puree).toPlainString());
+        assertEquals("0.691", map.get(butter).toPlainString());
+        assertEquals("4.000", map.get(ribeyeWithPuree).toPlainString());
+        assertEquals("1.455", map.get(potato).toPlainString());
+
+    }
+
+
+
+
+
 
     private void setYieldForRecipe(RichItem item, BigDecimal yield) {
         modifyItem.setYield(new SetYieldCommand(item.getId(), yield));
@@ -94,6 +112,6 @@ class QueryItemServiceTest {
         addIngredientToRecipe(butter, puree, BigDecimal.valueOf(0.2));
         addIngredientToRecipe(butter, ribeyeWithButterAndPuree, BigDecimal.valueOf(0.1));
         addIngredientToRecipe(puree, ribeyeWithButterAndPuree, BigDecimal.valueOf(0.4));
-        addIngredientToRecipe(butter, ribeyeWithButterAndPuree, BigDecimal.valueOf(0.3));
+        addIngredientToRecipe(ribeyeSteak, ribeyeWithButterAndPuree, BigDecimal.valueOf(0.3));
     }
 }

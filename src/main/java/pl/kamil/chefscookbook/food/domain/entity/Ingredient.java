@@ -1,8 +1,6 @@
 package pl.kamil.chefscookbook.food.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 
 import javax.persistence.*;
@@ -10,7 +8,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ingredient extends BaseEntity {
@@ -24,6 +23,10 @@ public class Ingredient extends BaseEntity {
     private BigDecimal amount;
 
     public BigDecimal getRatio() {
-        return this.amount.divide(this.getRecipe().getRecipeYield(), 4, RoundingMode.HALF_UP).setScale(4, RoundingMode.HALF_UP);
+        return this.amount.divide(this.getRecipe().getRecipeYield(), 4, RoundingMode.HALF_UP);
+    }
+
+    public Item getParentItem() {
+        return this.recipe.getParentItem();
     }
 }

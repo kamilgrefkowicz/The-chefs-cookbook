@@ -38,7 +38,6 @@ public interface QueryItemUseCase {
                     .unit(item.getUnit())
                     .type(item.getType())
                     .pricePerUnit(item.getPricePerUnit())
-                    .active(item.isActive())
                     .build();
         }
     }
@@ -62,7 +61,6 @@ public interface QueryItemUseCase {
                     .unit(item.getUnit())
                     .type(item.getType())
                     .pricePerUnit(item.getPricePerUnit())
-                    .active(item.isActive())
                     .recipe(item.getRecipe())
                     .build();
         }

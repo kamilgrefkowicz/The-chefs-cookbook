@@ -6,23 +6,20 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.RemoveIngredientFromRecipeCommand;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.UpdateDescriptionCommand;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.*;
 import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 
-import java.io.NotActiveException;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
+import static pl.kamil.chefscookbook.food.domain.staticData.Unit.PIECE;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -49,7 +46,6 @@ class ModifyItemServiceTest {
 
         assertEquals("Butter", item.getName());
         assertEquals(BASIC(), item.getType());
-        assertTrue(item.isActive());
         assertNull(item.getRecipe());
     }
 
@@ -76,19 +72,7 @@ class ModifyItemServiceTest {
         assertFalse(queried.getRecipe().getIngredients().isEmpty());
     }
 
-    @Test
-    void addingAnInactiveItemAsIngredientShouldThrowException() {
-        var puree = givenItemCreated("Puree", INTERMEDIATE(), KILOGRAM());
-        var butter = givenItemCreated("Butter", BASIC(), KILOGRAM());
-        Item butterItem = itemJpaRepository.findById(butter.getId()).get();
-        butterItem.setActive(false);
-        itemJpaRepository.save(butterItem);
 
-        AddIngredientCommand command = new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE);
-
-        assertThrows(IllegalArgumentException.class, () -> modifyItem.addIngredientToRecipe(command));
-
-    }
 
 
     @Test
@@ -113,18 +97,6 @@ class ModifyItemServiceTest {
 
     }
 
-    @Test
-    void dishOrIntermediateItemShouldBecomeActiveWhenBothYieldSetAndAtLeastOneIngredient() {
-        var puree = givenItemCreated("Puree", INTERMEDIATE(), KILOGRAM());
-        var butter = givenItemCreated("Butter", BASIC(), KILOGRAM());
-
-        modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
-        modifyItem.setYield(new ModifyItemUseCase.SetYieldCommand(puree.getId(), BigDecimal.valueOf(1)));
-
-        var queried = queryItem.findById(puree.getId());
-
-        assertTrue(queried.isActive());
-    }
 
     @Test
     void canUpdateDescription() {
@@ -143,6 +115,18 @@ class ModifyItemServiceTest {
         modifyItem.deleteItem(new ModifyItemUseCase.DeleteItemCommand(puree.getId()));
 
         assertEquals(0, queryItem.findAll().size());
+    }
+    @Test
+    void deletingAnItemShouldRemoveItFromAllRecipes() {
+        var puree = givenItemCreated("Puree", INTERMEDIATE(), KILOGRAM());
+        var butter = givenItemCreated("Butter", BASIC(), KILOGRAM());
+        modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
+        setYieldForItem(puree, BigDecimal.ONE);
+
+        modifyItem.deleteItem(new DeleteItemCommand(butter.getId()));
+        var queried = queryItem.findById(puree.getId());
+
+        assertFalse(queried.isActive());
     }
 
     @Test
@@ -163,7 +147,7 @@ class ModifyItemServiceTest {
     void removingLastIngredientShouldSetItemToInactive() {
         var puree = givenItemCreated("Puree", INTERMEDIATE(), KILOGRAM());
         var butter = givenItemCreated("Butter", BASIC(), KILOGRAM());
-        modifyItem.setYield(new ModifyItemUseCase.SetYieldCommand(puree.getId(), BigDecimal.valueOf(1)));
+        setYieldForItem(puree, BigDecimal.valueOf(1));
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
         Long ingredientId = queryItem.findById(puree.getId()).getRecipe().getIngredients().stream().findFirst().get().getId();
 
@@ -171,8 +155,15 @@ class ModifyItemServiceTest {
         var queried = queryItem.findById(puree.getId());
 
         assertFalse(queried.isActive());
-
     }
+
+
+
+    private RichItem setYieldForItem(RichItem puree, BigDecimal itemYield) {
+        return modifyItem.setYield(new SetYieldCommand(puree.getId(), itemYield));
+    }
+
+
 
 
     private RichItem givenItemCreated(String itemName, Type itemType, Unit itemUnit) {
