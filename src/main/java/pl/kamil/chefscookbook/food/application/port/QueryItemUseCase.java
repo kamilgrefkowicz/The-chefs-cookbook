@@ -77,6 +77,11 @@ public interface QueryItemUseCase {
             this.itemId = itemId;
             targetAmount = BigDecimal.valueOf(1);
         }
+
+        public GetFullItemCommand(Long itemId, BigDecimal targetAmount) {
+            this.itemId = itemId;
+            this.targetAmount = targetAmount;
+        }
     }
 
     @Value
@@ -89,7 +94,7 @@ public interface QueryItemUseCase {
         BigDecimal pricePerUnit;
         boolean active;
         Recipe recipe;
-        Map<Item, BigDecimal> dependencyMapWithAmounts;
+        Map<PoorItem, BigDecimal> dependencyMapWithAmounts;
     }
 
 }

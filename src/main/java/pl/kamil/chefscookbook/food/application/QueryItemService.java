@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.PoorItem.toPoorItem;
 import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.RichItem.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 
@@ -43,8 +44,9 @@ public class QueryItemService implements QueryItemUseCase {
     @Transactional
     public FullItem getFullItem(GetFullItemCommand command) {
         Item item = itemRepository.getOne(command.getItemId());
+        if (!item.isActive()) throw new IllegalArgumentException();
 
-        Map<Item, BigDecimal> map = new LinkedHashMap<>();
+        Map<PoorItem, BigDecimal> map = new LinkedHashMap<>();
         createMapOfAllDependenciesWithAmounts(item, command.getTargetAmount(), map);
 
         return FullItem.builder()
@@ -61,20 +63,30 @@ public class QueryItemService implements QueryItemUseCase {
 
     }
 
-    private Map<Item, BigDecimal> createMapOfAllDependenciesWithAmounts(Item item, BigDecimal targetAmount, Map<Item, BigDecimal> map) {
-        if (map.containsKey(item)) {
-            map.put(item, map.get(item).add(targetAmount));
-        } else map.put(item, targetAmount);
+    private Map<PoorItem, BigDecimal> createMapOfAllDependenciesWithAmounts(Item item, BigDecimal targetAmount, Map<PoorItem, BigDecimal> map) {
 
-        if (!item.getType().equals(BASIC())) {
-            for (Ingredient ingredient : item.getIngredients()) {
-                targetAmount = targetAmount.multiply(ingredient.getRatio());
-                createMapOfAllDependenciesWithAmounts(ingredient.getChildItem(), targetAmount, map);
-            }
-        }
+        placeItemInMap(item, targetAmount, map);
+        recursivelyGetDependencies(item, targetAmount, map);
+
         return map;
 
     }
+
+    private void placeItemInMap(Item item, BigDecimal targetAmount, Map<PoorItem, BigDecimal> map) {
+        PoorItem toPlace = toPoorItem(item);
+        if (map.containsKey(toPlace)) map.put(toPlace, map.get(toPlace).add(targetAmount));
+        else map.put(toPlace, targetAmount);
+    }
+
+    private void recursivelyGetDependencies(Item item, BigDecimal targetAmount, Map<PoorItem, BigDecimal> map) {
+        if (!item.getType().equals(BASIC())) {
+            for (Ingredient ingredient : item.getIngredients()) {
+                BigDecimal amountForNext = targetAmount.multiply(ingredient.getRatio());
+                createMapOfAllDependenciesWithAmounts(ingredient.getChildItem(), amountForNext, map);
+            }
+        }
+    }
+
 
 
 }
