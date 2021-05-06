@@ -58,7 +58,7 @@ public class ModifyItemService implements ModifyItemUseCase {
     @Override
     @Transactional
     public RichItem setYield(SetYieldCommand command) {
-        Item item = itemRepository.getOne(command.getParentItemId());
+        Item item = itemRepository.findById(command.getParentItemId()).orElseThrow();
         item.getRecipe().setRecipeYield(command.getItemYield());
         activateIfValid(item);
         return toRichItem(itemRepository.save(item));

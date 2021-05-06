@@ -36,7 +36,7 @@ public class ApplicationStartup implements CommandLineRunner {
 
         initializeTypesAndUnits();
 
-        initialize();
+//        initialize();
 
 
     }

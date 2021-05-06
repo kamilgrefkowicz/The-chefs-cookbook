@@ -6,5 +6,5 @@ import pl.kamil.chefscookbook.food.domain.entity.Item;
 
 public interface ItemJpaRepository extends JpaRepository<Item, Long> {
 
-
+    Item findFirstByNameContaining(String term);
 }

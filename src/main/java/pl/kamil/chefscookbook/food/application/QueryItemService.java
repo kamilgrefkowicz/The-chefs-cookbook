@@ -43,7 +43,7 @@ public class QueryItemService implements QueryItemUseCase {
     @Override
     @Transactional
     public FullItem getFullItem(GetFullItemCommand command) {
-        Item item = itemRepository.getOne(command.getItemId());
+        Item item = itemRepository.findById(command.getItemId()).orElseThrow();
         if (!item.isActive()) throw new IllegalArgumentException();
 
         Map<PoorItem, BigDecimal> map = new LinkedHashMap<>();
