@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.RemoveIngredientFromRecipeCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.SetYieldCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.GetFullItemCommand;
@@ -56,31 +57,30 @@ public class ApplicationStartup implements CommandLineRunner {
 
 
         RichItem ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", BASIC(), KILOGRAM()));
-        RichItem masło = modifyItemService.createItem(new CreateNewItemCommand("masło", BASIC(), KILOGRAM()));
+//        RichItem masło = modifyItemService.createItem(new CreateNewItemCommand("masło", BASIC(), KILOGRAM()));
         RichItem puree = modifyItemService.createItem(new CreateNewItemCommand("puree", INTERMEDIATE(), KILOGRAM()));
-        RichItem schab = modifyItemService.createItem(new CreateNewItemCommand("schab", BASIC(), KILOGRAM()));
-        RichItem schabZMaslemIPuree =  modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", DISH(), PIECE()));
+//        RichItem schab = modifyItemService.createItem(new CreateNewItemCommand("schab", BASIC(), KILOGRAM()));
+//        RichItem schabZMaslemIPuree =  modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", DISH(), PIECE()));
 
         AddIngredientCommand addZiemniaktoPuree = new AddIngredientCommand(puree.getId(), ziemniak.getId(), BigDecimal.valueOf(1));
-        AddIngredientCommand addMasłoToPuree = new AddIngredientCommand(puree.getId(), masło.getId(), BigDecimal.valueOf(0.2));
+//        AddIngredientCommand addMasłoToPuree = new AddIngredientCommand(puree.getId(), masło.getId(), BigDecimal.valueOf(0.2));
+//
+//        AddIngredientCommand addMasłoToSchab = new AddIngredientCommand(schabZMaslemIPuree.getId(), masło.getId(), BigDecimal.valueOf(0.1));
+//        AddIngredientCommand addPureeToSchab = new AddIngredientCommand(schabZMaslemIPuree.getId(), puree.getId(), BigDecimal.valueOf(0.4));
+//        AddIngredientCommand addSchabtoSchab = new AddIngredientCommand(schabZMaslemIPuree.getId(), schab.getId(), BigDecimal.valueOf(0.3));
 
-        AddIngredientCommand addMasłoToSchab = new AddIngredientCommand(schabZMaslemIPuree.getId(), masło.getId(), BigDecimal.valueOf(0.1));
-        AddIngredientCommand addPureeToSchab = new AddIngredientCommand(schabZMaslemIPuree.getId(), puree.getId(), BigDecimal.valueOf(0.4));
-        AddIngredientCommand addSchabtoSchab = new AddIngredientCommand(schabZMaslemIPuree.getId(), schab.getId(), BigDecimal.valueOf(0.3));
-
-        modifyItemService.setYield(new SetYieldCommand(puree.getId(), BigDecimal.valueOf(1.1)));
-        modifyItemService.setYield(new SetYieldCommand(schabZMaslemIPuree.getId(), BigDecimal.ONE));
-
-
-        modifyItemService.addIngredientToRecipe(addZiemniaktoPuree );
-        modifyItemService.addIngredientToRecipe(addMasłoToPuree );
-        modifyItemService.addIngredientToRecipe(addPureeToSchab );
-        modifyItemService.addIngredientToRecipe(addMasłoToSchab);
-        modifyItemService.addIngredientToRecipe(addSchabtoSchab);
+//        modifyItemService.setYield(new SetYieldCommand(puree.getId(), BigDecimal.valueOf(1.1)));
+//        modifyItemService.setYield(new SetYieldCommand(schabZMaslemIPuree.getId(), BigDecimal.ONE));
 
 
-        Map<PoorItem, BigDecimal> dependencyMapWithAmounts = queryItemService.getFullItem(new GetFullItemCommand(schabZMaslemIPuree.getId())).getDependencyMapWithAmounts();
-        System.out.println(dependencyMapWithAmounts);
+        modifyItemService.addIngredientToRecipe(addZiemniaktoPuree);
+//        modifyItemService.addIngredientToRecipe(addMasłoToPuree );
+//        modifyItemService.addIngredientToRecipe(addPureeToSchab );
+//        modifyItemService.addIngredientToRecipe(addMasłoToSchab);
+//        modifyItemService.addIngredientToRecipe(addSchabtoSchab);
 
+
+        modifyItemService.deleteItem(new ModifyItemUseCase.DeleteItemCommand(ziemniak.getId()));
+//        modifyItemService.removeIngredientFromRecipe(new RemoveIngredientFromRecipeCommand(puree.getId(), 3L));
     }
 }

@@ -13,6 +13,7 @@ import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,7 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Unit.PIECE;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 class ModifyItemServiceTest {
 
     @Autowired
@@ -85,7 +87,7 @@ class ModifyItemServiceTest {
         var queried = queryItem.findById(puree.getId());
 
         assertEquals(1, queried.getRecipe().getIngredients().size());
-        assertEquals("2.00", queried.getRecipe().getIngredients().stream().findFirst().get().getAmount().toPlainString());
+        assertEquals("2", queried.getRecipe().getIngredients().stream().findFirst().get().getAmount().toPlainString());
     }
 
     @Test
@@ -126,7 +128,7 @@ class ModifyItemServiceTest {
         modifyItem.deleteItem(new DeleteItemCommand(butter.getId()));
         var queried = queryItem.findById(puree.getId());
 
-        assertFalse(queried.isActive());
+        assertEquals(0, queried.getRecipe().getIngredients().size());
     }
 
     @Test

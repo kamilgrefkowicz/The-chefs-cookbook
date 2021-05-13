@@ -12,6 +12,7 @@ import pl.kamil.chefscookbook.food.domain.entity.Recipe;
 import javax.transaction.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.*;
 import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.RichItem.toRichItem;
@@ -69,11 +70,21 @@ public class ModifyItemService implements ModifyItemUseCase {
         removeThisItemFromAllDependencies(command.getItemId());
 
         itemRepository.deleteById(command.getItemId());
+
     }
 
     private void removeThisItemFromAllDependencies(Long itemId) {
+
         ingredientRepository.findAllByChildItemId(itemId)
-                .forEach(ingredient -> this.remove(ingredient.getParentItem(), ingredient));
+                .forEach(Ingredient::removeSelf);
+
+//        List<Ingredient> toRemove = ingredientRepository.findAllByChildItemId(itemId);
+//        toRemove.forEach(ingredient -> {
+//            long ingredientId = ingredient.getId();
+//            long parentId = ingredient.getParentItem().getId();
+//            removeIngredientFromRecipe(new RemoveIngredientFromRecipeCommand(parentId, ingredientId));
+//
+//        });
 
     }
 
@@ -83,15 +94,10 @@ public class ModifyItemService implements ModifyItemUseCase {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Ingredient ingredientToRemove = ingredientRepository.getOne(command.getIngredientId());
 
-        remove(parentItem, ingredientToRemove);
+        ingredientToRemove.removeSelf();
 
         return toRichItem(itemRepository.save(parentItem));
     }
-
-    private void remove(Item parentItem, Ingredient ingredientToRemove) {
-        parentItem.getIngredients().remove(ingredientToRemove);
-    }
-
 
 
 
@@ -110,7 +116,6 @@ public class ModifyItemService implements ModifyItemUseCase {
         if ((childItem.getDependencies().contains(parentItem) || childItem.equals(parentItem)))
             throw new IllegalArgumentException();
     }
-
 
 
     private void generateRecipeIfApplicable(Item item) {

@@ -14,7 +14,7 @@ import java.math.RoundingMode;
 @NoArgsConstructor
 public class Ingredient extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     Recipe recipe;
 
     @ManyToOne
@@ -28,5 +28,9 @@ public class Ingredient extends BaseEntity {
 
     public Item getParentItem() {
         return this.recipe.getParentItem();
+    }
+
+    public void removeSelf() {
+        getParentItem().getIngredients().remove(this);
     }
 }

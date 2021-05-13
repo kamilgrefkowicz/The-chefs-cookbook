@@ -18,17 +18,14 @@ public class Recipe extends BaseEntity {
 
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Ingredient> ingredients = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId
     private Item parentItem;
 
     private BigDecimal recipeYield;
 
-    public void setIngredients(Set<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-        ingredients.forEach(ingredient -> ingredient.setRecipe(this));
-    }
+
 }
