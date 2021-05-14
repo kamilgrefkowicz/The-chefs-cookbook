@@ -2,23 +2,23 @@ package pl.kamil.chefscookbook.food.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.kamil.chefscookbook.food.application.dto.ItemDto;
+import pl.kamil.chefscookbook.food.application.dto.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.food.domain.staticData.Type;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.PoorItem.toPoorItem;
-import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.RichItem.*;
+import static pl.kamil.chefscookbook.food.application.dto.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 
 @Service
@@ -32,38 +32,28 @@ public class QueryItemService implements QueryItemUseCase {
     public List<PoorItem> findAll() {
         return itemRepository.findAll()
                 .stream()
-                .map(PoorItem::toPoorItem)
+                .map(PoorItem::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public RichItem findById(Long id) {
-        return toRichItem(itemRepository.findById(id).orElseThrow());
+        return new RichItem(itemRepository.findById(id).orElseThrow());
     }
 
     @Override
     @Transactional
-    public FullItem getFullItem(GetFullItemCommand command) {
-        Item item = itemRepository.findById(command.getItemId()).orElseThrow();
-
-        Map<PoorItem, BigDecimal> map = new LinkedHashMap<>();
-        createMapOfAllDependenciesWithAmounts(item, command.getTargetAmount(), map);
-
-        return FullItem.builder()
-                .id(item.getId())
-                .name(item.getName())
-                .unit(item.getUnit())
-                .type(item.getType())
-                .pricePerUnit(item.getPricePerUnit())
-                .recipe(item.getRecipe())
-                .dependencyMapWithAmounts(map)
-                .build();
-
-
+    public Map<ItemDto, BigDecimal> getMapOfAllDependencies(Long itemId, BigDecimal targetAmount) {
+        Map<ItemDto, BigDecimal> dependencies = new LinkedHashMap<>();
+        Item item = itemRepository.getOne(itemId);
+        buildMapOfDependencies(item, targetAmount, dependencies);
+        return dependencies;
     }
 
-    private Map<PoorItem, BigDecimal> createMapOfAllDependenciesWithAmounts(Item item, BigDecimal targetAmount, Map<PoorItem, BigDecimal> map) {
+
+
+    private Map<ItemDto, BigDecimal> buildMapOfDependencies(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
 
         placeItemInMap(item, targetAmount, map);
         recursivelyGetDependencies(item, targetAmount, map);
@@ -71,18 +61,18 @@ public class QueryItemService implements QueryItemUseCase {
         return map;
 
     }
-    private void placeItemInMap(Item item, BigDecimal targetAmount, Map<PoorItem, BigDecimal> map) {
+    private void placeItemInMap(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
         targetAmount = targetAmount.setScale(3, RoundingMode.HALF_EVEN);
-        PoorItem toPlace = toPoorItem(item);
+        ItemDto toPlace = convertToDto(item);
         if (map.containsKey(toPlace)) map.put(toPlace, map.get(toPlace).add(targetAmount));
         else map.put(toPlace, targetAmount);
     }
 
-    private void recursivelyGetDependencies(Item item, BigDecimal targetAmount, Map<PoorItem, BigDecimal> map) {
+    private void recursivelyGetDependencies(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
         if (!item.getType().equals(BASIC())) {
             for (Ingredient ingredient : item.getIngredients()) {
                 BigDecimal amountForNext = targetAmount.multiply(ingredient.getRatio());
-                createMapOfAllDependenciesWithAmounts(ingredient.getChildItem(), amountForNext, map);
+                buildMapOfDependencies(ingredient.getChildItem(), amountForNext, map);
             }
         }
     }

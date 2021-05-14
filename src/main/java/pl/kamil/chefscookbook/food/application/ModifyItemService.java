@@ -2,6 +2,8 @@ package pl.kamil.chefscookbook.food.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.kamil.chefscookbook.food.application.dto.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
@@ -12,10 +14,7 @@ import pl.kamil.chefscookbook.food.domain.entity.Recipe;
 import javax.transaction.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.*;
-import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.RichItem.toRichItem;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 
 @Service
@@ -27,10 +26,10 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     @Override
     @Transactional
-    public RichItem createItem(CreateNewItemCommand command) {
+    public PoorItem createItem(CreateNewItemCommand command) {
         Item item = command.toItem();
         generateRecipeIfApplicable(item);
-        return toRichItem(itemRepository.save(item));
+        return new PoorItem(itemRepository.save(item));
     }
 
 
@@ -43,7 +42,7 @@ public class ModifyItemService implements ModifyItemUseCase {
         checkForLoops(parentItem, childItem);
         addIngredient(parentItem, childItem, command.getAmount());
 
-        return toRichItem(itemRepository.save(parentItem));
+        return new RichItem(itemRepository.save(parentItem));
     }
 
 
@@ -52,7 +51,7 @@ public class ModifyItemService implements ModifyItemUseCase {
     public RichItem setYield(SetYieldCommand command) {
         Item item = itemRepository.findById(command.getParentItemId()).orElseThrow();
         item.getRecipe().setRecipeYield(command.getItemYield());
-        return toRichItem(itemRepository.save(item));
+        return new RichItem(itemRepository.save(item));
     }
 
     @Override
@@ -60,7 +59,7 @@ public class ModifyItemService implements ModifyItemUseCase {
     public RichItem updateDescription(UpdateDescriptionCommand command) {
         Item item = itemRepository.getOne(command.getParentItemId());
         item.getRecipe().setDescription(command.getDescription());
-        return toRichItem(itemRepository.save(item));
+        return new RichItem(itemRepository.save(item));
     }
 
     @Override
@@ -77,15 +76,6 @@ public class ModifyItemService implements ModifyItemUseCase {
 
         ingredientRepository.findAllByChildItemId(itemId)
                 .forEach(Ingredient::removeSelf);
-
-//        List<Ingredient> toRemove = ingredientRepository.findAllByChildItemId(itemId);
-//        toRemove.forEach(ingredient -> {
-//            long ingredientId = ingredient.getId();
-//            long parentId = ingredient.getParentItem().getId();
-//            removeIngredientFromRecipe(new RemoveIngredientFromRecipeCommand(parentId, ingredientId));
-//
-//        });
-
     }
 
     @Override
@@ -96,7 +86,7 @@ public class ModifyItemService implements ModifyItemUseCase {
 
         ingredientToRemove.removeSelf();
 
-        return toRichItem(itemRepository.save(parentItem));
+        return new RichItem(itemRepository.save(parentItem));
     }
 
 

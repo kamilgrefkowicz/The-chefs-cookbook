@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import pl.kamil.chefscookbook.food.application.dto.PoorItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.*;
 import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
@@ -44,7 +45,7 @@ class ModifyItemServiceTest {
     void canCreateItem() {
         givenItemCreated("Butter", BASIC(), KILOGRAM());
 
-        RichItem item = queryItem.findById(1L);
+        Item item = itemJpaRepository.findById(1L).get();
 
         assertEquals("Butter", item.getName());
         assertEquals(BASIC(), item.getType());
@@ -56,8 +57,8 @@ class ModifyItemServiceTest {
         givenItemCreated("Dish", DISH(), KILOGRAM());
         givenItemCreated("Intermediate", INTERMEDIATE(), KILOGRAM());
 
-        RichItem intermediate = queryItem.findById(1L);
-        RichItem dish = queryItem.findById(2L);
+        Item intermediate =itemJpaRepository.findById(1L).get();
+        Item dish = itemJpaRepository.findById(2L).get();
 
         assertNotNull(intermediate.getRecipe());
         assertNotNull(dish.getRecipe());
@@ -71,7 +72,7 @@ class ModifyItemServiceTest {
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
         var queried = queryItem.findById(puree.getId());
 
-        assertFalse(queried.getRecipe().getIngredients().isEmpty());
+        assertFalse(queried.getIngredients().isEmpty());
     }
 
 
@@ -86,8 +87,8 @@ class ModifyItemServiceTest {
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
         var queried = queryItem.findById(puree.getId());
 
-        assertEquals(1, queried.getRecipe().getIngredients().size());
-        assertEquals("2", queried.getRecipe().getIngredients().stream().findFirst().get().getAmount().toPlainString());
+        assertEquals(1, queried.getIngredients().size());
+        assertEquals("2", queried.getIngredients().stream().findFirst().get().getAmount().toPlainString());
     }
 
     @Test
@@ -107,7 +108,7 @@ class ModifyItemServiceTest {
         modifyItem.updateDescription(new UpdateDescriptionCommand(puree.getId(), "description"));
         var queried = queryItem.findById(puree.getId());
 
-        assertEquals("description", queried.getRecipe().getDescription());
+        assertEquals("description", queried.getDescription());
     }
 
     @Test
@@ -123,12 +124,11 @@ class ModifyItemServiceTest {
         var puree = givenItemCreated("Puree", INTERMEDIATE(), KILOGRAM());
         var butter = givenItemCreated("Butter", BASIC(), KILOGRAM());
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
-        setYieldForItem(puree, BigDecimal.ONE);
 
         modifyItem.deleteItem(new DeleteItemCommand(butter.getId()));
         var queried = queryItem.findById(puree.getId());
 
-        assertEquals(0, queried.getRecipe().getIngredients().size());
+        assertEquals(0, queried.getIngredients().size());
     }
 
     @Test
@@ -139,36 +139,14 @@ class ModifyItemServiceTest {
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), potato.getId(), BigDecimal.ONE));
 
-        Long ingredientId = queryItem.findById(puree.getId()).getRecipe().getIngredients().stream().findFirst().get().getId();
+        Long ingredientId = queryItem.findById(puree.getId()).getIngredients().stream().findFirst().get().getId();
         modifyItem.removeIngredientFromRecipe(new RemoveIngredientFromRecipeCommand(puree.getId(), ingredientId));
 
-        assertEquals(1, queryItem.findById(puree.getId()).getRecipe().getIngredients().size());
-    }
-
-    @Test
-    void removingLastIngredientShouldSetItemToInactive() {
-        var puree = givenItemCreated("Puree", INTERMEDIATE(), KILOGRAM());
-        var butter = givenItemCreated("Butter", BASIC(), KILOGRAM());
-        setYieldForItem(puree, BigDecimal.valueOf(1));
-        modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
-        Long ingredientId = queryItem.findById(puree.getId()).getRecipe().getIngredients().stream().findFirst().get().getId();
-
-        modifyItem.removeIngredientFromRecipe(new RemoveIngredientFromRecipeCommand(puree.getId(), ingredientId));
-        var queried = queryItem.findById(puree.getId());
-
-        assertFalse(queried.isActive());
+        assertEquals(1, queryItem.findById(puree.getId()).getIngredients().size());
     }
 
 
-
-    private RichItem setYieldForItem(RichItem puree, BigDecimal itemYield) {
-        return modifyItem.setYield(new SetYieldCommand(puree.getId(), itemYield));
-    }
-
-
-
-
-    private RichItem givenItemCreated(String itemName, Type itemType, Unit itemUnit) {
+    private PoorItem givenItemCreated(String itemName, Type itemType, Unit itemUnit) {
         return modifyItem.createItem(new CreateNewItemCommand(itemName, itemType, itemUnit));
     }
 

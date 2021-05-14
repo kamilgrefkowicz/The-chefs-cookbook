@@ -29,8 +29,6 @@ public class Item extends BaseEntity {
     @ManyToOne
     private Type type;
 
-    private BigDecimal pricePerUnit;
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentItem")
     private Recipe recipe;
 

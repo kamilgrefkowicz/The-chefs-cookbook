@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <title> INSERT </title>
+</head>
+<body>
+<nav th:replace="fragments/layout :: topNavBar"></nav>
+
+<p th:text="${richItem.name} + ', przepis na '+ ${#numbers.formatDecimal(richItem.recipe.recipeYield, 1, 1, 'COMMA')} + ${richItem.unit}"></p>
+
+<table width="350px" border="1">
+    <thead>
+    <th>Składnik</th>
+    <th>Ilość</th>
+    <th>Jednostka</th>
+
+    </thead>
+    <tbody>
+    <tr th:each="ingredient : ${richItem.recipe.ingredients}">
+
+        <td th:text="${ingredient.childItem.name}"></td>
+        <td th:text="${ingredient.amount}"></td>
+        <td th:text="${ingredient.childItem.unit}"></td>
+
+    </tr>
+    </tbody>
+</table>
+
+<div>
+
+
+    <p>Przelicz dla :
+    <form th:action="@{/recipes/view-item}" th:method="get">
+        <input type="hidden" th:attr="name='itemId'" th:value="${richItem.id}">
+        <input type="text" th:attr="name='target'">
+        <input type="submit" value="przelicz">
+
+    </form>
+    </p>
+
+    <div th:each="item : ${dependencies.keySet()}">
+        <p th:text="'Składniki potrzebne na '+ ${#numbers.formatDecimal(dependencies.get(item), 1, 3, 'COMMA')} + ${item.unit} +' '+ ${item.name} + ':'"></p>
+        <table width="350px" border="1">
+            <thead>
+            <th>Składnik</th>
+            <th>Ilość</th>
+            <th>Jednostka</th>
+
+            </thead>
+            <tbody>
+            <tr th:each="ingredient : *{item.ingredients}">
+
+                <td th:text="${ingredient.childItem.name}"></td>
+                <td th:text="${#numbers.formatDecimal(ingredient.ratio * dependencies.get(item), 1, 3, 'COMMA')}"></td>
+                <!--                <td th:text="${(ingredient.ratio * dependencies.get(item), 1, 3, 'COMMA')}"></td>-->
+                <td th:text="${ingredient.childItem.unit}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

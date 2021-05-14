@@ -1,7 +1,8 @@
 package pl.kamil.chefscookbook.food.application.port;
 
 import lombok.Value;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.RichItem;
+import pl.kamil.chefscookbook.food.application.dto.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.RichItem;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 
 public interface ModifyItemUseCase {
 
-    RichItem createItem(CreateNewItemCommand command);
+    PoorItem createItem(CreateNewItemCommand command);
 
     RichItem addIngredientToRecipe(AddIngredientCommand command);
 
