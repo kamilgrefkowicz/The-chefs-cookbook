@@ -6,10 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.kamil.chefscookbook.food.application.QueryItemService;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
+import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.domain.staticData.Type;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,10 +30,26 @@ public class FoodController {
     }
 
     @GetMapping("/view-item")
-    public String showItem(Model model, @RequestParam Long itemId, @RequestParam(required = false, defaultValue = "1") BigDecimal target) {
-        model.addAttribute(queryItem.findById(itemId));
-        model.addAttribute("target", target);
-        model.addAttribute("dependencies", queryItem.getMapOfAllDependencies(itemId, target));
+    public String showItem(Model model, @RequestParam Long itemId, @RequestParam(required = false, defaultValue = "1") BigDecimal targetAmount) {
+        Map<ItemDto, BigDecimal> mapOfAllDependencies = queryItem.getMapOfAllDependencies(itemId, targetAmount);
+
+        Map<PoorItem, BigDecimal> basics = new LinkedHashMap<>();
+        Map<RichItem, BigDecimal> intermediates = new LinkedHashMap<>();
+
+        splitMapToBasicsAndIntermediates(mapOfAllDependencies, basics, intermediates);
+
+
+        model.addAttribute("targetItem", queryItem.findById(itemId));
+        model.addAttribute("targetAmount", targetAmount);
+        model.addAttribute("basics", basics);
+        model.addAttribute("intermediates", intermediates);
         return "/food/view-item";
+    }
+
+    private void splitMapToBasicsAndIntermediates(Map<ItemDto, BigDecimal> mapOfAllDependencies, Map<PoorItem, BigDecimal> basics, Map<RichItem, BigDecimal> intermediates) {
+        for (Map.Entry<ItemDto, BigDecimal> entry : mapOfAllDependencies.entrySet()) {
+            if (entry.getKey().getType().equals(Type.BASIC())) basics.put((PoorItem) entry.getKey(), entry.getValue());
+            else intermediates.put((RichItem) entry.getKey(), entry.getValue());
+        }
     }
 }

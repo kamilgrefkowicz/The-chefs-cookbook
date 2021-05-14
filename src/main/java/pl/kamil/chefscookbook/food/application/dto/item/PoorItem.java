@@ -1,4 +1,4 @@
-package pl.kamil.chefscookbook.food.application.dto;
+package pl.kamil.chefscookbook.food.application.dto.item;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;

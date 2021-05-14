@@ -1,8 +1,8 @@
 package pl.kamil.chefscookbook.food.application.port;
 
 import lombok.Value;
-import pl.kamil.chefscookbook.food.application.dto.PoorItem;
-import pl.kamil.chefscookbook.food.application.dto.RichItem;
+import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;

@@ -1,9 +1,9 @@
 package pl.kamil.chefscookbook.food.application.port;
 
 
-import pl.kamil.chefscookbook.food.application.dto.ItemDto;
-import pl.kamil.chefscookbook.food.application.dto.PoorItem;
-import pl.kamil.chefscookbook.food.application.dto.RichItem;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
+import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 
 
 import java.math.BigDecimal;

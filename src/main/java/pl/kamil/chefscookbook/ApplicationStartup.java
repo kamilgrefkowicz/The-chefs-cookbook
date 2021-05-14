@@ -3,7 +3,7 @@ package pl.kamil.chefscookbook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import pl.kamil.chefscookbook.food.application.dto.ItemDto;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
@@ -16,7 +16,6 @@ import pl.kamil.chefscookbook.food.domain.staticData.UnitRepository;
 
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.*;
@@ -35,7 +34,7 @@ public class ApplicationStartup implements CommandLineRunner {
 
         initializeTypesAndUnits();
 
-//        initialize();
+        initialize();
 
 
     }

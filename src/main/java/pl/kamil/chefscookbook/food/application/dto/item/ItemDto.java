@@ -1,13 +1,10 @@
-package pl.kamil.chefscookbook.food.application.dto;
+package pl.kamil.chefscookbook.food.application.dto.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Value;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
-
-import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -21,6 +18,10 @@ public abstract class ItemDto {
     public static ItemDto convertToDto(Item item) {
         if (item.getType().equals(Type.BASIC())) return new PoorItem(item);
         return new RichItem(item);
+    }
+
+    public static PoorItem convertToPoorItem(Item item) {
+        return new PoorItem(item);
     }
 
 }

@@ -6,14 +6,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.test.annotation.DirtiesContext;
-import pl.kamil.chefscookbook.food.application.dto.ItemDto;
-import pl.kamil.chefscookbook.food.application.dto.PoorItem;
-import pl.kamil.chefscookbook.food.application.dto.RichItem;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
+import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.SetYieldCommand;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
@@ -23,7 +20,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pl.kamil.chefscookbook.food.application.dto.ItemDto.*;
+import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.PIECE;

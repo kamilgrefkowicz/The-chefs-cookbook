@@ -2,9 +2,9 @@ package pl.kamil.chefscookbook.food.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.kamil.chefscookbook.food.application.dto.ItemDto;
-import pl.kamil.chefscookbook.food.application.dto.PoorItem;
-import pl.kamil.chefscookbook.food.application.dto.RichItem;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
+import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static pl.kamil.chefscookbook.food.application.dto.ItemDto.convertToDto;
+import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 
 @Service

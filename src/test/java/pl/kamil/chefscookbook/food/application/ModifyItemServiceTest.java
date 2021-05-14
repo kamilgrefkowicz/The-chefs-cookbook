@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import pl.kamil.chefscookbook.food.application.dto.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.*;
 import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
@@ -18,10 +18,8 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
-import static pl.kamil.chefscookbook.food.domain.staticData.Unit.PIECE;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -139,7 +137,7 @@ class ModifyItemServiceTest {
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), butter.getId(), BigDecimal.ONE));
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(puree.getId(), potato.getId(), BigDecimal.ONE));
 
-        Long ingredientId = queryItem.findById(puree.getId()).getIngredients().stream().findFirst().get().getId();
+        Long ingredientId = queryItem.findById(puree.getId()).getIngredients().stream().findFirst().get().getIngredientId();
         modifyItem.removeIngredientFromRecipe(new RemoveIngredientFromRecipeCommand(puree.getId(), ingredientId));
 
         assertEquals(1, queryItem.findById(puree.getId()).getIngredients().size());

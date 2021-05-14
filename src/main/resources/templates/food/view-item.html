@@ -11,7 +11,7 @@
 <body>
 <nav th:replace="fragments/layout :: topNavBar"></nav>
 
-<p th:text="${richItem.name} + ', przepis na '+ ${#numbers.formatDecimal(richItem.recipe.recipeYield, 1, 1, 'COMMA')} + ${richItem.unit}"></p>
+<p th:text="${targetItem.name} + ', przepis na '+ ${#numbers.formatDecimal(targetItem.recipeYield, 1, 1, 'COMMA')} + ${targetItem.unit}"></p>
 
 <table width="350px" border="1">
     <thead>
@@ -21,7 +21,7 @@
 
     </thead>
     <tbody>
-    <tr th:each="ingredient : ${richItem.recipe.ingredients}">
+    <tr th:each="ingredient : ${targetItem.ingredients}">
 
         <td th:text="${ingredient.childItem.name}"></td>
         <td th:text="${ingredient.amount}"></td>
@@ -35,16 +35,16 @@
 
 
     <p>Przelicz dla :
-    <form th:action="@{/recipes/view-item}" th:method="get">
-        <input type="hidden" th:attr="name='itemId'" th:value="${richItem.id}">
-        <input type="text" th:attr="name='target'">
+    <form th:action="@{/food/view-item}" th:method="get">
+        <input type="hidden" th:attr="name='itemId'" th:value="${targetItem.id}">
+        <input type="text" th:attr="name='targetAmount'">
         <input type="submit" value="przelicz">
 
     </form>
     </p>
 
-    <div th:each="item : ${dependencies.keySet()}">
-        <p th:text="'Składniki potrzebne na '+ ${#numbers.formatDecimal(dependencies.get(item), 1, 3, 'COMMA')} + ${item.unit} +' '+ ${item.name} + ':'"></p>
+    <div th:each="item : ${intermediates.keySet()}">
+        <p th:text="'Składniki potrzebne na '+ ${#numbers.formatDecimal(intermediates.get(item), 1, 3, 'COMMA')} + ${item.unit} +' '+ ${item.name} + ':'"></p>
         <table width="350px" border="1">
             <thead>
             <th>Składnik</th>
@@ -56,9 +56,28 @@
             <tr th:each="ingredient : *{item.ingredients}">
 
                 <td th:text="${ingredient.childItem.name}"></td>
-                <td th:text="${#numbers.formatDecimal(ingredient.ratio * dependencies.get(item), 1, 3, 'COMMA')}"></td>
-                <!--                <td th:text="${(ingredient.ratio * dependencies.get(item), 1, 3, 'COMMA')}"></td>-->
+                <td th:text="${#numbers.formatDecimal((ingredient.ratio * intermediates.get(item)), 1, 3, 'COMMA')}"></td>
                 <td th:text="${ingredient.childItem.unit}"></td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:text="'Suma podstawowych składników potrzebnych na przygotowanie ' + ${targetAmount} + ' ' + ${targetItem.unit} + ' ' + ${targetItem.name}"></p>
+    <div>
+        <table width="350px" border="1">
+            <thead>
+            <th>Składnik</th>
+            <th>Ilość</th>
+            <th>Jednostka</th>
+
+            </thead>
+            <tbody>
+            <tr th:each="item : ${basics.keySet()}">
+
+                <td th:text="${item.name}"></td>
+                <td th:text="${#numbers.formatDecimal((basics.get(item)), 1, 3, 'COMMA')}"></td>
+                <td th:text="${item.unit}"></td>
 
             </tr>
             </tbody>

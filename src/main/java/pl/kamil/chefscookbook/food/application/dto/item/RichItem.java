@@ -1,25 +1,30 @@
-package pl.kamil.chefscookbook.food.application.dto;
+package pl.kamil.chefscookbook.food.application.dto.item;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto.convertIngredientToDto;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class RichItem extends ItemDto{
     String description;
-    Set<Ingredient> ingredients;
+    Set<IngredientDto> ingredients;
     BigDecimal recipeYield;
 
     public RichItem (Item item) {
         super(item.getId(), item.getName(), item.getUnit(), item.getType());
         this.description = item.getRecipe().getDescription();
-        this.ingredients = item.getIngredients();
+        this.ingredients = item.getIngredients().stream()
+        .map(IngredientDto::convertIngredientToDto)
+        .collect(Collectors.toSet());
         this.recipeYield = item.getRecipe().getRecipeYield();
     }
 }
