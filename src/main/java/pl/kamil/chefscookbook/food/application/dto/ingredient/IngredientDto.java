@@ -1,11 +1,8 @@
 package pl.kamil.chefscookbook.food.application.dto.ingredient;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
-import pl.kamil.chefscookbook.food.domain.entity.Item;
 
 import java.math.BigDecimal;
 

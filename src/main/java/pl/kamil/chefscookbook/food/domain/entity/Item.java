@@ -6,9 +6,7 @@ import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 

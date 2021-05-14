@@ -3,14 +3,11 @@ package pl.kamil.chefscookbook.food.application.dto.item;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto;
-import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 
 import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto.convertIngredientToDto;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
