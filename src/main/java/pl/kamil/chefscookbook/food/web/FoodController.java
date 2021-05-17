@@ -3,15 +3,19 @@ package pl.kamil.chefscookbook.food.web;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,28 +27,45 @@ public class FoodController {
 
     private final QueryItemUseCase queryItem;
 
-    @GetMapping({"/","/my-items"})
+    @GetMapping({"/", "/my-items"})
     public String showMyItems(Model model) {
         model.addAttribute(queryItem.findAll());
+        model.addAttribute("command", new QueryItemWithDependenciesCommand());
         return "/food/my-items";
     }
 
     @GetMapping("/view-item")
-    public String showItem(Model model, @RequestParam Long itemId, @RequestParam(required = false, defaultValue = "1") BigDecimal targetAmount) {
-        Map<ItemDto, BigDecimal> mapOfAllDependencies = queryItem.getMapOfAllDependencies(itemId, targetAmount);
+    public String showItem(Model model, @Valid QueryItemWithDependenciesCommand command, BindingResult bindingResult) {
+
+
+        if (command.getTargetAmount() == null) {
+            command.setTargetAmount(BigDecimal.ONE);
+        }
+
+        model.addAttribute("command", command);
+        model.addAttribute("targetItem", queryItem.findById(command.getItemId()));
 
         Map<PoorItem, BigDecimal> basics = new LinkedHashMap<>();
         Map<RichItem, BigDecimal> intermediates = new LinkedHashMap<>();
 
+
+        Map<ItemDto, BigDecimal> mapOfAllDependencies;
+
+        if (bindingResult.hasErrors()) {
+            mapOfAllDependencies = queryItem.getMapOfAllDependencies(new QueryItemWithDependenciesCommand(command.getItemId(), BigDecimal.ONE));
+        } else {
+            mapOfAllDependencies = queryItem.getMapOfAllDependencies(command);
+        }
+
         splitMapToBasicsAndIntermediates(mapOfAllDependencies, basics, intermediates);
-
-
-        model.addAttribute("targetItem", queryItem.findById(itemId));
-        model.addAttribute("targetAmount", targetAmount);
+        model.addAttribute("targetAmount", command.getTargetAmount());
         model.addAttribute("basics", basics);
         model.addAttribute("intermediates", intermediates);
         return "/food/view-item";
+
+
     }
+
 
     private void splitMapToBasicsAndIntermediates(Map<ItemDto, BigDecimal> mapOfAllDependencies, Map<PoorItem, BigDecimal> basics, Map<RichItem, BigDecimal> intermediates) {
         for (Map.Entry<ItemDto, BigDecimal> entry : mapOfAllDependencies.entrySet()) {

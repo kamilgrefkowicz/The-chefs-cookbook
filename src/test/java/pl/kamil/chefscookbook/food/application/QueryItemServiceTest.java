@@ -11,6 +11,8 @@ import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.SetYieldCommand;
+import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
@@ -50,7 +52,7 @@ class QueryItemServiceTest {
         ItemDto puree =  convertToDto(itemRepository.findFirstByNameContaining("puree"));
         ItemDto ribeyeWithPuree = convertToDto(itemRepository.findFirstByNameContaining("ribeye with"));
 
-        Map<ItemDto, BigDecimal> map = queryItem.getMapOfAllDependencies(ribeyeWithPuree.getId(), BigDecimal.ONE);
+        Map<ItemDto, BigDecimal> map = queryItem.getMapOfAllDependencies(new QueryItemWithDependenciesCommand(ribeyeWithPuree.getId(), BigDecimal.ONE));
 
         assertEquals(5, map.size());
         assertEquals("0.300", map.get(ribeye).toPlainString());
@@ -69,7 +71,7 @@ class QueryItemServiceTest {
         ItemDto puree =  convertToDto(itemRepository.findFirstByNameContaining("puree"));
         ItemDto ribeyeWithPuree = convertToDto(itemRepository.findFirstByNameContaining("ribeye with"));
 
-        Map<ItemDto, BigDecimal> map = queryItem.getMapOfAllDependencies(ribeyeWithPuree.getId(), BigDecimal.valueOf(4));
+        Map<ItemDto, BigDecimal> map = queryItem.getMapOfAllDependencies(new QueryItemWithDependenciesCommand(ribeyeWithPuree.getId(), BigDecimal.valueOf(4)));
 
         assertEquals(5, map.size());
         assertEquals("1.200", map.get(ribeye).toPlainString());

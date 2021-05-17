@@ -44,10 +44,10 @@ public class QueryItemService implements QueryItemUseCase {
 
     @Override
     @Transactional
-    public Map<ItemDto, BigDecimal> getMapOfAllDependencies(Long itemId, BigDecimal targetAmount) {
+    public Map<ItemDto, BigDecimal> getMapOfAllDependencies(QueryItemWithDependenciesCommand command) {
         Map<ItemDto, BigDecimal> dependencies = new LinkedHashMap<>();
-        Item item = itemRepository.getOne(itemId);
-        buildMapOfDependencies(item, targetAmount, dependencies);
+        Item item = itemRepository.getOne(command.getItemId());
+        buildMapOfDependencies(item, command.getTargetAmount(), dependencies);
         return dependencies;
     }
 
