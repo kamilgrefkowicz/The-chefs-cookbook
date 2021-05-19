@@ -16,8 +16,8 @@ import java.util.UUID;
 public abstract class BaseEntity {
 
     @Id
-    @GeneratedValue
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Version

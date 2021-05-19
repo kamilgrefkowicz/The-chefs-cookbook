@@ -40,9 +40,9 @@ public class ApplicationStartup implements CommandLineRunner {
 
         initializeTypesAndUnits();
 
-//        initializeUser();
-//
-//        initializeStartingItems();
+        initializeUser();
+
+        initializeStartingItems();
 //
 
 

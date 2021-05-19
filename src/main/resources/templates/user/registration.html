@@ -10,18 +10,13 @@
 </head>
 <body>
 
-<p>hello</p>
+<form th:action="@{/register-user}" th:method="post" th:object="${user}">
+    <input type="text" placeholder="username" th:field="*{username}">
+    <input type="password" placeholder="password" th:field="*{password}">
+    <input type="password" placeholder="repeat password" th:field="*{passwordMatch}">
+    <input type="submit" >
 
-<div>
-    <form th:action="@{/templates/user}" th:method="post">
-        <input type="text" name="username" placeholder="username">
-        <input type="password" name="password" placeholder="password">
-        <button type="submit">Login</button>
-
-
-    </form>
-</div>
-
+</form>
 
 </body>
 </html>
