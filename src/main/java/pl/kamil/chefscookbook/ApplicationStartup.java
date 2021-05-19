@@ -13,6 +13,8 @@ import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 
 import pl.kamil.chefscookbook.food.domain.staticData.TypeRepository;
 import pl.kamil.chefscookbook.food.domain.staticData.UnitRepository;
+import pl.kamil.chefscookbook.user.database.UserRepository;
+import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 
 import java.math.BigDecimal;
@@ -28,15 +30,23 @@ public class ApplicationStartup implements CommandLineRunner {
     private final ModifyItemUseCase modifyItemService;
     private final UnitRepository unitRepository;
     private final TypeRepository typeRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
 
         initializeTypesAndUnits();
 
-        initialize();
+        initializeStartingItems();
+
+        initializeUser();
 
 
+    }
+
+    private void initializeUser() {
+        UserEntity user = new UserEntity("kamil", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
+        userRepository.save(user);
     }
 
     private void initializeTypesAndUnits() {
@@ -50,7 +60,7 @@ public class ApplicationStartup implements CommandLineRunner {
 
     }
 
-    private void initialize() {
+    private void initializeStartingItems() {
 
 
         ItemDto ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", BASIC(), KILOGRAM()));

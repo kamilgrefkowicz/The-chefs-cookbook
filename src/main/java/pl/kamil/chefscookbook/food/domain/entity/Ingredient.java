@@ -15,7 +15,7 @@ import java.math.RoundingMode;
 public class Ingredient extends BaseEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    Recipe recipe;
+    private Recipe recipe;
 
     @ManyToOne
     private Item childItem;

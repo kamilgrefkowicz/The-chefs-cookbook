@@ -9,8 +9,19 @@
     <title> INSERT </title>
 </head>
 <body>
-<!--todo:login-->
-<p>LOGIN GOES HERE</p>
+
+<p>hello</p>
+
+<div>
+    <form th:action="@{/login}" th:method="post">
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <button type="submit">Login</button>
+
+
+    </form>
+</div>
+
 
 </body>
 </html>

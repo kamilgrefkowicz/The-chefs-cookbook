@@ -11,6 +11,7 @@
 <nav th:fragment="topNavBar">
     <a href="#" th:href="@{/main-page}">Home</a>
     <a href="#" th:href="@{/food/my-items}">Moje przepisy</a>
+    <button th:action="@{/logout}" th:method="post"></button>
 </nav>
 
 

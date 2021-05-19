@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import static pl.kamil.chefscookbook.language.LanguageConfiguration.getLanguage;
+import static pl.kamil.chefscookbook.configuration.LanguageConfiguration.getLanguage;
 
 @Entity
 @Data

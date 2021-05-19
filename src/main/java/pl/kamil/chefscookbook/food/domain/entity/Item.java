@@ -4,6 +4,7 @@ import lombok.*;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
+import pl.kamil.chefscookbook.user.domain.*;
 
 import javax.persistence.*;
 import java.util.Collections;
@@ -34,6 +35,9 @@ public class Item extends BaseEntity {
         this.recipe = recipe;
         recipe.setParentItem(this);
     }
+
+    @ManyToOne
+    private UserEntity userEntity;
 
     public Set<Ingredient> getIngredients() {
         return recipe.getIngredients();
