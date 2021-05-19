@@ -10,12 +10,16 @@ import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.entity.Recipe;
+import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.user.database.UserRepository;
 
 import javax.transaction.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.getTypeFromId;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +27,18 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     private final ItemJpaRepository itemRepository;
     private final IngredientJpaRepository ingredientRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public PoorItem createItem(CreateNewItemCommand command) {
-        Item item = command.toItem();
+        Item item = commandToItem(command);
         generateRecipeIfApplicable(item);
         return new PoorItem(itemRepository.save(item));
+    }
+
+    private Item commandToItem(CreateNewItemCommand command) {
+        return new Item(command.getItemName(), Unit.getUnitFromId(command.getItemUnitId()), getTypeFromId(command.getItemTypeId()), userRepository.getOne(command.getUserId()));
     }
 
 
@@ -74,6 +83,12 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     private void removeThisItemFromAllDependencies(Long itemId) {
 
+        List<Ingredient> ingredients = ingredientRepository.findAllByChildItemId(itemId);
+
+        for (Ingredient ingredient : ingredients) {
+            ingredient.removeSelf();
+        }
+
         ingredientRepository.findAllByChildItemId(itemId)
                 .forEach(Ingredient::removeSelf);
     }
@@ -109,6 +124,6 @@ public class ModifyItemService implements ModifyItemUseCase {
 
 
     private void generateRecipeIfApplicable(Item item) {
-        if (!item.getType().equals(BASIC())) item.setRecipe(new Recipe());
+        if (!item.getType().equals(BASIC())) item.setRecipe(new Recipe(BigDecimal.ONE));
     }
 }

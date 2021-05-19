@@ -2,6 +2,7 @@ package pl.kamil.chefscookbook.security;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -15,9 +16,11 @@ import pl.kamil.chefscookbook.user.database.UserRepository;
 
 @Configuration
 @AllArgsConstructor
+@EnableConfigurationProperties(AdminConfig.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepository;
+    private final AdminConfig config;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -27,6 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/main-page")
+                .defaultSuccessUrl("/food/my-items")
                 .loginProcessingUrl("/login")
                 .permitAll()
                 .and().logout().permitAll().logoutUrl("/logout")
@@ -44,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        ChefsCookbookUserDetailsService detailsService = new ChefsCookbookUserDetailsService(userRepository);
+        ChefsCookbookUserDetailsService detailsService = new ChefsCookbookUserDetailsService(userRepository, config);
         provider.setUserDetailsService(detailsService);
         provider.setPasswordEncoder(passwordEncoder());
 

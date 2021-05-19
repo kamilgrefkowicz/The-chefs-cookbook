@@ -32,21 +32,27 @@ public class ApplicationStartup implements CommandLineRunner {
     private final TypeRepository typeRepository;
     private final UserRepository userRepository;
 
+    private Long ccbId;
+    private Long kamilId;
+
     @Override
     public void run(String... args) throws Exception {
 
         initializeTypesAndUnits();
 
-        initializeStartingItems();
-
-        initializeUser();
+//        initializeUser();
+//
+//        initializeStartingItems();
+//
 
 
     }
 
     private void initializeUser() {
         UserEntity user = new UserEntity("kamil", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
-        userRepository.save(user);
+        UserEntity ccb = new UserEntity("CCB", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
+        kamilId = userRepository.save(user).getId();
+        ccbId = userRepository.save(ccb).getId();
     }
 
     private void initializeTypesAndUnits() {
@@ -63,11 +69,11 @@ public class ApplicationStartup implements CommandLineRunner {
     private void initializeStartingItems() {
 
 
-        ItemDto ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", BASIC(), KILOGRAM()));
-        ItemDto masło = modifyItemService.createItem(new CreateNewItemCommand("masło", BASIC(), KILOGRAM()));
-        ItemDto puree = modifyItemService.createItem(new CreateNewItemCommand("puree", INTERMEDIATE(), KILOGRAM()));
-        ItemDto schab = modifyItemService.createItem(new CreateNewItemCommand("schab", BASIC(), KILOGRAM()));
-        ItemDto schabZMaslemIPuree =  modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", DISH(), PIECE()));
+        ItemDto ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", 1, 1, ccbId ));
+        ItemDto masło = modifyItemService.createItem(new CreateNewItemCommand("masło", 1, 1, ccbId));
+        ItemDto puree = modifyItemService.createItem(new CreateNewItemCommand("puree", 2, 1, kamilId));
+        ItemDto schab = modifyItemService.createItem(new CreateNewItemCommand("schab", 1, 1, ccbId));
+        ItemDto schabZMaslemIPuree = modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", 3, 3, kamilId));
 
         AddIngredientCommand addZiemniaktoPuree = new AddIngredientCommand(puree.getId(), ziemniak.getId(), BigDecimal.valueOf(1));
         AddIngredientCommand addMasłoToPuree = new AddIngredientCommand(puree.getId(), masło.getId(), BigDecimal.valueOf(0.2));
@@ -81,8 +87,8 @@ public class ApplicationStartup implements CommandLineRunner {
 
 
         modifyItemService.addIngredientToRecipe(addZiemniaktoPuree);
-        modifyItemService.addIngredientToRecipe(addMasłoToPuree );
-        modifyItemService.addIngredientToRecipe(addPureeToSchab );
+        modifyItemService.addIngredientToRecipe(addMasłoToPuree);
+        modifyItemService.addIngredientToRecipe(addPureeToSchab);
         modifyItemService.addIngredientToRecipe(addMasłoToSchab);
         modifyItemService.addIngredientToRecipe(addSchabtoSchab);
 

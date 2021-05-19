@@ -1,5 +1,6 @@
 package pl.kamil.chefscookbook.food.application;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,6 +17,8 @@ import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWi
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.user.database.UserRepository;
+import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -41,6 +44,9 @@ class QueryItemServiceTest {
 
     @Autowired
     ItemJpaRepository itemRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
 
     @Test
@@ -83,10 +89,6 @@ class QueryItemServiceTest {
     }
 
 
-
-
-
-
     private void setYieldForRecipe(PoorItem item, BigDecimal yield) {
         modifyItem.setYield(new SetYieldCommand(item.getId(), yield));
     }
@@ -98,7 +100,7 @@ class QueryItemServiceTest {
 
 
     private PoorItem givenItemCreated(String itemName, Type itemType, Unit itemUnit) {
-        return modifyItem.createItem(new CreateNewItemCommand(itemName, itemType, itemUnit));
+        return modifyItem.createItem(new CreateNewItemCommand(itemName, itemType.getId(), itemUnit.getId(), 1L));
     }
 
     private void givenSteakDishAndDependencies() {
@@ -114,5 +116,9 @@ class QueryItemServiceTest {
         addIngredientToRecipe(butter, ribeyeWithButterAndPuree, BigDecimal.valueOf(0.1));
         addIngredientToRecipe(puree, ribeyeWithButterAndPuree, BigDecimal.valueOf(0.4));
         addIngredientToRecipe(ribeyeSteak, ribeyeWithButterAndPuree, BigDecimal.valueOf(0.3));
+    }
+    @BeforeEach
+    private void setUpUser() {
+        userRepository.save(new UserEntity("test user", "test"));
     }
 }

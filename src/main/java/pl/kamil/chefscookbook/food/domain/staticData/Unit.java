@@ -37,4 +37,16 @@ public class Unit {
     public static Unit PIECE() {
         return new Unit (3, "SZT", "PC" );
     }
+
+    public static Unit getUnitFromId(int id) {
+        switch (id) {
+            case 1:
+                return KILOGRAM();
+            case 2:
+                return LITRE();
+            case 3:
+                return PIECE();
+            default: throw new IllegalArgumentException();
+        }
+    }
 }

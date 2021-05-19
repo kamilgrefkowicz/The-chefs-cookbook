@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Getter
@@ -20,6 +17,7 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Version

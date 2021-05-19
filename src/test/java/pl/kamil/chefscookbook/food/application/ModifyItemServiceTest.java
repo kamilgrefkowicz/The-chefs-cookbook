@@ -1,9 +1,13 @@
 package pl.kamil.chefscookbook.food.application;
 
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.annotation.DirtiesContext;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
@@ -13,11 +17,15 @@ import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.user.database.UserRepository;
+import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
 
@@ -39,11 +47,16 @@ class ModifyItemServiceTest {
     @Autowired
     ItemJpaRepository itemJpaRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+
     @Test
     void canCreateItem() {
         givenItemCreated("Butter", BASIC(), KILOGRAM());
 
-        Item item = itemJpaRepository.findById(1L).get();
+        List<Item> items = itemJpaRepository.findAll();
+        Item item = items.get(0);
 
         assertEquals("Butter", item.getName());
         assertEquals(BASIC(), item.getType());
@@ -113,7 +126,7 @@ class ModifyItemServiceTest {
     void canDeleteItem() {
         var puree = givenItemCreated("Puree", INTERMEDIATE(), KILOGRAM());
 
-        modifyItem.deleteItem(new ModifyItemUseCase.DeleteItemCommand(puree.getId()));
+        modifyItem.deleteItem(new DeleteItemCommand(puree.getId()));
 
         assertEquals(0, queryItem.findAll().size());
     }
@@ -145,7 +158,12 @@ class ModifyItemServiceTest {
 
 
     private PoorItem givenItemCreated(String itemName, Type itemType, Unit itemUnit) {
-        return modifyItem.createItem(new CreateNewItemCommand(itemName, itemType, itemUnit));
+        return modifyItem.createItem(new CreateNewItemCommand(itemName, itemType.getId(), itemUnit.getId(), 1L));
+    }
+
+    @BeforeEach
+    private void setUpUser() {
+        userRepository.save(new UserEntity("test user", "test"));
     }
 
 

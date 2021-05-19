@@ -6,6 +6,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -32,17 +33,19 @@ public interface ModifyItemUseCase {
         @NotBlank
         String itemName;
         @NotNull
-        Type itemType;
+        int itemTypeId;
         @NotNull
-        Unit itemUnit;
+        int itemUnitId;
+        @NotNull
+        Long userId;
 
-        public Item toItem() {
-            return  Item.builder()
-                    .name(itemName)
-                    .type(itemType)
-                    .unit(itemUnit)
-                    .build();
-        }
+//        public Item toItem() {
+//            return  Item.builder()
+//                    .name(itemName)
+//                    .type(itemType)
+//                    .unit(itemUnit)
+//                    .build();
+//        }
     }
 
     @Value

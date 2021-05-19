@@ -28,4 +28,7 @@ public class Recipe extends BaseEntity {
     private BigDecimal recipeYield;
 
 
+    public Recipe(BigDecimal recipeYield) {
+        this.recipeYield = recipeYield;
+    }
 }

@@ -36,7 +36,7 @@ public class Item extends BaseEntity {
         recipe.setParentItem(this);
     }
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private UserEntity userEntity;
 
     public Set<Ingredient> getIngredients() {
@@ -57,4 +57,10 @@ public class Item extends BaseEntity {
         return dependencies;
     }
 
+    public Item(String name, Unit unit, Type type, UserEntity userEntity) {
+        this.name = name;
+        this.unit = unit;
+        this.type = type;
+        this.userEntity = userEntity;
+    }
 }

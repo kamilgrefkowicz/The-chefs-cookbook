@@ -28,15 +28,27 @@ public class Type {
     }
 
     public static Type BASIC() {
-        return new Type (1, "podstawowy", "basic" );
+        return new Type(1, "podstawowy", "basic");
     }
 
     public static Type INTERMEDIATE() {
-        return new Type (2, "półprodukt", "intermediate" );
+        return new Type(2, "półprodukt", "intermediate");
     }
 
     public static Type DISH() {
-        return new Type (3, "danie", "dish" );
+        return new Type(3, "danie", "dish");
+    }
+
+    public static Type getTypeFromId(int id) {
+        switch (id) {
+            case 1:
+                return BASIC();
+            case 2:
+                return INTERMEDIATE();
+            case 3:
+                return DISH();
+            default: throw new IllegalArgumentException();
+        }
     }
 }
 
