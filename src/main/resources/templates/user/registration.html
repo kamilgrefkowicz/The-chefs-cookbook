@@ -10,7 +10,10 @@
 </head>
 <body>
 
-<form th:action="@{/register-user}" th:method="post" th:object="${user}">
+<div th:unless="${message} == null">
+    <p th:text="${message}"></p>
+</div>
+<form th:action="@{/user/register-user}" th:method="post" th:object="${user}">
     <input type="text" placeholder="username" th:field="*{username}">
     <input type="password" placeholder="password" th:field="*{password}">
     <input type="password" placeholder="repeat password" th:field="*{passwordMatch}">
