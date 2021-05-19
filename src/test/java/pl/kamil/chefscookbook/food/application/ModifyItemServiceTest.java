@@ -68,8 +68,8 @@ class ModifyItemServiceTest {
         givenItemCreated("Dish", DISH(), KILOGRAM());
         givenItemCreated("Intermediate", INTERMEDIATE(), KILOGRAM());
 
-        Item intermediate =itemJpaRepository.findById(1L).get();
-        Item dish = itemJpaRepository.findById(2L).get();
+        Item intermediate =itemJpaRepository.findFirstByNameContaining("Intermediate");
+        Item dish = itemJpaRepository.findFirstByNameContaining("Dish");
 
         assertNotNull(intermediate.getRecipe());
         assertNotNull(dish.getRecipe());
