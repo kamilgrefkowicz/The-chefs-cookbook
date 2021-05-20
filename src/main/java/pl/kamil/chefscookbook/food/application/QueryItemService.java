@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook.food.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
@@ -9,10 +10,12 @@ import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.security.UserSecurity;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,16 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 public class QueryItemService implements QueryItemUseCase {
 
     private final ItemJpaRepository itemRepository;
+    private final UserSecurity userSecurity;
+
+    @Override
+    public List<PoorItem> findAllItemsBelongingToUser(Principal user) {
+
+        return itemRepository.findAllByUserEntityId(Long.valueOf(user.getName()))
+                .stream()
+                .map(PoorItem::new)
+                .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional
@@ -52,7 +65,6 @@ public class QueryItemService implements QueryItemUseCase {
     }
 
 
-
     private Map<ItemDto, BigDecimal> buildMapOfDependencies(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
 
         placeItemInMap(item, targetAmount, map);
@@ -61,6 +73,7 @@ public class QueryItemService implements QueryItemUseCase {
         return map;
 
     }
+
     private void placeItemInMap(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
         targetAmount = targetAmount.setScale(3, RoundingMode.HALF_EVEN);
         ItemDto toPlace = convertToDto(item);
@@ -76,7 +89,6 @@ public class QueryItemService implements QueryItemUseCase {
             }
         }
     }
-
 
 
 }

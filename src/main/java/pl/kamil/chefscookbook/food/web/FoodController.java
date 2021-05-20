@@ -1,6 +1,9 @@
 package pl.kamil.chefscookbook.food.web;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import pl.kamil.chefscookbook.food.domain.staticData.Type;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -27,9 +31,10 @@ public class FoodController {
 
     private final QueryItemUseCase queryItem;
 
+    @Secured({"ROLE_USER"})
     @GetMapping({"/", "/my-items"})
-    public String showMyItems(Model model) {
-        model.addAttribute(queryItem.findAll());
+    public String showMyItems(Model model, Principal user) {
+        model.addAttribute(queryItem.findAllItemsBelongingToUser(user));
         model.addAttribute("command", new QueryItemWithDependenciesCommand());
         return "/food/my-items";
     }

@@ -3,8 +3,12 @@ package pl.kamil.chefscookbook.food.database;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 
+import java.util.List;
+
 
 public interface ItemJpaRepository extends JpaRepository<Item, Long> {
 
     Item findFirstByNameContaining(String term);
+
+    List<Item> findAllByUserEntityId(Long userId);
 }

@@ -16,11 +16,9 @@ import pl.kamil.chefscookbook.user.database.UserRepository;
 
 @Configuration
 @AllArgsConstructor
-@EnableConfigurationProperties(AdminConfig.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepository;
-    private final AdminConfig config;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
