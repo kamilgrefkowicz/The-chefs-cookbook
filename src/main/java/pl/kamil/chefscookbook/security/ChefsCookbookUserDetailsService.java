@@ -10,13 +10,11 @@ import pl.kamil.chefscookbook.user.database.UserRepository;
 public class ChefsCookbookUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
-    private final AdminConfig config;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (config.getUsername().equals(username)) return config.CCB();
 
-        return userRepository.findByUsernameIgnoreCase(username)
+        return userRepository.findByUsername(username)
                 .map(UserEntityDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }

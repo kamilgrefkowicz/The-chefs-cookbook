@@ -31,13 +31,18 @@ public class UserController {
     @PostMapping("/register-user")
     public String registerUser(Model model, @Valid CreateUserCommand command, BindingResult result) {
 
-        if (result.hasErrors()) return "user/registration";
+        if (result.hasErrors()) {
+            model.addAttribute("user", command);
+            return "user/registration";
+
+        }
 
         try {
-            UserEntity user = userService.createNewUser(command);
+            userService.createNewUser(command);
         } catch (UserAlreadyExistsException e) {
             model.addAttribute("message", "An account with this username already exists.");
-            return "/user/registration";
+            model.addAttribute("user", command);
+            return "user/registration";
         }
         model.addAttribute("message", "Your account has been created");
 

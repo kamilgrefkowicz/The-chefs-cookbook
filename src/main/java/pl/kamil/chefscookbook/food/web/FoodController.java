@@ -38,7 +38,7 @@ public class FoodController {
     public String showItem(Model model, @Valid QueryItemWithDependenciesCommand command, BindingResult bindingResult) {
 
 
-        if (command.getTargetAmount() == null) {
+        if (command.getTargetAmount() == null || bindingResult.hasErrors()) {
             command.setTargetAmount(BigDecimal.ONE);
         }
 
@@ -51,11 +51,8 @@ public class FoodController {
 
         Map<ItemDto, BigDecimal> mapOfAllDependencies;
 
-        if (bindingResult.hasErrors()) {
-            mapOfAllDependencies = queryItem.getMapOfAllDependencies(new QueryItemWithDependenciesCommand(command.getItemId(), BigDecimal.ONE));
-        } else {
-            mapOfAllDependencies = queryItem.getMapOfAllDependencies(command);
-        }
+        mapOfAllDependencies = queryItem.getMapOfAllDependencies(command);
+
 
         splitMapToBasicsAndIntermediates(mapOfAllDependencies, basics, intermediates);
         model.addAttribute("targetAmount", command.getTargetAmount());

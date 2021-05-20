@@ -29,13 +29,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/main-page")
-                .defaultSuccessUrl("/food/my-items")
                 .loginProcessingUrl("/login")
+                .loginPage("/main-page")
+                .defaultSuccessUrl("/food/my-items", true)
                 .permitAll()
                 .and().logout().permitAll().logoutUrl("/logout")
-                .and()
-                .httpBasic()
                 .and().csrf().disable();
 
     }
@@ -48,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        ChefsCookbookUserDetailsService detailsService = new ChefsCookbookUserDetailsService(userRepository, config);
+        ChefsCookbookUserDetailsService detailsService = new ChefsCookbookUserDetailsService(userRepository);
         provider.setUserDetailsService(detailsService);
         provider.setPasswordEncoder(passwordEncoder());
 

@@ -11,17 +11,20 @@
 <body>
 
 <p>hello</p>
+<div th:unless="${message} == null">
+    <p th:text="${message}"></p>
+</div>
 
 <div>
-    <form th:action="@{/templates/user}" th:method="post">
+    <form th:action="@{/login}" th:method="post">
         <input type="text" name="username" placeholder="username">
         <input type="password" name="password" placeholder="password">
         <button type="submit">Login</button>
 
-        <a href="#" th:href="@{/user/new-user}"> Create new account</a>
 
     </form>
 </div>
+        <a href="#" th:href="@{/user/new-user}"> Create new account</a>
 
 
 </body>
