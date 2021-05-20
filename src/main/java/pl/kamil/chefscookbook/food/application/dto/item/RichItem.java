@@ -17,7 +17,7 @@ public class RichItem extends ItemDto{
     BigDecimal recipeYield;
 
     public RichItem (Item item) {
-        super(item.getId(), item.getName(), item.getUnit(), item.getType());
+        super(item.getId(), item.getName(), item.getUnit(), item.getType(), item.getUserEntity().getId());
         this.description = item.getRecipe().getDescription();
         this.ingredients = item.getIngredients().stream()
         .map(IngredientDto::convertIngredientToDto)

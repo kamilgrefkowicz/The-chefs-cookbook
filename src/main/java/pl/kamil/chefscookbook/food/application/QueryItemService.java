@@ -65,13 +65,9 @@ public class QueryItemService implements QueryItemUseCase {
     }
 
 
-    private Map<ItemDto, BigDecimal> buildMapOfDependencies(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
-
+    private void buildMapOfDependencies(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
         placeItemInMap(item, targetAmount, map);
         recursivelyGetDependencies(item, targetAmount, map);
-
-        return map;
-
     }
 
     private void placeItemInMap(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {

@@ -17,6 +17,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
+import pl.kamil.chefscookbook.security.UserSecurity;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class FoodController {
 
     private final QueryItemUseCase queryItem;
+    private final UserSecurity userSecurity;
 
     @Secured({"ROLE_USER"})
     @GetMapping({"/", "/my-items"})
@@ -40,15 +42,23 @@ public class FoodController {
     }
 
     @GetMapping("/view-item")
-    public String showItem(Model model, @Valid QueryItemWithDependenciesCommand command, BindingResult bindingResult) {
-
+    public String showItem(Model model, @Valid QueryItemWithDependenciesCommand command, BindingResult bindingResult, Principal user) {
 
         if (command.getTargetAmount() == null || bindingResult.hasErrors()) {
             command.setTargetAmount(BigDecimal.ONE);
         }
 
         model.addAttribute("command", command);
-        model.addAttribute("targetItem", queryItem.findById(command.getItemId()));
+        RichItem item = queryItem.findById(command.getItemId());
+
+        if (!userSecurity.isOwner(item.getUserEntityId(), user)) {
+            model.addAttribute("error", "You're not authorized to view this item.");
+            return "/error";
+        }
+
+        model.addAttribute("targetItem", item);
+
+
 
         Map<PoorItem, BigDecimal> basics = new LinkedHashMap<>();
         Map<RichItem, BigDecimal> intermediates = new LinkedHashMap<>();

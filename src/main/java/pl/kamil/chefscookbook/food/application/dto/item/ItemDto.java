@@ -5,6 +5,7 @@ import lombok.Data;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +15,7 @@ public abstract class ItemDto {
     private String name;
     private Unit unit;
     private Type type;
+    private Long userEntityId;
 
     public static ItemDto convertToDto(Item item) {
         if (item.getType().equals(Type.BASIC())) return new PoorItem(item);

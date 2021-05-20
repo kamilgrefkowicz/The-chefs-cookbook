@@ -9,7 +9,7 @@ import pl.kamil.chefscookbook.food.domain.entity.Item;
 public class PoorItem extends ItemDto {
 
     public PoorItem(Item item) {
-        super(item.getId(), item.getName(), item.getUnit(), item.getType());
+        super(item.getId(), item.getName(), item.getUnit(), item.getType(), item.getUserEntity().getId());
     }
 
 }
