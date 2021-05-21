@@ -28,7 +28,7 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/food")
-public class FoodController {
+public class ViewFoodController {
 
     private final QueryItemUseCase queryItem;
     private final UserSecurity userSecurity;
@@ -57,25 +57,25 @@ public class FoodController {
         }
 
         model.addAttribute("targetItem", item);
-
-
-
-        Map<PoorItem, BigDecimal> basics = new LinkedHashMap<>();
-        Map<RichItem, BigDecimal> intermediates = new LinkedHashMap<>();
-
-
-        Map<ItemDto, BigDecimal> mapOfAllDependencies;
-
-        mapOfAllDependencies = queryItem.getMapOfAllDependencies(command);
-
-
-        splitMapToBasicsAndIntermediates(mapOfAllDependencies, basics, intermediates);
         model.addAttribute("targetAmount", command.getTargetAmount());
-        model.addAttribute("basics", basics);
-        model.addAttribute("intermediates", intermediates);
+
+        addDependencyMapsToModel(model, command);
+
         return "/food/view-item";
 
 
+    }
+
+    private void addDependencyMapsToModel(Model model, QueryItemWithDependenciesCommand command) {
+        Map<PoorItem, BigDecimal> basics = new LinkedHashMap<>();
+        Map<RichItem, BigDecimal> intermediates = new LinkedHashMap<>();
+
+        Map<ItemDto, BigDecimal> mapOfAllDependencies = queryItem.getMapOfAllDependencies(command);
+
+
+        splitMapToBasicsAndIntermediates(mapOfAllDependencies, basics, intermediates);
+        model.addAttribute("basics", basics);
+        model.addAttribute("intermediates", intermediates);
     }
 
 

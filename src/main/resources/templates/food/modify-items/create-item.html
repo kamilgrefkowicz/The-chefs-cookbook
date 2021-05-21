@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <title> INSERT </title>
+</head>
+<body>
+<nav th:replace="fragments/layout :: topNavBar"></nav>
+
+
+<form th:action="@{/food/new-item}"
+      th:object="${createNewItemCommand}" method="POST">
+
+    <input type="text" th:field="*{itemName}" placeholder="Nazwa przepisu">
+
+    <hr>
+
+    <input id="choseDish" type="radio" name="itemType" th:text="Półprodukt"
+           th:value="2" th:field="*{itemTypeId}">
+    <input id="choseIntermediate" type="radio" name="itemType" th:text="Danie"
+           th:value="3" th:field="*{itemTypeId}">
+
+    <div id="unit">
+        <hr>
+        <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
+        <span th:each="unit : ${units}">
+    <input type="radio" name="unit" th:value="${unit.id}" th:text="${unit.toString()}"
+           th:field="*{itemUnitId}"></span>
+
+    </div>
+
+    <input type="submit" value="Kontynuuj!">
+</form>
+
+</body>
+</html>

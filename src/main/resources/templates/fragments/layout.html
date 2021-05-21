@@ -9,9 +9,10 @@
 <body>
 
 <nav th:fragment="topNavBar">
-    <a href="#" th:href="@{/main-page}">Home</a>
     <a href="#" th:href="@{/food/my-items}">Moje przepisy</a>
-    <button th:action="@{/logout}" th:method="post"></button>
+    <form th:action="@{/logout}" th:method="post">
+        <input type="submit" value="log out">
+    </form>
 </nav>
 
 

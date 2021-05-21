@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import java.util.List;
+
 import static pl.kamil.chefscookbook.configuration.LanguageConfiguration.getLanguage;
 
 @Entity
@@ -48,5 +50,8 @@ public class Unit {
                 return PIECE();
             default: throw new IllegalArgumentException();
         }
+    }
+    public static List<Unit> unitList() {
+        return List.of(KILOGRAM(), LITRE(), PIECE());
     }
 }

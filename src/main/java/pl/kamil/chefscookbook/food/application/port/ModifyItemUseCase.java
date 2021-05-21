@@ -1,5 +1,8 @@
 package pl.kamil.chefscookbook.food.application.port;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
@@ -28,63 +31,64 @@ public interface ModifyItemUseCase {
     RichItem removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command);
 
 
-    @Value
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     class CreateNewItemCommand {
         @NotBlank
-        String itemName;
+        private String itemName;
         @NotNull
-        int itemTypeId;
+        private int itemTypeId;
         @NotNull
-        int itemUnitId;
+        private int itemUnitId;
         @NotNull
-        Long userId;
+        private Long userId;
 
-//        public Item toItem() {
-//            return  Item.builder()
-//                    .name(itemName)
-//                    .type(itemType)
-//                    .unit(itemUnit)
-//                    .build();
-//        }
+
     }
 
-    @Value
+    @Data
+    @AllArgsConstructor
     class AddIngredientCommand {
         @NotNull
-        Long parentItemId;
+        private Long parentItemId;
         @NotNull
-        Long childItemId;
+        private Long childItemId;
         @Positive
-        BigDecimal amount;
+        private BigDecimal amount;
     }
 
-    @Value
+    @Data
+    @AllArgsConstructor
     class SetYieldCommand {
         @NotNull
-        Long parentItemId;
+        private Long parentItemId;
         @Positive
-        BigDecimal itemYield;
+        private BigDecimal itemYield;
     }
 
-    @Value
+    @Data
+    @AllArgsConstructor
     class UpdateDescriptionCommand {
         @NotNull
-        Long parentItemId;
+        private Long parentItemId;
         @NotBlank
-        String description;
+        private String description;
     }
 
-    @Value
+    @Data
+    @AllArgsConstructor
     class DeleteItemCommand {
         @NotNull
-        Long itemId;
+        private Long itemId;
     }
 
-    @Value
+    @Data
+    @AllArgsConstructor
     class RemoveIngredientFromRecipeCommand {
         @NotNull
-        Long parentItemId;
+        private Long parentItemId;
         @NotNull
-        Long ingredientId;
+        private Long ingredientId;
     }
 }

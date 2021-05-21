@@ -3,9 +3,12 @@ package pl.kamil.chefscookbook.food.domain.staticData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.hql.internal.ast.tree.IndexNode;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import java.util.List;
 
 import static pl.kamil.chefscookbook.configuration.LanguageConfiguration.getLanguage;
 
@@ -49,6 +52,9 @@ public class Type {
                 return DISH();
             default: throw new IllegalArgumentException();
         }
+    }
+    public static List<Type> typeList() {
+        return List.of(BASIC(), INTERMEDIATE(), DISH());
     }
 }
 

@@ -36,7 +36,9 @@ My recipes:
 
 
 </table>
-<a th:href="@{/recipes/create-new-item}">Stwórz nowy przepis</a>
+<form th:action="@{/food/new-item}" th:method="get">
+    <input type="submit" value="Stwórz nowy przepis!">
+</form>
 
 </body>
 </html>
