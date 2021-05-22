@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.user.application.port.CreateUserUseCase;
 import pl.kamil.chefscookbook.user.application.port.CreateUserUseCase.CreateUserCommand;
-import pl.kamil.chefscookbook.user.domain.UserEntity;
-import pl.kamil.chefscookbook.user.registration.UserAlreadyExistsException;
+import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
 
 import javax.validation.Valid;
 
@@ -39,7 +38,7 @@ public class UserController {
 
         try {
             userService.createNewUser(command);
-        } catch (UserAlreadyExistsException e) {
+        } catch (NameAlreadyTakenException e) {
             model.addAttribute("message", "An account with this username already exists.");
             model.addAttribute("user", command);
             return "user/registration";

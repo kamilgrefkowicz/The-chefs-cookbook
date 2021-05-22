@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
@@ -66,6 +67,7 @@ public class ApplicationStartup implements CommandLineRunner {
 
     }
 
+    @SneakyThrows
     private void initializeStartingItems() {
 
 

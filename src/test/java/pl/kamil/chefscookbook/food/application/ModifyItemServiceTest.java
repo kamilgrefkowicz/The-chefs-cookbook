@@ -1,5 +1,6 @@
 package pl.kamil.chefscookbook.food.application;
 
+import lombok.SneakyThrows;
 import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -157,6 +158,7 @@ class ModifyItemServiceTest {
     }
 
 
+    @SneakyThrows
     private PoorItem givenItemCreated(String itemName, Type itemType, Unit itemUnit) {
         return modifyItem.createItem(new CreateNewItemCommand(itemName, itemType.getId(), itemUnit.getId(), 1L));
     }

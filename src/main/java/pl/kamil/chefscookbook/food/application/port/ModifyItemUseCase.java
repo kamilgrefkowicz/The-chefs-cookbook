@@ -9,6 +9,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.validation.constraints.NotBlank;
@@ -18,7 +19,7 @@ import java.math.BigDecimal;
 
 public interface ModifyItemUseCase {
 
-    PoorItem createItem(CreateNewItemCommand command);
+    PoorItem createItem(CreateNewItemCommand command) throws NameAlreadyTakenException;
 
     RichItem addIngredientToRecipe(AddIngredientCommand command);
 
@@ -41,7 +42,7 @@ public interface ModifyItemUseCase {
         private int itemTypeId;
         @NotNull
         private int itemUnitId;
-        @NotNull
+
         private Long userId;
 
 

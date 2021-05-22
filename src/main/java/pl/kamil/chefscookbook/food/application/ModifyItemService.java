@@ -11,6 +11,7 @@ import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.entity.Recipe;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 
 import javax.transaction.Transactional;
@@ -31,7 +32,12 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     @Override
     @Transactional
-    public PoorItem createItem(CreateNewItemCommand command) {
+    public PoorItem createItem(CreateNewItemCommand command) throws NameAlreadyTakenException {
+
+        if (itemRepository.findFirstByNameAndUserEntityId(command.getItemName(), command.getUserId()).isPresent()) {
+            throw new NameAlreadyTakenException("You already have an item called " + command.getItemName());
+        }
+
         Item item = commandToItem(command);
         generateRecipeIfApplicable(item);
         return new PoorItem(itemRepository.save(item));

@@ -15,6 +15,7 @@
 <form th:action="@{/food/new-item}"
       th:object="${createNewItemCommand}" method="POST">
 
+    <p th:unless="${message == null}" th:text="${message}"></p>
     <input type="text" th:field="*{itemName}" placeholder="Nazwa przepisu">
 
     <hr>

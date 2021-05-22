@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ItemJpaRepository extends JpaRepository<Item, Long> {
@@ -11,4 +12,6 @@ public interface ItemJpaRepository extends JpaRepository<Item, Long> {
     Item findFirstByNameContaining(String term);
 
     List<Item> findAllByUserEntityId(Long userId);
+
+    Optional<Item> findFirstByNameAndUserEntityId(String itemName, Long userEntityId);
 }
