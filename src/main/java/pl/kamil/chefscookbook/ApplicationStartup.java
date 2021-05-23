@@ -51,10 +51,10 @@ public class ApplicationStartup implements CommandLineRunner {
     }
 
     private void initializeUser() {
-        UserEntity user = new UserEntity("kamil", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
         UserEntity ccb = masterUser;
-        kamilId = userRepository.save(user).getId();
+        UserEntity user = new UserEntity("kamil", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
         ccbId = userRepository.save(ccb).getId();
+        kamilId = userRepository.save(user).getId();
     }
 
     private void initializeTypesAndUnits() {

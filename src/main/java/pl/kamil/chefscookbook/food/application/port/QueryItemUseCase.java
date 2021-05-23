@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import org.springframework.security.core.userdetails.User;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
@@ -29,6 +30,8 @@ public interface QueryItemUseCase {
     Map<ItemDto, BigDecimal> getMapOfAllDependencies(QueryItemWithDependenciesCommand command);
 
     List<PoorItem> findAllItemsBelongingToUser(Principal user);
+
+    List<ItemAutocompleteDto> findForAutocomplete(String term, Long userId);
 
 
     @Data

@@ -3,6 +3,7 @@ package pl.kamil.chefscookbook.food.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
@@ -38,6 +39,18 @@ public class QueryItemService implements QueryItemUseCase {
                 .stream()
                 .map(PoorItem::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemAutocompleteDto> findForAutocomplete(String term, Long userId) {
+        return itemRepository.findForAutocomplete(term, userId)
+                .stream()
+                .map(this::convertToAutocompleteDto)
+                .collect(Collectors.toList());
+
+    }
+    private ItemAutocompleteDto convertToAutocompleteDto(Item item) {
+        return new ItemAutocompleteDto(item.getId(), item.getName() + " (" + item.getUnit().toString() + ")");
     }
 
     @Override
