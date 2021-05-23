@@ -3,14 +3,10 @@ package pl.kamil.chefscookbook.food.application.port;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
-import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.food.domain.staticData.Type;
-import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.shared.exception.LoopAttemptedException;
 import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
-import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,9 +15,9 @@ import java.math.BigDecimal;
 
 public interface ModifyItemUseCase {
 
-    PoorItem createItem(CreateNewItemCommand command) throws NameAlreadyTakenException;
+    ItemDto createItem(CreateNewItemCommand command) throws NameAlreadyTakenException;
 
-    RichItem addIngredientToRecipe(AddIngredientCommand command);
+    RichItem addIngredientToRecipe(AddIngredientCommand command, Long userId) throws LoopAttemptedException;
 
     RichItem setYield(SetYieldCommand command);
 
@@ -50,6 +46,7 @@ public interface ModifyItemUseCase {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     class AddIngredientCommand {
         @NotNull
         private Long parentItemId;

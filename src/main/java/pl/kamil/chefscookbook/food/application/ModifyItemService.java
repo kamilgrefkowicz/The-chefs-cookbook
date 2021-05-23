@@ -1,8 +1,9 @@
 package pl.kamil.chefscookbook.food.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
@@ -11,14 +12,17 @@ import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.entity.Recipe;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.shared.exception.LoopAttemptedException;
 import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
 import pl.kamil.chefscookbook.user.database.UserRepository;
+import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.getTypeFromId;
 
@@ -29,35 +33,51 @@ public class ModifyItemService implements ModifyItemUseCase {
     private final ItemJpaRepository itemRepository;
     private final IngredientJpaRepository ingredientRepository;
     private final UserRepository userRepository;
+    private final UserEntity masterUser;
 
     @Override
     @Transactional
-    public PoorItem createItem(CreateNewItemCommand command) throws NameAlreadyTakenException {
+    public ItemDto createItem(CreateNewItemCommand command) throws NameAlreadyTakenException {
 
+        checkIfItemNameAlreadyTaken(command);
+        Item item = newItemCommandToItem(command);
+        generateRecipeIfApplicable(item);
+        return  convertToDto(itemRepository.save(item));
+    }
+
+    private void checkIfItemNameAlreadyTaken(CreateNewItemCommand command) throws NameAlreadyTakenException {
         if (itemRepository.findFirstByNameAndUserEntityId(command.getItemName(), command.getUserId()).isPresent()) {
             throw new NameAlreadyTakenException("You already have an item called " + command.getItemName());
         }
-
-        Item item = commandToItem(command);
-        generateRecipeIfApplicable(item);
-        return new PoorItem(itemRepository.save(item));
     }
 
-    private Item commandToItem(CreateNewItemCommand command) {
+    private Item newItemCommandToItem(CreateNewItemCommand command) {
         return new Item(command.getItemName(), Unit.getUnitFromId(command.getItemUnitId()), getTypeFromId(command.getItemTypeId()), userRepository.getOne(command.getUserId()));
     }
 
 
     @Transactional
     @Override
-    public RichItem addIngredientToRecipe(AddIngredientCommand command) {
+    public RichItem addIngredientToRecipe(AddIngredientCommand command, Long userId) throws LoopAttemptedException {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Item childItem = itemRepository.getOne(command.getChildItemId());
-        //todo implement exceptions
+
         checkForLoops(parentItem, childItem);
+        confirmOwnership(parentItem, childItem, userId);
+
         addIngredient(parentItem, childItem, command.getAmount());
 
         return new RichItem(itemRepository.save(parentItem));
+    }
+
+    private void confirmOwnership(Item parentItem, Item childItem, Long userId) {
+        if (!parentItem.getUserEntity().getId().equals(userId))
+            throw new AccessDeniedException("You're not authorized to modify this item");
+
+        if ((!childItem.getUserEntity().getId().equals(userId)) &&
+             !childItem.getUserEntity().equals(masterUser))
+            throw new AccessDeniedException("You do not own this ingredient");
+
     }
 
 
@@ -123,9 +143,13 @@ public class ModifyItemService implements ModifyItemUseCase {
         parentItem.getIngredients().add(new Ingredient(parentItem.getRecipe(), childItem, amount));
     }
 
-    private void checkForLoops(Item parentItem, Item childItem) {
-        if ((childItem.getDependencies().contains(parentItem) || childItem.equals(parentItem)))
-            throw new IllegalArgumentException();
+    private void checkForLoops(Item parentItem, Item childItem) throws LoopAttemptedException {
+        if (childItem.getDependencies().contains(parentItem))
+            throw new LoopAttemptedException(parentItem.getName() + " is already a dependency of " + childItem.getName());
+        if (childItem.equals(parentItem)) {
+            throw new LoopAttemptedException("An item cannot depend on itself");
+
+        }
     }
 
 

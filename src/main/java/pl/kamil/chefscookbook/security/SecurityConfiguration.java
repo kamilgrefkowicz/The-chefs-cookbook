@@ -20,6 +20,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepository;
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()

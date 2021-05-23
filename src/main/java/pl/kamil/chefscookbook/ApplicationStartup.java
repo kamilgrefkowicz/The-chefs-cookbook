@@ -32,6 +32,7 @@ public class ApplicationStartup implements CommandLineRunner {
     private final UnitRepository unitRepository;
     private final TypeRepository typeRepository;
     private final UserRepository userRepository;
+    private final UserEntity masterUser;
 
     private Long ccbId;
     private Long kamilId;
@@ -51,7 +52,7 @@ public class ApplicationStartup implements CommandLineRunner {
 
     private void initializeUser() {
         UserEntity user = new UserEntity("kamil", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
-        UserEntity ccb = new UserEntity("CCB", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
+        UserEntity ccb = masterUser;
         kamilId = userRepository.save(user).getId();
         ccbId = userRepository.save(ccb).getId();
     }
@@ -88,11 +89,11 @@ public class ApplicationStartup implements CommandLineRunner {
         modifyItemService.setYield(new SetYieldCommand(schabZMaslemIPuree.getId(), BigDecimal.ONE));
 
 
-        modifyItemService.addIngredientToRecipe(addZiemniaktoPuree);
-        modifyItemService.addIngredientToRecipe(addMasłoToPuree);
-        modifyItemService.addIngredientToRecipe(addPureeToSchab);
-        modifyItemService.addIngredientToRecipe(addMasłoToSchab);
-        modifyItemService.addIngredientToRecipe(addSchabtoSchab);
+        modifyItemService.addIngredientToRecipe(addZiemniaktoPuree, kamilId);
+        modifyItemService.addIngredientToRecipe(addMasłoToPuree, kamilId);
+        modifyItemService.addIngredientToRecipe(addPureeToSchab, kamilId);
+        modifyItemService.addIngredientToRecipe(addMasłoToSchab, kamilId);
+        modifyItemService.addIngredientToRecipe(addSchabtoSchab, kamilId);
 
 
 //        modifyItemService.deleteItem(new ModifyItemUseCase.DeleteItemCommand(ziemniak.getId()));
