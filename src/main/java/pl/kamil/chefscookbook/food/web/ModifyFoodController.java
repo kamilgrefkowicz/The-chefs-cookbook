@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
@@ -13,12 +14,15 @@ import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.RemoveIngredientFromRecipeCommand;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.SetYieldCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.UserSecurityService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.unitList;
 
@@ -29,12 +33,23 @@ public class ModifyFoodController {
 
     private final ModifyItemUseCase modifyItem;
     private final QueryItemUseCase queryItem;
-    private final UserSecurityService userSecurity;
+
+    private static final String modifyItemUrl = "food/modify-items/modify-item";
+
+
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("createNewItemCommand", new CreateNewItemCommand());
+        model.addAttribute("units", unitList());
+        model.addAttribute("addIngredientCommand", new AddIngredientCommand());
+        model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
+        model.addAttribute("setYieldCommand", new SetYieldCommand());
+    }
+
 
     @GetMapping("/new-item")
-    public String showCreateNewItemForm(Model model) {
-        model.addAttribute(new CreateNewItemCommand());
-        model.addAttribute("units", unitList());
+    public String showCreateNewItemForm() {
         return "food/modify-items/create-item";
     }
 
@@ -46,22 +61,17 @@ public class ModifyFoodController {
         Response<ItemDto> itemCreated = modifyItem.createItem(command);
 
         if (!itemCreated.isSuccess()) {
-            model.addAttribute("units", unitList());
             model.addAttribute("message", itemCreated.getError());
             return "food/modify-items/create-item";
         }
         model.addAttribute("item", itemCreated.getData());
-        model.addAttribute("addIngredientCommand", new AddIngredientCommand());
 
-        return "food/modify-items/modify-ingredients";
+        return modifyItemUrl;
     }
 
     @PostMapping("/add-ingredient")
     public String addIngredient(Model model, @Valid AddIngredientCommand command, BindingResult bindingResult, Principal user) {
         Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
-
-        model.addAttribute("addIngredientCommand", new AddIngredientCommand());
-        model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
 
         if (!queried.isSuccess()) {
             model.addAttribute("error", queried.getError());
@@ -71,7 +81,7 @@ public class ModifyFoodController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("item", item);
-            return "food/modify-items/modify-ingredients";
+            return modifyItemUrl;
         }
 
         Response<RichItem> modification = modifyItem.addIngredientToRecipe(command, Long.valueOf(user.getName()));
@@ -84,25 +94,33 @@ public class ModifyFoodController {
 
         model.addAttribute("item", item);
 
-        return "food/modify-items/modify-ingredients";
+        return modifyItemUrl;
 
     }
     @PostMapping("/remove-ingredient")
     public String removeIngredient(Model model, RemoveIngredientFromRecipeCommand command, Principal user) {
 
-        if (!userSecurity.isOwner(command.getParentItemId(), user)) {
-        }
         Response<RichItem> modification = modifyItem.removeIngredientFromRecipe(command, user);
 
         if (!modification.isSuccess()) {
             model.addAttribute("error", modification.getError());
             return "/error";
         }
-
         model.addAttribute("item", modification.getData());
-        model.addAttribute("addIngredientCommand", new AddIngredientCommand());
-        model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
 
-        return "food/modify-items/modify-ingredients";
+        return modifyItemUrl;
+    }
+
+    @PostMapping("/set-yield")
+    public String setYield(Model model, @Valid SetYieldCommand command, BindingResult bindingResult, Principal user) {
+
+        Response<RichItem> modification = modifyItem.setYield(command, user);
+
+        if (!modification.isSuccess()) {
+            model.addAttribute("error", modification.getError());
+        }
+        model.addAttribute("item", modification.getData());
+
+        return modifyItemUrl;
     }
 }

@@ -86,10 +86,6 @@ public class ApplicationStartup implements CommandLineRunner {
         AddIngredientCommand addPureeToSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), puree.getData().getId(), BigDecimal.valueOf(0.4));
         AddIngredientCommand addSchabtoSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), schab.getData().getId(), BigDecimal.valueOf(0.3));
 
-        modifyItemService.setYield(new SetYieldCommand(puree.getData().getId(), BigDecimal.valueOf(1.1)));
-        modifyItemService.setYield(new SetYieldCommand(schabZMaslemIPuree.getData().getId(), BigDecimal.ONE));
-
-
         modifyItemService.addIngredientToRecipe(addZiemniaktoPuree, kamilId);
         modifyItemService.addIngredientToRecipe(addMasłoToPuree, kamilId);
         modifyItemService.addIngredientToRecipe(addPureeToSchab, kamilId);

@@ -84,10 +84,12 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     @Override
     @Transactional
-    public RichItem setYield(SetYieldCommand command) {
+    public Response<RichItem> setYield(SetYieldCommand command, Principal user) {
         Item item = itemRepository.findById(command.getParentItemId()).orElseThrow();
+        if (!userSecurity.isOwner(item.getUserEntity().getId(), user)) return Response.failure("You do not own this item");
+
         item.getRecipe().setRecipeYield(command.getItemYield());
-        return new RichItem(itemRepository.save(item));
+        return Response.success(new RichItem(itemRepository.save(item)));
     }
 
     @Override
@@ -110,11 +112,7 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     private void removeThisItemFromAllDependencies(Long itemId) {
 
-//        List<Ingredient> ingredients = ingredientRepository.findAllByChildItemId(itemId);
-//
-//        for (Ingredient ingredient : ingredients) {
-//            ingredient.removeSelf();
-//        }
+
 
         ingredientRepository.findAllByChildItemId(itemId)
                 .forEach(Ingredient::removeSelf);

@@ -56,9 +56,16 @@
         </td>
     </tr>
     </tbody>
-
-
 </table>
+<div>
+    <p>Ile gotowego produktu otrzymasz z tego przepisu?</p>
+    <form th:action="@{/food/set-yield}" th:method="post" th:object="${setYieldCommand}">
+        <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
+        <input type="text" th:attr="name='itemYield'" th:value="${item.recipeYield}" th:text="${item.unit}">
+
+        <input type="submit" value="Zmien">
+    </form>
+</div>
 
 
 </body>

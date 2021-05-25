@@ -27,7 +27,6 @@ import java.util.Map;
 public class ViewFoodController {
 
     private final QueryItemUseCase queryItem;
-    private final UserSecurityService userSecurity;
 
     @GetMapping({"/", "/my-items"})
     public String showMyItems(Model model, Principal user) {
@@ -51,7 +50,7 @@ public class ViewFoodController {
             return "/error";
         }
 
-        model.addAttribute("targetItem", queried);
+        model.addAttribute("targetItem", queried.getData());
         model.addAttribute("targetAmount", command.getTargetAmount());
 
         addDependencyMapsToModel(model, command);

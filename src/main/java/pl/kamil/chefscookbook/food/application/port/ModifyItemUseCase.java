@@ -19,7 +19,7 @@ public interface ModifyItemUseCase {
 
     Response<RichItem> addIngredientToRecipe(AddIngredientCommand command, Long userId) ;
 
-    RichItem setYield(SetYieldCommand command);
+    Response<RichItem> setYield(SetYieldCommand command, Principal user);
 
     RichItem updateDescription(UpdateDescriptionCommand command);
 
@@ -58,6 +58,7 @@ public interface ModifyItemUseCase {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     class SetYieldCommand {
         @NotNull
         private Long parentItemId;
