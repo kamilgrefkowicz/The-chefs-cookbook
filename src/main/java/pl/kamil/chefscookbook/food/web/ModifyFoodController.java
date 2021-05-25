@@ -57,23 +57,29 @@ public class ModifyFoodController {
     }
 
     @PostMapping("/add-ingredient")
-    public String addIngredient(Model model, @Valid AddIngredientCommand command, BindingResult result, Principal user) {
-        RichItem item = queryItem.findById(command.getParentItemId());
+    public String addIngredient(Model model, @Valid AddIngredientCommand command, BindingResult bindingResult, Principal user) {
+        Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
 
         model.addAttribute("addIngredientCommand", new AddIngredientCommand());
         model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
 
-        if (result.hasErrors()) {
-            model.addAttribute(item);
+        if (!queried.isSuccess()) {
+            model.addAttribute("error", queried.getError());
+            return "/error";
+        }
+        RichItem item = queried.getData();
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("item", item);
             return "food/modify-items/modify-ingredients";
         }
 
-        Response<RichItem> response = modifyItem.addIngredientToRecipe(command, Long.valueOf(user.getName()));
+        Response<RichItem> modification = modifyItem.addIngredientToRecipe(command, Long.valueOf(user.getName()));
 
-        if (response.isSuccess()) {
-            item = response.getData();
+        if (modification.isSuccess()) {
+            item = modification.getData();
         } else {
-            model.addAttribute("message", response.getError());
+            model.addAttribute("message", modification.getError());
         }
 
         model.addAttribute("item", item);
@@ -85,12 +91,15 @@ public class ModifyFoodController {
     public String removeIngredient(Model model, RemoveIngredientFromRecipeCommand command, Principal user) {
 
         if (!userSecurity.isOwner(command.getParentItemId(), user)) {
-            model.addAttribute("message", "You're not authorized to modify this item");
+        }
+        Response<RichItem> modification = modifyItem.removeIngredientFromRecipe(command, user);
+
+        if (!modification.isSuccess()) {
+            model.addAttribute("error", modification.getError());
             return "/error";
         }
-        RichItem item = modifyItem.removeIngredientFromRecipe(command);
 
-        model.addAttribute("item", item);
+        model.addAttribute("item", modification.getData());
         model.addAttribute("addIngredientCommand", new AddIngredientCommand());
         model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
 

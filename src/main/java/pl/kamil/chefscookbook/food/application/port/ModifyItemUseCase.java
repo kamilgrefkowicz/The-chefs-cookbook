@@ -5,13 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.security.Principal;
 
 public interface ModifyItemUseCase {
 
@@ -25,7 +25,7 @@ public interface ModifyItemUseCase {
 
     void deleteItem(DeleteItemCommand command);
 
-    RichItem removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command);
+    Response<RichItem> removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command, Principal user);
 
 
     @Data

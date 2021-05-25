@@ -10,6 +10,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
+import pl.kamil.chefscookbook.shared.response.Response;
 
 
 import javax.validation.Valid;
@@ -23,9 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface QueryItemUseCase {
-    List<PoorItem> findAll();
 
-    RichItem findById(Long id);
+    Response<RichItem> findById(Long itemId, Principal user);
 
     Map<ItemDto, BigDecimal> getMapOfAllDependencies(QueryItemWithDependenciesCommand command);
 
@@ -46,6 +46,7 @@ public interface QueryItemUseCase {
         @DecimalMin(value = "0", inclusive = false)
         BigDecimal targetAmount;
     }
+
 
 }
 

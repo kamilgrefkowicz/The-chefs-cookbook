@@ -10,6 +10,10 @@ import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.shared.response.Response;
+import pl.kamil.chefscookbook.user.application.UserSecurityService;
+import pl.kamil.chefscookbook.user.application.UserService;
+import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -28,6 +32,7 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 public class QueryItemService implements QueryItemUseCase {
 
     private final ItemJpaRepository itemRepository;
+    private final UserSecurityUseCase userSecurity;
 
     @Override
     public List<PoorItem> findAllItemsBelongingToUser(Principal user) {
@@ -50,19 +55,14 @@ public class QueryItemService implements QueryItemUseCase {
         return new ItemAutocompleteDto(item.getId(), item.getName() + " (" + item.getUnit().toString() + ")");
     }
 
-    @Override
-    @Transactional
-    public List<PoorItem> findAll() {
-        return itemRepository.findAll()
-                .stream()
-                .map(PoorItem::new)
-                .collect(Collectors.toList());
-    }
+
 
     @Override
     @Transactional
-    public RichItem findById(Long id) {
-        return new RichItem(itemRepository.findById(id).orElseThrow());
+    public Response<RichItem> findById(Long itemId, Principal user) {
+        RichItem item = new RichItem(itemRepository.getOne(itemId));
+        if (!userSecurity.isOwner(item.getUserEntityId(), user)) return Response.failure("You're not authorized to view this item");
+        return Response.success(item);
     }
 
     @Override

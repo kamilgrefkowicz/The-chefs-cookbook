@@ -12,6 +12,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
+import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.UserSecurityService;
 
 import javax.validation.Valid;
@@ -43,14 +44,14 @@ public class ViewFoodController {
         }
 
         model.addAttribute("command", command);
-        RichItem item = queryItem.findById(command.getItemId());
+        Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
 
-        if (!userSecurity.isOwner(item.getUserEntityId(), user)) {
-            model.addAttribute("error", "You're not authorized to view this item.");
+        if (!queried.isSuccess()) {
+            model.addAttribute("error", queried.getError());
             return "/error";
         }
 
-        model.addAttribute("targetItem", item);
+        model.addAttribute("targetItem", queried);
         model.addAttribute("targetAmount", command.getTargetAmount());
 
         addDependencyMapsToModel(model, command);

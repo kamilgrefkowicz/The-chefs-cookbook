@@ -11,16 +11,14 @@ import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.entity.Recipe;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
-import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
 import pl.kamil.chefscookbook.shared.response.Response;
+import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
 import pl.kamil.chefscookbook.user.database.UserRepository;
-import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.Null;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.security.Principal;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
@@ -33,7 +31,7 @@ public class ModifyItemService implements ModifyItemUseCase {
     private final ItemJpaRepository itemRepository;
     private final IngredientJpaRepository ingredientRepository;
     private final UserRepository userRepository;
-    private final UserEntity masterUser;
+    private final UserSecurityUseCase userSecurity;
 
     @Override
     @Transactional
@@ -61,17 +59,18 @@ public class ModifyItemService implements ModifyItemUseCase {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Item childItem = itemRepository.getOne(command.getChildItemId());
 
-        Response verifyLoops = checkForLoops(parentItem, childItem);
-        if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());
+        Response<Void> eligibilityValidation = userSecurity.validateEligibilityForAddIngredient(parentItem, childItem, userId);
+        if (!eligibilityValidation.isSuccess()) return Response.failure(eligibilityValidation.getError());
 
-        Response<Null> verifyOwnership = confirmOwnership(parentItem, childItem, userId);
-        if (!verifyOwnership.isSuccess()) return Response.failure(verifyOwnership.getError());
+        Response<Void> verifyLoops = checkForLoops(parentItem, childItem);
+        if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());
 
         addIngredient(parentItem, childItem, command.getAmount());
 
         return  Response.success(new RichItem(itemRepository.save(parentItem)));
     }
-    private Response<Null> checkForLoops(Item parentItem, Item childItem)  {
+
+    private Response<Void> checkForLoops(Item parentItem, Item childItem)  {
         if (childItem.getDependencies().contains(parentItem))
             return Response.failure(parentItem.getName() + " is already a dependency of " + childItem.getName());
         if (childItem.equals(parentItem)) {
@@ -80,15 +79,7 @@ public class ModifyItemService implements ModifyItemUseCase {
         return Response.success(null);
     }
 
-    private Response<Null> confirmOwnership(Item parentItem, Item childItem, Long userId) {
-        if (!parentItem.getUserEntity().getId().equals(userId))
-            return Response.failure("You're not authorized to modify this item");
-        if ((!childItem.getUserEntity().getId().equals(userId)) &&
-             !childItem.getUserEntity().equals(masterUser))
-            return Response.failure("You do not own this ingredient");
 
-        return Response.success(null);
-    }
 
 
     @Override
@@ -119,11 +110,11 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     private void removeThisItemFromAllDependencies(Long itemId) {
 
-        List<Ingredient> ingredients = ingredientRepository.findAllByChildItemId(itemId);
-
-        for (Ingredient ingredient : ingredients) {
-            ingredient.removeSelf();
-        }
+//        List<Ingredient> ingredients = ingredientRepository.findAllByChildItemId(itemId);
+//
+//        for (Ingredient ingredient : ingredients) {
+//            ingredient.removeSelf();
+//        }
 
         ingredientRepository.findAllByChildItemId(itemId)
                 .forEach(Ingredient::removeSelf);
@@ -131,13 +122,15 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     @Override
     @Transactional
-    public RichItem removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command) {
+    public Response<RichItem> removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command, Principal user) {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Ingredient ingredientToRemove = ingredientRepository.getOne(command.getIngredientId());
 
+        if (!userSecurity.isOwner(parentItem.getUserEntity().getId(), user)) return Response.failure("You do not own this item");
+
         ingredientToRemove.removeSelf();
 
-        return new RichItem(itemRepository.save(parentItem));
+        return Response.success(new RichItem(itemRepository.save(parentItem)));
     }
 
 
