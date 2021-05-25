@@ -1,7 +1,6 @@
 package pl.kamil.chefscookbook.food.application;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
@@ -12,12 +11,13 @@ import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.entity.Recipe;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
-import pl.kamil.chefscookbook.shared.exception.LoopAttemptedException;
 import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
+import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.Null;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -58,26 +58,37 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     @Transactional
     @Override
-    public RichItem addIngredientToRecipe(AddIngredientCommand command, Long userId) throws LoopAttemptedException {
+    public Response<RichItem> addIngredientToRecipe(AddIngredientCommand command, Long userId)  {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Item childItem = itemRepository.getOne(command.getChildItemId());
 
-        checkForLoops(parentItem, childItem);
-        confirmOwnership(parentItem, childItem, userId);
+        Response verifyLoops = checkForLoops(parentItem, childItem);
+        if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());
+
+        Response<Null> verifyOwnership = confirmOwnership(parentItem, childItem, userId);
+        if (!verifyOwnership.isSuccess()) return Response.failure(verifyOwnership.getError());
 
         addIngredient(parentItem, childItem, command.getAmount());
 
-        return new RichItem(itemRepository.save(parentItem));
+        return  Response.success(new RichItem(itemRepository.save(parentItem)));
+    }
+    private Response<Null> checkForLoops(Item parentItem, Item childItem)  {
+        if (childItem.getDependencies().contains(parentItem))
+            return Response.failure(parentItem.getName() + " is already a dependency of " + childItem.getName());
+        if (childItem.equals(parentItem)) {
+            return Response.failure("An item cannot depend on itself");
+        }
+        return Response.success(null);
     }
 
-    private void confirmOwnership(Item parentItem, Item childItem, Long userId) {
+    private Response<Null> confirmOwnership(Item parentItem, Item childItem, Long userId) {
         if (!parentItem.getUserEntity().getId().equals(userId))
-            throw new AccessDeniedException("You're not authorized to modify this item");
-
+            return Response.failure("You're not authorized to modify this item");
         if ((!childItem.getUserEntity().getId().equals(userId)) &&
              !childItem.getUserEntity().equals(masterUser))
-            throw new AccessDeniedException("You do not own this ingredient");
+            return Response.failure("You do not own this ingredient");
 
+        return Response.success(null);
     }
 
 
@@ -143,14 +154,6 @@ public class ModifyItemService implements ModifyItemUseCase {
         parentItem.getIngredients().add(new Ingredient(parentItem.getRecipe(), childItem, amount));
     }
 
-    private void checkForLoops(Item parentItem, Item childItem) throws LoopAttemptedException {
-        if (childItem.getDependencies().contains(parentItem))
-            throw new LoopAttemptedException(parentItem.getName() + " is already a dependency of " + childItem.getName());
-        if (childItem.equals(parentItem)) {
-            throw new LoopAttemptedException("An item cannot depend on itself");
-
-        }
-    }
 
 
     private void generateRecipeIfApplicable(Item item) {

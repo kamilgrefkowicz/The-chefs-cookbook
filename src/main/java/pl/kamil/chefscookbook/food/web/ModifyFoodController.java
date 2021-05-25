@@ -3,6 +3,7 @@ package pl.kamil.chefscookbook.food.web;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +13,8 @@ import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
-import pl.kamil.chefscookbook.shared.exception.LoopAttemptedException;
 import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
+import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -40,7 +41,7 @@ public class ModifyFoodController {
 
         command.setUserId(Long.valueOf(user.getName()));
 
-            ItemDto item;
+        ItemDto item;
         try {
             item = modifyItem.createItem(command);
         } catch (NameAlreadyTakenException e) {
@@ -54,15 +55,21 @@ public class ModifyFoodController {
         return "food/modify-items/modify-ingredients";
     }
 
-    @PostMapping
-    public String addIngredient(Model model, @Valid AddIngredientCommand command, Principal user) {
+    @PostMapping("add-ingredient")
+    public String addIngredient(Model model, @Valid AddIngredientCommand command, BindingResult result, Principal user) {
+
+        if (result.hasErrors()) return "food/modify-items/modify-ingredients";
 
         RichItem item = queryItem.findById(command.getParentItemId());
-        try {
-            item = modifyItem.addIngredientToRecipe(command, Long.valueOf(user.getName()));
-        } catch (LoopAttemptedException e) {
-            model.addAttribute("message", e.getMessage());
+
+        Response<RichItem> response = modifyItem.addIngredientToRecipe(command, Long.valueOf(user.getName()));
+
+        if (response.isSuccess()) {
+            item = response.getData();
+        } else {
+            model.addAttribute("message", response.getError());
         }
+
         model.addAttribute("item", item);
         model.addAttribute("command", new AddIngredientCommand());
 

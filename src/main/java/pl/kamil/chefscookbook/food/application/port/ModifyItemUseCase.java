@@ -7,6 +7,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.shared.exception.LoopAttemptedException;
 import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
+import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ public interface ModifyItemUseCase {
 
     ItemDto createItem(CreateNewItemCommand command) throws NameAlreadyTakenException;
 
-    RichItem addIngredientToRecipe(AddIngredientCommand command, Long userId) throws LoopAttemptedException;
+    Response<RichItem> addIngredientToRecipe(AddIngredientCommand command, Long userId) ;
 
     RichItem setYield(SetYieldCommand command);
 

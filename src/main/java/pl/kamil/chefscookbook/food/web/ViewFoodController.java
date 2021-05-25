@@ -33,7 +33,6 @@ public class ViewFoodController {
     private final QueryItemUseCase queryItem;
     private final UserSecurity userSecurity;
 
-    @Secured({"ROLE_USER"})
     @GetMapping({"/", "/my-items"})
     public String showMyItems(Model model, Principal user) {
         model.addAttribute(queryItem.findAllItemsBelongingToUser(user));
@@ -72,12 +71,10 @@ public class ViewFoodController {
 
         Map<ItemDto, BigDecimal> mapOfAllDependencies = queryItem.getMapOfAllDependencies(command);
 
-
         splitMapToBasicsAndIntermediates(mapOfAllDependencies, basics, intermediates);
         model.addAttribute("basics", basics);
         model.addAttribute("intermediates", intermediates);
     }
-
 
     private void splitMapToBasicsAndIntermediates(Map<ItemDto, BigDecimal> mapOfAllDependencies, Map<PoorItem, BigDecimal> basics, Map<RichItem, BigDecimal> intermediates) {
         for (Map.Entry<ItemDto, BigDecimal> entry : mapOfAllDependencies.entrySet()) {

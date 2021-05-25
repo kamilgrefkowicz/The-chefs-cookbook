@@ -23,7 +23,7 @@
 <div>
     <form th:action="@{/food/add-ingredient}" th:object="${command}" th:method="post">
 
-        <input type="hidden" th:field="*{parentItemId}" th:value="${item.id}">
+        <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
 
 
         <input id="ingredientLabel" class="form-control" type="text">
