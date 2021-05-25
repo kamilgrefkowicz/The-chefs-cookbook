@@ -1,7 +1,6 @@
 package pl.kamil.chefscookbook.food.application;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
@@ -11,7 +10,6 @@ import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.security.UserSecurity;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -30,7 +28,6 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 public class QueryItemService implements QueryItemUseCase {
 
     private final ItemJpaRepository itemRepository;
-    private final UserSecurity userSecurity;
 
     @Override
     public List<PoorItem> findAllItemsBelongingToUser(Principal user) {

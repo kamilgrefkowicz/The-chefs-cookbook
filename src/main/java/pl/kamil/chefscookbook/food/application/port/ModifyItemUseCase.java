@@ -83,6 +83,7 @@ public interface ModifyItemUseCase {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     class RemoveIngredientFromRecipeCommand {
         @NotNull
         private Long parentItemId;

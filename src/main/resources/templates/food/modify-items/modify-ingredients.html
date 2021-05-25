@@ -19,9 +19,9 @@
 </div>
 
 <label>Dodaj nowy składnik:</label>
-
+<div th:unless="${message == null}" th:text="${message}"></div>
 <div>
-    <form th:action="@{/food/add-ingredient}" th:object="${command}" th:method="post">
+    <form th:action="@{/food/add-ingredient}" th:object="${addIngredientCommand}" th:method="post">
 
         <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
 
@@ -48,7 +48,11 @@
         <td th:text="${ingredient.childItem.name}"></td>
         <td th:text="${ingredient.amount} + ${ingredient.childItem.unit}"></td>
         <td>
-            <button>click</button>
+            <form th:action="@{/food/remove-ingredient}" th:method="post" th:object="${removeIngredientCommand}">
+                <input type="hidden" th:attr="name='ingredientId'" th:value="${ingredient.ingredientId}">
+                <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
+                <input type="submit" value="click">
+            </form>
         </td>
     </tr>
     </tbody>

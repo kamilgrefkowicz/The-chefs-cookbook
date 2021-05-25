@@ -12,9 +12,10 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.RemoveIngredientFromRecipeCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
-import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
 import pl.kamil.chefscookbook.shared.response.Response;
+import pl.kamil.chefscookbook.user.application.UserSecurityService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -28,6 +29,7 @@ public class ModifyFoodController {
 
     private final ModifyItemUseCase modifyItem;
     private final QueryItemUseCase queryItem;
+    private final UserSecurityService userSecurity;
 
     @GetMapping("/new-item")
     public String showCreateNewItemForm(Model model) {
@@ -49,17 +51,22 @@ public class ModifyFoodController {
             return "food/modify-items/create-item";
         }
         model.addAttribute("item", itemCreated.getData());
-        model.addAttribute("command", new AddIngredientCommand());
+        model.addAttribute("addIngredientCommand", new AddIngredientCommand());
 
         return "food/modify-items/modify-ingredients";
     }
 
-    @PostMapping("add-ingredient")
+    @PostMapping("/add-ingredient")
     public String addIngredient(Model model, @Valid AddIngredientCommand command, BindingResult result, Principal user) {
-
-        if (result.hasErrors()) return "food/modify-items/modify-ingredients";
-
         RichItem item = queryItem.findById(command.getParentItemId());
+
+        model.addAttribute("addIngredientCommand", new AddIngredientCommand());
+        model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
+
+        if (result.hasErrors()) {
+            model.addAttribute(item);
+            return "food/modify-items/modify-ingredients";
+        }
 
         Response<RichItem> response = modifyItem.addIngredientToRecipe(command, Long.valueOf(user.getName()));
 
@@ -70,9 +77,23 @@ public class ModifyFoodController {
         }
 
         model.addAttribute("item", item);
-        model.addAttribute("command", new AddIngredientCommand());
 
         return "food/modify-items/modify-ingredients";
 
+    }
+    @PostMapping("/remove-ingredient")
+    public String removeIngredient(Model model, RemoveIngredientFromRecipeCommand command, Principal user) {
+
+        if (!userSecurity.isOwner(command.getParentItemId(), user)) {
+            model.addAttribute("message", "You're not authorized to modify this item");
+            return "/error";
+        }
+        RichItem item = modifyItem.removeIngredientFromRecipe(command);
+
+        model.addAttribute("item", item);
+        model.addAttribute("addIngredientCommand", new AddIngredientCommand());
+        model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
+
+        return "food/modify-items/modify-ingredients";
     }
 }

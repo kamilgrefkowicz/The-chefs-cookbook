@@ -1,23 +1,18 @@
 package pl.kamil.chefscookbook.food.web;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
-import pl.kamil.chefscookbook.security.UserSecurity;
+import pl.kamil.chefscookbook.user.application.UserSecurityService;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -31,7 +26,7 @@ import java.util.Map;
 public class ViewFoodController {
 
     private final QueryItemUseCase queryItem;
-    private final UserSecurity userSecurity;
+    private final UserSecurityService userSecurity;
 
     @GetMapping({"/", "/my-items"})
     public String showMyItems(Model model, Principal user) {
