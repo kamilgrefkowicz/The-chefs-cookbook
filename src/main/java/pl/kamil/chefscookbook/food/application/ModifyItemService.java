@@ -37,18 +37,17 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     @Override
     @Transactional
-    public ItemDto createItem(CreateNewItemCommand command) throws NameAlreadyTakenException {
+    public Response<ItemDto> createItem(CreateNewItemCommand command)  {
 
-        checkIfItemNameAlreadyTaken(command);
+        if (nameAlreadyTaken(command)) return Response.failure("You already have an item called " + command.getItemName());
         Item item = newItemCommandToItem(command);
         generateRecipeIfApplicable(item);
-        return  convertToDto(itemRepository.save(item));
+        return  Response.success(convertToDto(itemRepository.save(item)));
     }
 
-    private void checkIfItemNameAlreadyTaken(CreateNewItemCommand command) throws NameAlreadyTakenException {
-        if (itemRepository.findFirstByNameAndUserEntityId(command.getItemName(), command.getUserId()).isPresent()) {
-            throw new NameAlreadyTakenException("You already have an item called " + command.getItemName());
-        }
+    private boolean nameAlreadyTaken(CreateNewItemCommand command)  {
+        return itemRepository.findFirstByNameAndUserEntityId(command.getItemName(), command.getUserId()).isPresent();
+
     }
 
     private Item newItemCommandToItem(CreateNewItemCommand command) {

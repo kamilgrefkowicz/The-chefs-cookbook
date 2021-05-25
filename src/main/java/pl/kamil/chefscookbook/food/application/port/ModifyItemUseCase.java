@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.shared.exception.LoopAttemptedException;
 import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
 import pl.kamil.chefscookbook.shared.response.Response;
 
@@ -16,7 +15,7 @@ import java.math.BigDecimal;
 
 public interface ModifyItemUseCase {
 
-    ItemDto createItem(CreateNewItemCommand command) throws NameAlreadyTakenException;
+    Response<ItemDto> createItem(CreateNewItemCommand command);
 
     Response<RichItem> addIngredientToRecipe(AddIngredientCommand command, Long userId) ;
 

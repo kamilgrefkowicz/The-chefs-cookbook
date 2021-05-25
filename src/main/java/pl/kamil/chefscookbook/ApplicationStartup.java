@@ -14,6 +14,7 @@ import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 
 import pl.kamil.chefscookbook.food.domain.staticData.TypeRepository;
 import pl.kamil.chefscookbook.food.domain.staticData.UnitRepository;
+import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
@@ -72,21 +73,21 @@ public class ApplicationStartup implements CommandLineRunner {
     private void initializeStartingItems() {
 
 
-        ItemDto ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", 1, 1, ccbId ));
-        ItemDto masło = modifyItemService.createItem(new CreateNewItemCommand("masło", 1, 1, ccbId));
-        ItemDto puree = modifyItemService.createItem(new CreateNewItemCommand("puree", 2, 1, kamilId));
-        ItemDto schab = modifyItemService.createItem(new CreateNewItemCommand("schab", 1, 1, ccbId));
-        ItemDto schabZMaslemIPuree = modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", 3, 3, kamilId));
+        Response<ItemDto> ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", 1, 1, ccbId ));
+        Response<ItemDto> masło = modifyItemService.createItem(new CreateNewItemCommand("masło", 1, 1, ccbId));
+        Response<ItemDto> puree = modifyItemService.createItem(new CreateNewItemCommand("puree", 2, 1, kamilId));
+        Response<ItemDto> schab = modifyItemService.createItem(new CreateNewItemCommand("schab", 1, 1, ccbId));
+        Response<ItemDto> schabZMaslemIPuree = modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", 3, 3, kamilId));
 
-        AddIngredientCommand addZiemniaktoPuree = new AddIngredientCommand(puree.getId(), ziemniak.getId(), BigDecimal.valueOf(1));
-        AddIngredientCommand addMasłoToPuree = new AddIngredientCommand(puree.getId(), masło.getId(), BigDecimal.valueOf(0.2));
+        AddIngredientCommand addZiemniaktoPuree = new AddIngredientCommand(puree.getData().getId(), ziemniak.getData().getId(), BigDecimal.valueOf(1));
+        AddIngredientCommand addMasłoToPuree = new AddIngredientCommand(puree.getData().getId(), masło.getData().getId(), BigDecimal.valueOf(0.2));
 //
-        AddIngredientCommand addMasłoToSchab = new AddIngredientCommand(schabZMaslemIPuree.getId(), masło.getId(), BigDecimal.valueOf(0.1));
-        AddIngredientCommand addPureeToSchab = new AddIngredientCommand(schabZMaslemIPuree.getId(), puree.getId(), BigDecimal.valueOf(0.4));
-        AddIngredientCommand addSchabtoSchab = new AddIngredientCommand(schabZMaslemIPuree.getId(), schab.getId(), BigDecimal.valueOf(0.3));
+        AddIngredientCommand addMasłoToSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), masło.getData().getId(), BigDecimal.valueOf(0.1));
+        AddIngredientCommand addPureeToSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), puree.getData().getId(), BigDecimal.valueOf(0.4));
+        AddIngredientCommand addSchabtoSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), schab.getData().getId(), BigDecimal.valueOf(0.3));
 
-        modifyItemService.setYield(new SetYieldCommand(puree.getId(), BigDecimal.valueOf(1.1)));
-        modifyItemService.setYield(new SetYieldCommand(schabZMaslemIPuree.getId(), BigDecimal.ONE));
+        modifyItemService.setYield(new SetYieldCommand(puree.getData().getId(), BigDecimal.valueOf(1.1)));
+        modifyItemService.setYield(new SetYieldCommand(schabZMaslemIPuree.getData().getId(), BigDecimal.ONE));
 
 
         modifyItemService.addIngredientToRecipe(addZiemniaktoPuree, kamilId);

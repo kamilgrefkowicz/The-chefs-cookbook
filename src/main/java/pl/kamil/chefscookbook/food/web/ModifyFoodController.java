@@ -41,15 +41,14 @@ public class ModifyFoodController {
 
         command.setUserId(Long.valueOf(user.getName()));
 
-        ItemDto item;
-        try {
-            item = modifyItem.createItem(command);
-        } catch (NameAlreadyTakenException e) {
+        Response<ItemDto> itemCreated = modifyItem.createItem(command);
+
+        if (!itemCreated.isSuccess()) {
             model.addAttribute("units", unitList());
-            model.addAttribute("message", e.getMessage());
+            model.addAttribute("message", itemCreated.getError());
             return "food/modify-items/create-item";
         }
-        model.addAttribute("item", item);
+        model.addAttribute("item", itemCreated.getData());
         model.addAttribute("command", new AddIngredientCommand());
 
         return "food/modify-items/modify-ingredients";
