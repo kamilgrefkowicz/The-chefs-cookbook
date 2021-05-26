@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
@@ -47,6 +44,16 @@ public class ModifyFoodController {
         model.addAttribute("deleteItemCommand", new DeleteItemCommand());
     }
 
+    @GetMapping("/modify-item")
+    public String showModifyItemForm(Model model, @RequestParam Long itemId, Principal user){
+        Response<RichItem> queried = queryItem.findById(itemId, user);
+
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        RichItem item = queried.getData();
+        model.addAttribute("item", item);
+        return MODIFY_ITEM_URL;
+    }
 
     @GetMapping("/new-item")
     public String showCreateNewItemForm() {

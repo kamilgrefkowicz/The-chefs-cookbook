@@ -13,6 +13,14 @@
 
 <p th:text="${targetItem.name} + ', przepis na '+ ${#numbers.formatDecimal(targetItem.recipeYield, 1, 1, 'COMMA')} + ${targetItem.unit}"></p>
 
+<div>
+    <form th:action="@{/food/modify-item}" th:method="get">
+        <input type="hidden" th:attr="name='itemId'" th:value="${targetItem.id}">
+        <input type="submit" value="Edytuj">
+    </form>
+</div>
+
+
 <table width="350px" border="1">
     <thead>
     <th>Składnik</th>

@@ -19,6 +19,7 @@ import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 
 import java.math.BigDecimal;
+import java.security.Principal;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.*;
@@ -40,12 +41,12 @@ public class ApplicationStartup implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-//        initializeTypesAndUnits();
+        initializeTypesAndUnits();
+
+        initializeUser();
+
+        initializeStartingItems();
 //
-//        initializeUser();
-//
-//        initializeStartingItems();
-////
 
 
     }
@@ -70,26 +71,27 @@ public class ApplicationStartup implements CommandLineRunner {
 
     @SneakyThrows
     private void initializeStartingItems() {
-//
-//
-//        Response<ItemDto> ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", 1, 1, ccbId ), user);
-//        Response<ItemDto> masło = modifyItemService.createItem(new CreateNewItemCommand("masło", 1, 1, ccbId), user);
-//        Response<ItemDto> puree = modifyItemService.createItem(new CreateNewItemCommand("puree", 2, 1, kamilId), user);
-//        Response<ItemDto> schab = modifyItemService.createItem(new CreateNewItemCommand("schab", 1, 1, ccbId), user);
-//        Response<ItemDto> schabZMaslemIPuree = modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", 3, 3, kamilId), user);
-//
+
+
+        Principal ccb = () -> "1";
+        Response<ItemDto> ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", 1, 1), ccb);
+        Response<ItemDto> masło = modifyItemService.createItem(new CreateNewItemCommand("masło", 1, 1), ccb);
+        Response<ItemDto> puree = modifyItemService.createItem(new CreateNewItemCommand("puree", 2, 1), ccb);
+        Response<ItemDto> schab = modifyItemService.createItem(new CreateNewItemCommand("schab", 1, 1), ccb);
+//        Response<ItemDto> schabZMaslemIPuree = modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", 3, 3), ccb);
+
 //        AddIngredientCommand addZiemniaktoPuree = new AddIngredientCommand(puree.getData().getId(), ziemniak.getData().getId(), BigDecimal.valueOf(1));
 //        AddIngredientCommand addMasłoToPuree = new AddIngredientCommand(puree.getData().getId(), masło.getData().getId(), BigDecimal.valueOf(0.2));
-////
+//
 //        AddIngredientCommand addMasłoToSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), masło.getData().getId(), BigDecimal.valueOf(0.1));
 //        AddIngredientCommand addPureeToSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), puree.getData().getId(), BigDecimal.valueOf(0.4));
 //        AddIngredientCommand addSchabtoSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), schab.getData().getId(), BigDecimal.valueOf(0.3));
-////
-//        modifyItemService.addIngredientToRecipe(addZiemniaktoPuree, kamilId);
-//        modifyItemService.addIngredientToRecipe(addMasłoToPuree, kamilId);
-//        modifyItemService.addIngredientToRecipe(addPureeToSchab, kamilId);
-//        modifyItemService.addIngredientToRecipe(addMasłoToSchab, kamilId);
-//        modifyItemService.addIngredientToRecipe(addSchabtoSchab, kamilId);
+
+//        modifyItemService.addIngredientToRecipe(addZiemniaktoPuree, ccb);
+//        modifyItemService.addIngredientToRecipe(addMasłoToPuree, ccb);
+//        modifyItemService.addIngredientToRecipe(addPureeToSchab, ccb);
+//        modifyItemService.addIngredientToRecipe(addMasłoToSchab, ccb);
+//        modifyItemService.addIngredientToRecipe(addSchabtoSchab, ccb);
 
 
 //        modifyItemService.deleteItem(new ModifyItemUseCase.DeleteItemCommand(ziemniak.getId()));
