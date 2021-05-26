@@ -11,18 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.RemoveIngredientFromRecipeCommand;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.SetYieldCommand;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.*;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
-import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.response.Response;
-import pl.kamil.chefscookbook.user.application.UserSecurityService;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.unitList;
 
@@ -34,9 +28,9 @@ public class ModifyFoodController {
     private final ModifyItemUseCase modifyItem;
     private final QueryItemUseCase queryItem;
 
-    private static final String modifyItemUrl = "food/modify-items/modify-item";
-
-
+    private static final String MODIFY_ITEM_URL = "food/modify-items/modify-item";
+    private static final String ERROR = "error";
+    private static final String CREATE_ITEM_URL = "food/modify-items/create-item";
 
     @ModelAttribute
     public void addAttributes(Model model) {
@@ -45,82 +39,121 @@ public class ModifyFoodController {
         model.addAttribute("addIngredientCommand", new AddIngredientCommand());
         model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
         model.addAttribute("setYieldCommand", new SetYieldCommand());
+        model.addAttribute("updateDescriptionCommand", new UpdateDescriptionCommand());
     }
 
 
     @GetMapping("/new-item")
     public String showCreateNewItemForm() {
-        return "food/modify-items/create-item";
+        return CREATE_ITEM_URL;
     }
 
     @PostMapping("/new-item")
-    public String createNewItem(Model model, @Valid CreateNewItemCommand command, Principal user) {
+    public String createNewItem(Model model, @Valid CreateNewItemCommand command, BindingResult result, Principal user) {
 
-        command.setUserId(Long.valueOf(user.getName()));
+        if (result.hasErrors()) return CREATE_ITEM_URL;
 
-        Response<ItemDto> itemCreated = modifyItem.createItem(command);
+        Response<ItemDto> itemCreated = modifyItem.createItem(command, user);
 
         if (!itemCreated.isSuccess()) {
-            model.addAttribute("message", itemCreated.getError());
-            return "food/modify-items/create-item";
+            model.addAttribute(ERROR, itemCreated.getError());
+            return CREATE_ITEM_URL;
         }
         model.addAttribute("item", itemCreated.getData());
-
-        return modifyItemUrl;
+        return MODIFY_ITEM_URL;
     }
+
 
     @PostMapping("/add-ingredient")
     public String addIngredient(Model model, @Valid AddIngredientCommand command, BindingResult bindingResult, Principal user) {
         Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
 
-        if (!queried.isSuccess()) {
-            model.addAttribute("error", queried.getError());
-            return "/error";
-        }
+        if (!querySuccessful(queried, model)) return ERROR;
+
         RichItem item = queried.getData();
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("item", item);
-            return modifyItemUrl;
-        }
+        if (!validationSuccessful(bindingResult, model, item)) return MODIFY_ITEM_URL;
 
-        Response<RichItem> modification = modifyItem.addIngredientToRecipe(command, Long.valueOf(user.getName()));
+        Response<RichItem> modification = modifyItem.addIngredientToRecipe(command, user);
 
-        if (modification.isSuccess()) {
-            item = modification.getData();
-        } else {
-            model.addAttribute("message", modification.getError());
-        }
+        resolveModification(modification, model, item);
 
-        model.addAttribute("item", item);
-
-        return modifyItemUrl;
+        return MODIFY_ITEM_URL;
 
     }
+
     @PostMapping("/remove-ingredient")
     public String removeIngredient(Model model, RemoveIngredientFromRecipeCommand command, Principal user) {
 
+        Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
+
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        RichItem item = queried.getData();
+
         Response<RichItem> modification = modifyItem.removeIngredientFromRecipe(command, user);
 
-        if (!modification.isSuccess()) {
-            model.addAttribute("error", modification.getError());
-            return "/error";
-        }
-        model.addAttribute("item", modification.getData());
-
-        return modifyItemUrl;
+        resolveModification(modification, model, item);
+        return MODIFY_ITEM_URL;
     }
 
     @PostMapping("/set-yield")
     public String setYield(Model model, @Valid SetYieldCommand command, BindingResult bindingResult, Principal user) {
 
+        Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        RichItem item = queried.getData();
+
+        if (!validationSuccessful(bindingResult, model, item)) return MODIFY_ITEM_URL;
+
         Response<RichItem> modification = modifyItem.setYield(command, user);
 
-        if (!modification.isSuccess()) {
-            model.addAttribute("error", modification.getError());
-        }
-        model.addAttribute("item", modification.getData());
+        resolveModification(modification, model, item);
 
-        return modifyItemUrl;
+        return MODIFY_ITEM_URL;
+    }
+
+
+    @PostMapping("/update-description")
+    public String updateDescription(Model model, @Valid UpdateDescriptionCommand command, BindingResult bindingResult, Principal user) {
+
+        Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
+
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        RichItem item = queried.getData();
+
+        if (!validationSuccessful(bindingResult, model, item)) return MODIFY_ITEM_URL;
+
+        Response<RichItem> modification = modifyItem.updateDescription(command, user);
+
+        resolveModification(modification, model, item);
+        return MODIFY_ITEM_URL;
+    }
+
+    private boolean querySuccessful(Response<RichItem> response, Model model) {
+        if (!response.isSuccess()) {
+            model.addAttribute(ERROR, response.getError());
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validationSuccessful(BindingResult bindingResult, Model model, RichItem item) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("item", item);
+            return false;
+        }
+        return true;
+    }
+
+    private void resolveModification(Response<RichItem> modification, Model model, RichItem item) {
+        if (!modification.isSuccess()) {
+            model.addAttribute(ERROR, modification.getError());
+            model.addAttribute("item", item);
+        } else {
+            model.addAttribute("item", modification.getData());
+        }
     }
 }

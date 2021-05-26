@@ -15,13 +15,13 @@ import java.security.Principal;
 
 public interface ModifyItemUseCase {
 
-    Response<ItemDto> createItem(CreateNewItemCommand command);
+    Response<ItemDto> createItem(CreateNewItemCommand command, Principal user);
 
-    Response<RichItem> addIngredientToRecipe(AddIngredientCommand command, Long userId) ;
+    Response<RichItem> addIngredientToRecipe(AddIngredientCommand command, Principal user) ;
 
     Response<RichItem> setYield(SetYieldCommand command, Principal user);
 
-    RichItem updateDescription(UpdateDescriptionCommand command);
+    Response<RichItem> updateDescription(UpdateDescriptionCommand command, Principal user);
 
     void deleteItem(DeleteItemCommand command);
 
@@ -38,10 +38,6 @@ public interface ModifyItemUseCase {
         private int itemTypeId;
         @NotNull
         private int itemUnitId;
-
-        private Long userId;
-
-
     }
 
     @Data
@@ -68,6 +64,7 @@ public interface ModifyItemUseCase {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     class UpdateDescriptionCommand {
         @NotNull
         private Long parentItemId;

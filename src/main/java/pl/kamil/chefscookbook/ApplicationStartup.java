@@ -8,7 +8,6 @@ import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.SetYieldCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 
 
@@ -71,26 +70,26 @@ public class ApplicationStartup implements CommandLineRunner {
 
     @SneakyThrows
     private void initializeStartingItems() {
-
-
-        Response<ItemDto> ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", 1, 1, ccbId ));
-        Response<ItemDto> masło = modifyItemService.createItem(new CreateNewItemCommand("masło", 1, 1, ccbId));
-        Response<ItemDto> puree = modifyItemService.createItem(new CreateNewItemCommand("puree", 2, 1, kamilId));
-        Response<ItemDto> schab = modifyItemService.createItem(new CreateNewItemCommand("schab", 1, 1, ccbId));
-        Response<ItemDto> schabZMaslemIPuree = modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", 3, 3, kamilId));
-
-        AddIngredientCommand addZiemniaktoPuree = new AddIngredientCommand(puree.getData().getId(), ziemniak.getData().getId(), BigDecimal.valueOf(1));
-        AddIngredientCommand addMasłoToPuree = new AddIngredientCommand(puree.getData().getId(), masło.getData().getId(), BigDecimal.valueOf(0.2));
 //
-        AddIngredientCommand addMasłoToSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), masło.getData().getId(), BigDecimal.valueOf(0.1));
-        AddIngredientCommand addPureeToSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), puree.getData().getId(), BigDecimal.valueOf(0.4));
-        AddIngredientCommand addSchabtoSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), schab.getData().getId(), BigDecimal.valueOf(0.3));
-
-        modifyItemService.addIngredientToRecipe(addZiemniaktoPuree, kamilId);
-        modifyItemService.addIngredientToRecipe(addMasłoToPuree, kamilId);
-        modifyItemService.addIngredientToRecipe(addPureeToSchab, kamilId);
-        modifyItemService.addIngredientToRecipe(addMasłoToSchab, kamilId);
-        modifyItemService.addIngredientToRecipe(addSchabtoSchab, kamilId);
+//
+//        Response<ItemDto> ziemniak = modifyItemService.createItem(new CreateNewItemCommand("ziemniak", 1, 1, ccbId ), user);
+//        Response<ItemDto> masło = modifyItemService.createItem(new CreateNewItemCommand("masło", 1, 1, ccbId), user);
+//        Response<ItemDto> puree = modifyItemService.createItem(new CreateNewItemCommand("puree", 2, 1, kamilId), user);
+//        Response<ItemDto> schab = modifyItemService.createItem(new CreateNewItemCommand("schab", 1, 1, ccbId), user);
+//        Response<ItemDto> schabZMaslemIPuree = modifyItemService.createItem(new CreateNewItemCommand("schabZMaslemIPuree", 3, 3, kamilId), user);
+//
+//        AddIngredientCommand addZiemniaktoPuree = new AddIngredientCommand(puree.getData().getId(), ziemniak.getData().getId(), BigDecimal.valueOf(1));
+//        AddIngredientCommand addMasłoToPuree = new AddIngredientCommand(puree.getData().getId(), masło.getData().getId(), BigDecimal.valueOf(0.2));
+////
+//        AddIngredientCommand addMasłoToSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), masło.getData().getId(), BigDecimal.valueOf(0.1));
+//        AddIngredientCommand addPureeToSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), puree.getData().getId(), BigDecimal.valueOf(0.4));
+//        AddIngredientCommand addSchabtoSchab = new AddIngredientCommand(schabZMaslemIPuree.getData().getId(), schab.getData().getId(), BigDecimal.valueOf(0.3));
+////
+//        modifyItemService.addIngredientToRecipe(addZiemniaktoPuree, kamilId);
+//        modifyItemService.addIngredientToRecipe(addMasłoToPuree, kamilId);
+//        modifyItemService.addIngredientToRecipe(addPureeToSchab, kamilId);
+//        modifyItemService.addIngredientToRecipe(addMasłoToSchab, kamilId);
+//        modifyItemService.addIngredientToRecipe(addSchabtoSchab, kamilId);
 
 
 //        modifyItemService.deleteItem(new ModifyItemUseCase.DeleteItemCommand(ziemniak.getId()));
