@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
+import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.*;
@@ -17,6 +18,7 @@ import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.unitList;
 
@@ -31,6 +33,8 @@ public class ModifyFoodController {
     private static final String MODIFY_ITEM_URL = "food/modify-items/modify-item";
     private static final String ERROR = "error";
     private static final String CREATE_ITEM_URL = "food/modify-items/create-item";
+    private static final String DELETE_CONFIRM_URL = "food/modify-items/delete-confirm";
+    private static final String MY_ITEMS_URL = "food/my-items";
 
     @ModelAttribute
     public void addAttributes(Model model) {
@@ -40,6 +44,7 @@ public class ModifyFoodController {
         model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
         model.addAttribute("setYieldCommand", new SetYieldCommand());
         model.addAttribute("updateDescriptionCommand", new UpdateDescriptionCommand());
+        model.addAttribute("deleteItemCommand", new DeleteItemCommand());
     }
 
 
@@ -130,6 +135,33 @@ public class ModifyFoodController {
 
         resolveModification(modification, model, item);
         return MODIFY_ITEM_URL;
+    }
+    @GetMapping("/delete-item")
+    public String showConfirmPageForDelete(Model model, DeleteItemCommand command, Principal user) {
+        Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
+
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        ItemDto targetItem = queried.getData();
+        List<PoorItem> itemsAffected = queryItem.findAllItemsAffectedByDelete(command.getItemId());
+
+        model.addAttribute("itemsAffected", itemsAffected);
+        model.addAttribute("targetItem", targetItem);
+        model.addAttribute("command", command);
+
+        return DELETE_CONFIRM_URL;
+    }
+    @PostMapping("/delete-item")
+    public String deleteItem(Model model, DeleteItemCommand command, Principal user) {
+        Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
+
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        modifyItem.deleteItem(command);
+        model.addAttribute(queryItem.findAllItemsBelongingToUser(user));
+
+
+        return MY_ITEMS_URL;
     }
 
     private boolean querySuccessful(Response<RichItem> response, Model model) {

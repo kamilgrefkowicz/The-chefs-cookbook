@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.DeleteItemCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
@@ -32,6 +34,8 @@ public class ViewFoodController {
     public String showMyItems(Model model, Principal user) {
         model.addAttribute(queryItem.findAllItemsBelongingToUser(user));
         model.addAttribute("command", new QueryItemWithDependenciesCommand());
+        model.addAttribute("deleteItemCommand", new DeleteItemCommand());
+
         return "/food/my-items";
     }
 

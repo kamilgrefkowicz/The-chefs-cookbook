@@ -40,12 +40,12 @@ public class ApplicationStartup implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        initializeTypesAndUnits();
-
-        initializeUser();
-
-        initializeStartingItems();
+//        initializeTypesAndUnits();
 //
+//        initializeUser();
+//
+//        initializeStartingItems();
+////
 
 
     }

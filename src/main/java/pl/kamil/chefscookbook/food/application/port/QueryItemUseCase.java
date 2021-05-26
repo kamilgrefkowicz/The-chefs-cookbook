@@ -33,6 +33,8 @@ public interface QueryItemUseCase {
 
     List<ItemAutocompleteDto> findForAutocomplete(String term, Long userId);
 
+    List<PoorItem> findAllItemsAffectedByDelete(Long itemId);
+
 
     @Data
     @NoArgsConstructor

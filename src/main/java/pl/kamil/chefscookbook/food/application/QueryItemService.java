@@ -7,6 +7,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
@@ -33,6 +34,7 @@ public class QueryItemService implements QueryItemUseCase {
 
     private final ItemJpaRepository itemRepository;
     private final UserSecurityUseCase userSecurity;
+    private final IngredientJpaRepository ingredientRepository;
 
     @Override
     public List<PoorItem> findAllItemsBelongingToUser(Principal user) {
@@ -51,6 +53,15 @@ public class QueryItemService implements QueryItemUseCase {
                 .collect(Collectors.toList());
 
     }
+
+    @Override
+    public List<PoorItem> findAllItemsAffectedByDelete(Long itemId) {
+        return ingredientRepository.findAllByChildItemId(itemId).stream()
+                .map(ingredient -> new PoorItem(ingredient.getParentItem()))
+                .collect(Collectors.toList());
+
+    }
+
     private ItemAutocompleteDto convertToAutocompleteDto(Item item) {
         return new ItemAutocompleteDto(item.getId(), item.getName() + " (" + item.getUnit().toString() + ")");
     }

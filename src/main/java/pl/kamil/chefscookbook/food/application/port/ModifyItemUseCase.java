@@ -74,6 +74,7 @@ public interface ModifyItemUseCase {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     class DeleteItemCommand {
         @NotNull
         private Long itemId;
