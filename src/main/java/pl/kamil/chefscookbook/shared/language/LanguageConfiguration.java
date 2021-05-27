@@ -1,4 +1,4 @@
-package pl.kamil.chefscookbook.configuration;
+package pl.kamil.chefscookbook.shared.language;
 
 import java.util.Locale;
 

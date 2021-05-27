@@ -20,11 +20,4 @@ public class UserEntity extends BaseEntity{
 
     private String password;
 
-//    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
-//    @Column(name="role")
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    private Set<String> roles;
-//
-//    @OneToMany(orphanRemoval = true, mappedBy = "userEntity")
-//    private Set<Item> items;
 }

@@ -3,14 +3,13 @@ package pl.kamil.chefscookbook.food.domain.staticData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.hql.internal.ast.tree.IndexNode;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import java.util.List;
 
-import static pl.kamil.chefscookbook.configuration.LanguageConfiguration.getLanguage;
+import static pl.kamil.chefscookbook.shared.language.LanguageConfiguration.getLanguage;
 
 @Entity
 @Data

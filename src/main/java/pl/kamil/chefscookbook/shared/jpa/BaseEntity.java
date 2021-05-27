@@ -16,7 +16,6 @@ import java.util.UUID;
 public abstract class BaseEntity {
 
     @Id
-//    @GeneratedValue
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

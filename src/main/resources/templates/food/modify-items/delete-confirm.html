@@ -19,7 +19,7 @@
     <input type="submit" value="usuń">
 </form>
 
-<div th:unless="${itemsAffected} == null">
+<div th:unless="${itemsAffected.isEmpty()}">
     <p>Produkt zostanie usunięty z poniższych przepisów:</p>
     <ul th:each="item : ${itemsAffected}">
         <li th:text="*{item.name}"></li>

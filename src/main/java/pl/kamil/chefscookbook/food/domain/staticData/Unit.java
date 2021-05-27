@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 import java.util.List;
 
-import static pl.kamil.chefscookbook.configuration.LanguageConfiguration.getLanguage;
+import static pl.kamil.chefscookbook.shared.language.LanguageConfiguration.getLanguage;
 
 @Entity
 @Data
