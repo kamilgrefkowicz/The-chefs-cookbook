@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 public class Recipe extends BaseEntity {
 
-    private String description;
+    private String description = "";
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Ingredient> ingredients = new HashSet<>();

@@ -127,7 +127,7 @@ public class ModifyFoodController {
     }
 
 
-    @PostMapping("/update-description")
+    @PostMapping("/modify-description")
     public String updateDescription(Model model, @Valid UpdateDescriptionCommand command, BindingResult bindingResult, Principal user) {
 
         Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);

@@ -68,10 +68,11 @@
 </div>
 <div>
     <p>Opis przygotowania:</p>
-    <form th:action="@{/food/modify-description}" th:method="post" th:object="${updateDescriptionCommand}"></form>
-    <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
-    <textarea cols="30" rows="20" th:attr="name='description'" th:value="${item.description}"></textarea>
-    <input type="submit" value="Zmien">
+    <form th:action="@{/food/modify-description}" th:method="post" th:object="${updateDescriptionCommand}">
+        <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
+        <textarea cols="30" rows="20" th:attr="name='description'" th:value="${item.description}"></textarea>
+        <input type="submit" value="Zmien">
+    </form>
 </div>
 
 

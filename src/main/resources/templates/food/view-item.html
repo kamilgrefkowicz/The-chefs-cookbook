@@ -19,6 +19,12 @@
         <input type="submit" value="Edytuj">
     </form>
 </div>
+<div>
+    <form th:action="@{/pdf/item}" th:method="get">
+        <input type="hidden" th:attr="name='itemId'" th:value="${targetItem.id}">
+        <input type="submit" value="PDF">
+    </form>
+</div>
 
 
 <table width="350px" border="1">
