@@ -20,6 +20,8 @@ public class PdfFormattingService {
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
 
+
+
         generateItemNameRow(item, document);
         generateYieldRow(item, document);
         generateIngredientList(item, document);

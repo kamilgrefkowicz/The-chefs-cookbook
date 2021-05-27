@@ -11,9 +11,8 @@ import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 import pl.kamil.chefscookbook.shared.response.Response;
-import pl.kamil.chefscookbook.user.application.UserSecurityService;
-import pl.kamil.chefscookbook.user.application.UserService;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
 
 import javax.transaction.Transactional;
@@ -26,6 +25,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
+import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToPoorItem;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 
 @Service
@@ -39,7 +39,7 @@ public class QueryItemService implements QueryItemUseCase {
     @Override
     public List<PoorItem> findAllItemsBelongingToUser(Principal user) {
 
-        return itemRepository.findAllByUserEntityId(Long.valueOf(user.getName()))
+        return itemRepository.findAllByUserEntityId(getUserId(user))
                 .stream()
                 .map(PoorItem::new)
                 .collect(Collectors.toList());
@@ -61,6 +61,24 @@ public class QueryItemService implements QueryItemUseCase {
                 .collect(Collectors.toList());
 
     }
+
+    @Override
+    public List<PoorItem> findAllEligibleDishesForMenu(Principal user, Long menuId) {
+
+        return itemRepository.findAllDishesByUser(getUserId(user)).stream()
+                .filter(item -> alreadyInTheMenu(menuId, item))
+                .map(ItemDto::convertToPoorItem)
+                .collect(Collectors.toList());
+    }
+
+    private Long getUserId(Principal user) {
+        return Long.valueOf(user.getName());
+    }
+
+    private boolean alreadyInTheMenu(Long menuId, Item item) {
+        return item.getMenus().stream().map(BaseEntity::getId).collect(Collectors.toSet()).contains(menuId);
+    }
+
 
     private ItemAutocompleteDto convertToAutocompleteDto(Item item) {
         return new ItemAutocompleteDto(item.getId(), item.getName() + " (" + item.getUnit().toString() + ")");

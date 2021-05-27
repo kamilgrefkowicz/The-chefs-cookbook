@@ -5,7 +5,11 @@ import lombok.Data;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
+
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor

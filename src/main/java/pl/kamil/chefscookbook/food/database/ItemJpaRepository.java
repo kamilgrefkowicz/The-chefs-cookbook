@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface ItemJpaRepository extends JpaRepository<Item, Long> {
 
-    Item findFirstByNameContaining(String term);
 
     List<Item> findAllByUserEntityId(Long userId);
 
@@ -22,4 +21,7 @@ public interface ItemJpaRepository extends JpaRepository<Item, Long> {
     @Query("SELECT i from Item i where " +
             " (i.name like concat('%', :term, '%')) and  (i.userEntity.id = 1 or i.userEntity.id = :userId) and i.type.id <> 3")
     List<Item> findForAutocomplete(@Param("term") String term, @Param("userId") Long userId);
+
+    @Query("select i from Item i where i.userEntity.id = :userId and i.type.id = 3")
+    List<Item> findAllDishesByUser(@Param("userId") Long userId);
 }

@@ -3,11 +3,13 @@ package pl.kamil.chefscookbook.food.domain.entity;
 import lombok.*;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.menu.domain.Menu;
 import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 import pl.kamil.chefscookbook.user.domain.*;
 
 import javax.persistence.*;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,9 @@ public class Item extends BaseEntity {
 
     @ManyToOne(optional = false)
     private UserEntity userEntity;
+
+   @ManyToMany(mappedBy = "items")
+   private Set<Menu> menus = new HashSet<>();
 
     public Set<Ingredient> getIngredients() {
         return recipe.getIngredients();
