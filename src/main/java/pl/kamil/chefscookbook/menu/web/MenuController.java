@@ -18,6 +18,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
+import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.*;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/menu")
@@ -27,10 +29,7 @@ public class MenuController {
     private final QueryMenuUseCase queryMenu;
     private final QueryItemUseCase queryItem;
 
-    private final String MENU_NEW = "/menu/new-menu";
-    private final String MENU_LIST = "/menu/my-menus";
-    private final String MENU_VIEW = "/menu/view-menu";
-    private final String MENU_ADD_ITEMS = "/menu/add-items";
+
 
     @ModelAttribute
     public void addAttributes(Model model) {
@@ -47,23 +46,32 @@ public class MenuController {
 
     @GetMapping("/new-menu")
     public String showNewMenuForm() {
-        return MENU_NEW;
+        return MENU_CREATE;
     }
 
     @PostMapping ("/new-menu")
     public String createNewMenu(Model model, @Valid CreateNewMenuCommand command, BindingResult result, Principal user) {
-        if (result.hasErrors()) return MENU_NEW;
+        if (result.hasErrors()) return MENU_CREATE;
 
         Response<PoorMenu> menuCreated = modifyMenu.createNewMenu(command, user);
 
         if (!menuCreated.isSuccess()) {
             model.addAttribute("error", menuCreated.getError());
-            return MENU_NEW;
+            return MENU_CREATE;
         }
 
         model.addAttribute("menu", menuCreated.getData());
         return MENU_VIEW;
     }
+    @GetMapping("/view-menu")
+    public String showMenu(Model model, @RequestParam Long menuId, Principal user) {
+
+        Response<PoorMenu> queried = modifyMenu.findById(menuId, user);
+
+        i
+    }
+
+
     @GetMapping("/add-items")
     public String showAddItemToMenuForm(Model model, @RequestParam Long menuId, Principal user) {
 
@@ -74,5 +82,13 @@ public class MenuController {
 
         return MENU_ADD_ITEMS;
 
+    }
+
+    private boolean querySuccessful(Response<PoorMenu> response, Model model) {
+        if (!response.isSuccess()) {
+            model.addAttribute(ERROR, response.getError());
+            return false;
+        }
+        return true;
     }
 }

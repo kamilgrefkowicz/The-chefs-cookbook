@@ -8,6 +8,7 @@ import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
 import pl.kamil.chefscookbook.shared.response.Response;
+import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 
 import java.security.Principal;
@@ -20,6 +21,7 @@ public class ModifyMenuService implements ModifyMenuUseCase {
 
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
+    private final UserSecurityUseCase userSecurity;
 
     @Override
     public Response<PoorMenu> createNewMenu(CreateNewMenuCommand command, Principal user) {
@@ -40,5 +42,15 @@ public class ModifyMenuService implements ModifyMenuUseCase {
     @Override
     public Response<PoorMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user) {
         return null;
+    }
+
+    @Override
+    public Response<PoorMenu> findById(Long menuId, Principal user) {
+        Menu menu = menuRepository.getOne(menuId);
+
+        if (!userSecurity.isOwner(menu.getUserEntity().getId(), user)) return Response.failure("You do not own this menu");
+
+        return Response.success(convertToPoorMenu(menu));
+
     }
 }

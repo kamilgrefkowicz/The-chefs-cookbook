@@ -18,6 +18,34 @@
 <div th:if="${menuList.isEmpty()}">
     <p>Nie masz jeszcze żadnego menu. Kliknij przycisk powyżej aby to naprawić</p>
 </div>
+<div th:unless="${menuList.isEmpty()}">
+    <p>Moje menu:</p>
+    <table>
+        <thead>
+        <tr>Nazwa menu</tr>
+        <tr>Ilość pozycji</tr>
+        <tr>Zobacz</tr>
+        <tr>Usuń</tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="menu : ${menuList}">
+            <td th:text="*{menu.menuName}"></td>
+            <td th:text="*{menu.items.size()}"></td>
+            <td>
+                <form th:action="@{/menu/view-menu}" th:method="get">
+                    <input type="hidden" th:attr="name='menuId'" th:value="*{menu.menuId}">
+                    <input type="submit" value ="x">
+                </form>
+            </td>
+            <td>
+                TODO
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
 
 
 </body>

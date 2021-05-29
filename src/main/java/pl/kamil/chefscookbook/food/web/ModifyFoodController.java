@@ -18,6 +18,7 @@ import java.security.Principal;
 import java.util.List;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.unitList;
+import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.*;
 
 @Controller
 @AllArgsConstructor
@@ -27,11 +28,7 @@ public class ModifyFoodController {
     private final ModifyItemUseCase modifyItem;
     private final QueryItemUseCase queryItem;
 
-    private static final String MODIFY_ITEM_URL = "food/modify-items/modify-item";
-    private static final String ERROR = "error";
-    private static final String CREATE_ITEM_URL = "food/modify-items/create-item";
-    private static final String DELETE_CONFIRM_URL = "food/modify-items/delete-confirm";
-    private static final String MY_ITEMS_URL = "food/my-items";
+
 
     @ModelAttribute
     public void addAttributes(Model model) {
@@ -52,27 +49,27 @@ public class ModifyFoodController {
 
         RichItem item = queried.getData();
         model.addAttribute("item", item);
-        return MODIFY_ITEM_URL;
+        return ITEM_MODIFY;
     }
 
     @GetMapping("/new-item")
     public String showCreateNewItemForm() {
-        return CREATE_ITEM_URL;
+        return ITEM_CREATE;
     }
 
     @PostMapping("/new-item")
     public String createNewItem(Model model, @Valid CreateNewItemCommand command, BindingResult result, Principal user) {
 
-        if (result.hasErrors()) return CREATE_ITEM_URL;
+        if (result.hasErrors()) return ITEM_CREATE;
 
         Response<ItemDto> itemCreated = modifyItem.createItem(command, user);
 
         if (!itemCreated.isSuccess()) {
             model.addAttribute(ERROR, itemCreated.getError());
-            return CREATE_ITEM_URL;
+            return ITEM_CREATE;
         }
         model.addAttribute("item", itemCreated.getData());
-        return MODIFY_ITEM_URL;
+        return ITEM_MODIFY;
     }
 
 
@@ -84,13 +81,13 @@ public class ModifyFoodController {
 
         RichItem item = queried.getData();
 
-        if (!validationSuccessful(bindingResult, model, item)) return MODIFY_ITEM_URL;
+        if (!validationSuccessful(bindingResult, model, item)) return ITEM_MODIFY;
 
         Response<RichItem> modification = modifyItem.addIngredientToRecipe(command, user);
 
         resolveModification(modification, model, item);
 
-        return MODIFY_ITEM_URL;
+        return ITEM_MODIFY;
 
     }
 
@@ -106,7 +103,7 @@ public class ModifyFoodController {
         Response<RichItem> modification = modifyItem.removeIngredientFromRecipe(command, user);
 
         resolveModification(modification, model, item);
-        return MODIFY_ITEM_URL;
+        return ITEM_MODIFY;
     }
 
     @PostMapping("/set-yield")
@@ -117,13 +114,13 @@ public class ModifyFoodController {
 
         RichItem item = queried.getData();
 
-        if (!validationSuccessful(bindingResult, model, item)) return MODIFY_ITEM_URL;
+        if (!validationSuccessful(bindingResult, model, item)) return ITEM_MODIFY;
 
         Response<RichItem> modification = modifyItem.setYield(command, user);
 
         resolveModification(modification, model, item);
 
-        return MODIFY_ITEM_URL;
+        return ITEM_MODIFY;
     }
 
 
@@ -136,12 +133,12 @@ public class ModifyFoodController {
 
         RichItem item = queried.getData();
 
-        if (!validationSuccessful(bindingResult, model, item)) return MODIFY_ITEM_URL;
+        if (!validationSuccessful(bindingResult, model, item)) return ITEM_MODIFY;
 
         Response<RichItem> modification = modifyItem.updateDescription(command, user);
 
         resolveModification(modification, model, item);
-        return MODIFY_ITEM_URL;
+        return ITEM_MODIFY;
     }
     @GetMapping("/delete-item")
     public String showConfirmPageForDelete(Model model, DeleteItemCommand command, Principal user) {
@@ -156,7 +153,7 @@ public class ModifyFoodController {
         model.addAttribute("targetItem", targetItem);
         model.addAttribute("command", command);
 
-        return DELETE_CONFIRM_URL;
+        return ITEM_DELETE_CONFIRM;
     }
     @PostMapping("/delete-item")
     public String deleteItem(Model model, DeleteItemCommand command, Principal user) {
@@ -168,7 +165,7 @@ public class ModifyFoodController {
         model.addAttribute(queryItem.findAllItemsBelongingToUser(user));
 
 
-        return MY_ITEMS_URL;
+        return ITEMS_LIST;
     }
 
     private boolean querySuccessful(Response<RichItem> response, Model model) {

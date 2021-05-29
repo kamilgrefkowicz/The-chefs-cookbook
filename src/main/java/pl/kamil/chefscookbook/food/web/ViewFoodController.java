@@ -23,6 +23,9 @@ import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.ERROR;
+import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.ITEM_VIEW;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/food")
@@ -51,7 +54,7 @@ public class ViewFoodController {
 
         if (!queried.isSuccess()) {
             model.addAttribute("error", queried.getError());
-            return "/error";
+            return ERROR;
         }
 
         model.addAttribute("targetItem", queried.getData());
@@ -59,7 +62,7 @@ public class ViewFoodController {
 
         addDependencyMapsToModel(model, command);
 
-        return "/food/view-item";
+        return ITEM_VIEW;
 
 
     }
