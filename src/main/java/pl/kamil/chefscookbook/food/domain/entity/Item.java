@@ -8,6 +8,7 @@ import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 import pl.kamil.chefscookbook.user.domain.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,6 +49,16 @@ public class Item extends BaseEntity {
         return recipe.getIngredients();
     }
 
+    public void addIngredient(Item childItem, BigDecimal amount) {
+        for (Ingredient ingredient : this.getIngredients()) {
+            if (ingredient.getChildItem().equals(childItem)) {
+                ingredient.setAmount(ingredient.getAmount().add(amount));
+                return;
+            }
+        }
+        this.getIngredients().add(new Ingredient(this.getRecipe(), childItem, amount));
+    }
+
 
     public Set<Item> getDependencies() {
         if (this.type.equals(Type.BASIC())) return Collections.emptySet();
@@ -55,8 +66,8 @@ public class Item extends BaseEntity {
                 .stream()
                 .map(Ingredient::getChildItem).collect(Collectors.toSet());
 
-        dependencies.stream()
-        .filter(item -> !item.getType().equals(Type.BASIC()))
+        dependencies
+//        .filter(item -> !item.getType().equals(Type.BASIC()))
         .forEach(item -> dependencies.addAll(item.getDependencies()));
 
         return dependencies;

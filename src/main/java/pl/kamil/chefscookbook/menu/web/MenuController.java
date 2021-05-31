@@ -68,7 +68,11 @@ public class MenuController {
 
         Response<PoorMenu> queried = modifyMenu.findById(menuId, user);
 
-        i
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        model.addAttribute("menu", queried.getData());
+
+        return MENU_VIEW;
     }
 
 

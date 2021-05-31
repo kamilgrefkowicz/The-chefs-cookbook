@@ -73,7 +73,7 @@ public class ModifyItemService implements ModifyItemUseCase {
         Response<Void> verifyLoops = checkForLoops(parentItem, childItem);
         if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());
 
-        addIngredient(parentItem, childItem, command.getAmount());
+        parentItem.addIngredient(childItem, command.getAmount());
 
         return Response.success(new RichItem(itemRepository.save(parentItem)));
     }
@@ -142,15 +142,15 @@ public class ModifyItemService implements ModifyItemUseCase {
     }
 
 
-    private void addIngredient(Item parentItem, Item childItem, BigDecimal amount) {
-        for (Ingredient ingredient : parentItem.getIngredients()) {
-            if (ingredient.getChildItem().equals(childItem)) {
-                ingredient.setAmount(ingredient.getAmount().add(amount));
-                return;
-            }
-        }
-        parentItem.getIngredients().add(new Ingredient(parentItem.getRecipe(), childItem, amount));
-    }
+//    private void addIngredient(Item parentItem, Item childItem, BigDecimal amount) {
+//        for (Ingredient ingredient : parentItem.getIngredients()) {
+//            if (ingredient.getChildItem().equals(childItem)) {
+//                ingredient.setAmount(ingredient.getAmount().add(amount));
+//                return;
+//            }
+//        }
+//        parentItem.getIngredients().add(new Ingredient(parentItem.getRecipe(), childItem, amount));
+//    }
 
 
     private void generateRecipeIfApplicable(Item item) {

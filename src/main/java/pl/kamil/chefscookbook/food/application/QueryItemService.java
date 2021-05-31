@@ -22,6 +22,7 @@ import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
@@ -76,7 +77,7 @@ public class QueryItemService implements QueryItemUseCase {
     }
 
     private boolean alreadyInTheMenu(Long menuId, Item item) {
-        return item.getMenus().stream().map(BaseEntity::getId).collect(Collectors.toSet()).contains(menuId);
+        return !item.getMenus().stream().map(BaseEntity::getId).collect(Collectors.toSet()).contains(menuId);
     }
 
 
@@ -89,7 +90,9 @@ public class QueryItemService implements QueryItemUseCase {
     @Override
     @Transactional
     public Response<RichItem> findById(Long itemId, Principal user) {
-        RichItem item = new RichItem(itemRepository.getOne(itemId));
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if (optionalItem.isEmpty()) return Response.failure("Item with id " + itemId + " not found");
+        RichItem item = new RichItem(optionalItem.get());
         if (!userSecurity.isOwner(item.getUserEntityId(), user)) return Response.failure("You're not authorized to view this item");
         return Response.success(item);
     }
