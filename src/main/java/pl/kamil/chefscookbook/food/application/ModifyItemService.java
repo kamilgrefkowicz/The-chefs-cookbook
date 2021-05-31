@@ -112,17 +112,21 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     @Override
     @Transactional
-    public void deleteItem(DeleteItemCommand command) {
+    public Response<Void> deleteItem(DeleteItemCommand command, Principal user) {
+
+        Item item = itemRepository.getOne(command.getItemId());
+
+        if (!userSecurity.isOwner(item.getUserEntity().getId(), user))
+            return Response.failure("You're not authorized to modify this item");
 
         removeThisItemFromAllDependencies(command.getItemId());
 
         itemRepository.deleteById(command.getItemId());
+        return Response.success(null);
 
     }
 
     private void removeThisItemFromAllDependencies(Long itemId) {
-
-
         ingredientRepository.findAllByChildItemId(itemId)
                 .forEach(Ingredient::removeSelf);
     }

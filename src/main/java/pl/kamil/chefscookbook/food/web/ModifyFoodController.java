@@ -161,9 +161,8 @@ public class ModifyFoodController {
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        modifyItem.deleteItem(command);
+        modifyItem.deleteItem(command, user);
         model.addAttribute(queryItem.findAllItemsBelongingToUser(user));
-
 
         return ITEMS_LIST;
     }

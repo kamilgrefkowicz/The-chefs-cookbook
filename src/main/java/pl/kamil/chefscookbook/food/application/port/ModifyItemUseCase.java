@@ -23,7 +23,7 @@ public interface ModifyItemUseCase {
 
     Response<RichItem> updateDescription(UpdateDescriptionCommand command, Principal user);
 
-    void deleteItem(DeleteItemCommand command);
+    Response<Void> deleteItem(DeleteItemCommand command, Principal user);
 
     Response<RichItem> removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command, Principal user);
 
