@@ -7,7 +7,6 @@ import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 
 import java.util.stream.Collectors;
 
-import static pl.kamil.chefscookbook.menu.application.dto.MenuDto.convertToPoorMenu;
 
 @Value
 @EqualsAndHashCode(callSuper = true)

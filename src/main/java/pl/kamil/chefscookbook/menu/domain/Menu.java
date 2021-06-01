@@ -34,8 +34,6 @@ public class Menu extends BaseEntity {
     @Builder.Default
     private Set<Item> items = new HashSet<>();
 
-    @CreatedDate
-    LocalDate localDate;
 
 
 }

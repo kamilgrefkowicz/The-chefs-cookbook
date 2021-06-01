@@ -11,6 +11,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.*;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.Valid;
@@ -23,7 +24,7 @@ import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.*;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/food")
-public class ModifyFoodController {
+public class ModifyFoodController extends ValidatedController<RichItem> {
 
     private final ModifyItemUseCase modifyItem;
     private final QueryItemUseCase queryItem;
@@ -47,8 +48,8 @@ public class ModifyFoodController {
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem item = queried.getData();
-        model.addAttribute("item", item);
+        RichItem object = queried.getData();
+        model.addAttribute("object", object);
         return ITEM_MODIFY;
     }
 
@@ -68,7 +69,7 @@ public class ModifyFoodController {
             model.addAttribute(ERROR, itemCreated.getError());
             return ITEM_CREATE;
         }
-        model.addAttribute("item", itemCreated.getData());
+        model.addAttribute("object", itemCreated.getData());
         return ITEM_MODIFY;
     }
 
@@ -79,13 +80,13 @@ public class ModifyFoodController {
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem item = queried.getData();
+        RichItem object = queried.getData();
 
-        if (!validationSuccessful(bindingResult, model, item)) return ITEM_MODIFY;
+        if (!validationSuccessful(bindingResult, model, object)) return ITEM_MODIFY;
 
         Response<RichItem> modification = modifyItem.addIngredientToRecipe(command, user);
 
-        resolveModification(modification, model, item);
+        resolveModification(modification, model, object);
 
         return ITEM_MODIFY;
 
@@ -98,11 +99,11 @@ public class ModifyFoodController {
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem item = queried.getData();
+        RichItem object = queried.getData();
 
         Response<RichItem> modification = modifyItem.removeIngredientFromRecipe(command, user);
 
-        resolveModification(modification, model, item);
+        resolveModification(modification, model, object);
         return ITEM_MODIFY;
     }
 
@@ -112,13 +113,13 @@ public class ModifyFoodController {
         Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem item = queried.getData();
+        RichItem object = queried.getData();
 
-        if (!validationSuccessful(bindingResult, model, item)) return ITEM_MODIFY;
+        if (!validationSuccessful(bindingResult, model, object)) return ITEM_MODIFY;
 
         Response<RichItem> modification = modifyItem.setYield(command, user);
 
-        resolveModification(modification, model, item);
+        resolveModification(modification, model, object);
 
         return ITEM_MODIFY;
     }
@@ -131,13 +132,13 @@ public class ModifyFoodController {
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem item = queried.getData();
+        RichItem object = queried.getData();
 
-        if (!validationSuccessful(bindingResult, model, item)) return ITEM_MODIFY;
+        if (!validationSuccessful(bindingResult, model, object)) return ITEM_MODIFY;
 
         Response<RichItem> modification = modifyItem.updateDescription(command, user);
 
-        resolveModification(modification, model, item);
+        resolveModification(modification, model, object);
         return ITEM_MODIFY;
     }
     @GetMapping("/delete-item")
@@ -146,11 +147,11 @@ public class ModifyFoodController {
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        ItemDto targetItem = queried.getData();
+        ItemDto object = queried.getData();
         List<PoorItem> itemsAffected = queryItem.findAllItemsAffectedByDelete(command.getItemId());
 
         model.addAttribute("itemsAffected", itemsAffected);
-        model.addAttribute("targetItem", targetItem);
+        model.addAttribute("object", object);
         model.addAttribute("command", command);
 
         return ITEM_DELETE_CONFIRM;
@@ -167,28 +168,5 @@ public class ModifyFoodController {
         return ITEMS_LIST;
     }
 
-    private boolean querySuccessful(Response<RichItem> response, Model model) {
-        if (!response.isSuccess()) {
-            model.addAttribute(ERROR, response.getError());
-            return false;
-        }
-        return true;
-    }
 
-    private boolean validationSuccessful(BindingResult bindingResult, Model model, RichItem item) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("item", item);
-            return false;
-        }
-        return true;
-    }
-
-    private void resolveModification(Response<RichItem> modification, Model model, RichItem item) {
-        if (!modification.isSuccess()) {
-            model.addAttribute(ERROR, modification.getError());
-            model.addAttribute("item", item);
-        } else {
-            model.addAttribute("item", modification.getData());
-        }
-    }
 }

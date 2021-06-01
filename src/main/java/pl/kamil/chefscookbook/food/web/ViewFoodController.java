@@ -14,6 +14,7 @@ import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.DeleteItem
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
+import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.UserSecurityService;
 
@@ -29,7 +30,7 @@ import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.ITEM_VIEW;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/food")
-public class ViewFoodController {
+public class ViewFoodController extends ValidatedController<RichItem> {
 
     private final QueryItemUseCase queryItem;
 
@@ -52,12 +53,9 @@ public class ViewFoodController {
         model.addAttribute("command", command);
         Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
 
-        if (!queried.isSuccess()) {
-            model.addAttribute("error", queried.getError());
-            return ERROR;
-        }
+        if (!querySuccessful(queried, model)) return ERROR;
 
-        model.addAttribute("targetItem", queried.getData());
+        model.addAttribute("object", queried.getData());
         model.addAttribute("targetAmount", command.getTargetAmount());
 
         addDependencyMapsToModel(model, command);

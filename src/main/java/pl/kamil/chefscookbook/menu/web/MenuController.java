@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
+import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.AddItemsToMenuCommand;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.CreateNewMenuCommand;
 import pl.kamil.chefscookbook.menu.application.port.QueryMenuUseCase;
+import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.Valid;
@@ -23,7 +25,7 @@ import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.*;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/menu")
-public class MenuController {
+public class MenuController extends ValidatedController<RichMenu> {
 
     private final ModifyMenuUseCase modifyMenu;
     private final QueryMenuUseCase queryMenu;
@@ -39,7 +41,7 @@ public class MenuController {
 
     @GetMapping("/my-menus")
     public String showMyMenus(Model model, Principal user) {
-        List<PoorMenu> menuList = queryMenu.getAllMenusBelongingToUser(user);
+        List<RichMenu> menuList = queryMenu.getAllMenusBelongingToUser(user);
         model.addAttribute("menuList", menuList);
         return MENU_LIST;
     }
@@ -66,7 +68,7 @@ public class MenuController {
     @GetMapping("/view-menu")
     public String showMenu(Model model, @RequestParam Long menuId, Principal user) {
 
-        Response<PoorMenu> queried = modifyMenu.findById(menuId, user);
+        Response<RichMenu> queried = modifyMenu.findById(menuId, user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
@@ -88,11 +90,5 @@ public class MenuController {
 
     }
 
-    private boolean querySuccessful(Response<PoorMenu> response, Model model) {
-        if (!response.isSuccess()) {
-            model.addAttribute(ERROR, response.getError());
-            return false;
-        }
-        return true;
-    }
+
 }

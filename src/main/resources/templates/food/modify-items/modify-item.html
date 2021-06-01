@@ -15,7 +15,7 @@
 <nav th:replace="fragments/layout :: topNavBar"></nav>
 
 <div>
-    <p th:text="'Dodaj/Usuń składniki z przepisu na ' + ${item.name}">
+    <p th:text="'Dodaj/Usuń składniki z przepisu na ' + ${object.name}">
 </div>
 
 <label>Dodaj nowy składnik:</label>
@@ -23,7 +23,7 @@
 <div>
     <form th:action="@{/food/add-ingredient}" th:object="${addIngredientCommand}" th:method="post">
 
-        <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
+        <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
 
 
         <input id="ingredientLabel" class="form-control" type="text">
@@ -34,7 +34,7 @@
         <input type="submit" value="Dodaj składnik"/>
     </form>
 </div>
-<table th:unless="${item.ingredients == null}">
+<table th:unless="${object.ingredients == null}">
     <thead>
     <tr>
         <th>Składnik</th>
@@ -44,13 +44,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="ingredient : ${item.ingredients}">
+    <tr th:each="ingredient : ${object.ingredients}">
         <td th:text="${ingredient.childItem.name}"></td>
         <td th:text="${ingredient.amount} + ${ingredient.childItem.unit}"></td>
         <td>
             <form th:action="@{/food/remove-ingredient}" th:method="post" th:object="${removeIngredientCommand}">
                 <input type="hidden" th:attr="name='ingredientId'" th:value="${ingredient.ingredientId}">
-                <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
+                <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
                 <input type="submit" value="click">
             </form>
         </td>
@@ -60,8 +60,8 @@
 <div>
     <p>Ile gotowego produktu otrzymasz z tego przepisu?</p>
     <form th:action="@{/food/set-yield}" th:method="post" th:object="${setYieldCommand}">
-        <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
-        <input type="text" th:attr="name='itemYield'" th:value="${item.recipeYield}" th:text="${item.unit}">
+        <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
+        <input type="text" th:attr="name='itemYield'" th:value="${object.recipeYield}" th:text="${object.unit}">
 
         <input type="submit" value="Zmien">
     </form>
@@ -69,8 +69,8 @@
 <div>
     <p>Opis przygotowania:</p>
     <form th:action="@{/food/modify-description}" th:method="post" th:object="${updateDescriptionCommand}">
-        <input type="hidden" th:attr="name='parentItemId'" th:value="${item.id}">
-        <textarea cols="30" rows="20" th:attr="name='description'" th:value="${item.description}"></textarea>
+        <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
+        <textarea cols="30" rows="20" th:attr="name='description'" th:value="${object.description}"></textarea>
         <input type="submit" value="Zmien">
     </form>
 </div>

@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
+import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.constraints.NotEmpty;
@@ -17,7 +17,7 @@ public interface ModifyMenuUseCase {
 
     Response<PoorMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user);
 
-    Response<PoorMenu> findById(Long menuId, Principal user);
+    Response<RichMenu> findById(Long menuId, Principal user);
 
     @Data
     @AllArgsConstructor

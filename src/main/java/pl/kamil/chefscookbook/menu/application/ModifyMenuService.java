@@ -2,8 +2,8 @@ package pl.kamil.chefscookbook.menu.application;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
+import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
@@ -13,7 +13,8 @@ import pl.kamil.chefscookbook.user.database.UserRepository;
 
 import java.security.Principal;
 
-import static pl.kamil.chefscookbook.menu.application.dto.MenuDto.convertToPoorMenu;
+import static pl.kamil.chefscookbook.menu.application.dto.PoorMenu.convertToPoorMenu;
+import static pl.kamil.chefscookbook.menu.application.dto.RichMenu.convertToRichMenu;
 
 @Service
 @AllArgsConstructor
@@ -45,12 +46,12 @@ public class ModifyMenuService implements ModifyMenuUseCase {
     }
 
     @Override
-    public Response<PoorMenu> findById(Long menuId, Principal user) {
+    public Response<RichMenu> findById(Long menuId, Principal user) {
         Menu menu = menuRepository.getOne(menuId);
 
         if (!userSecurity.isOwner(menu.getUserEntity().getId(), user)) return Response.failure("You do not own this menu");
 
-        return Response.success(convertToPoorMenu(menu));
+        return Response.success(convertToRichMenu(menu));
 
     }
 }

@@ -12,9 +12,7 @@ public abstract class MenuDto {
 
     private Long menuId;
     private String menuName;
-    private LocalDate createdAt;
 
-    public static PoorMenu convertToPoorMenu(Menu menu) {
-        return new PoorMenu(menu);
-    }
+
+
 }

@@ -11,17 +11,17 @@
 <body>
 <nav th:replace="fragments/layout :: topNavBar"></nav>
 
-<p th:text="${targetItem.name} + ', przepis na '+ ${#numbers.formatDecimal(targetItem.recipeYield, 1, 1, 'COMMA')} + ${targetItem.unit}"></p>
+<p th:text="${object.name} + ', przepis na '+ ${#numbers.formatDecimal(object.recipeYield, 1, 1, 'COMMA')} + ${object.unit}"></p>
 
 <div>
     <form th:action="@{/food/modify-item}" th:method="get">
-        <input type="hidden" th:attr="name='itemId'" th:value="${targetItem.id}">
+        <input type="hidden" th:attr="name='itemId'" th:value="${object.id}">
         <input type="submit" value="Edytuj">
     </form>
 </div>
 <div>
     <form th:action="@{/pdf/item}" th:method="get">
-        <input type="hidden" th:attr="name='itemId'" th:value="${targetItem.id}">
+        <input type="hidden" th:attr="name='itemId'" th:value="${object.id}">
         <input type="submit" value="PDF">
     </form>
 </div>
@@ -35,7 +35,7 @@
 
     </thead>
     <tbody>
-    <tr th:each="ingredient : ${targetItem.ingredients}">
+    <tr th:each="ingredient : ${object.ingredients}">
 
         <td th:text="${ingredient.childItem.name}"></td>
         <td th:text="${ingredient.amount}"></td>
@@ -50,7 +50,7 @@
 
     <p>Przelicz dla :
     <form th:action="@{/food/view-item}" th:method="get" th:object="${command}">
-        <input type="hidden" th:field="*{itemId}" th:value="${targetItem.id}">
+        <input type="hidden" th:field="*{itemId}" th:value="${object.id}">
         <input type="text" th:field="*{targetAmount}">
         <input type="submit" value="przelicz">
 
@@ -77,7 +77,7 @@
             </tbody>
         </table>
     </div>
-    <p th:text="'Suma podstawowych składników potrzebnych na przygotowanie ' + ${targetAmount} + ' ' + ${targetItem.unit} + ' ' + ${targetItem.name}"></p>
+    <p th:text="'Suma podstawowych składników potrzebnych na przygotowanie ' + ${targetAmount} + ' ' + ${object.unit} + ' ' + ${object.name}"></p>
     <div>
         <table width="350px" border="1">
             <thead>
@@ -99,7 +99,7 @@
     </div>
 </div>
 <div>
-    <p th:text="${targetItem.description}"></p>
+    <p th:text="${object.description}"></p>
 </div>
 </body>
 </html>
