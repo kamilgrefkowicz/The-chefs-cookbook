@@ -39,7 +39,10 @@
                 </form>
             </td>
             <td>
-                TODO
+                <form th:action="@{/menu/delete-menu}" th:method="get" th:object="${deleteMenuCommand}">
+                    <input type="hidden" th:attr="name='menuId'" th:value="${menu.menuId}">
+                    <input type="submit" value="x">
+                </form>
             </td>
         </tr>
 

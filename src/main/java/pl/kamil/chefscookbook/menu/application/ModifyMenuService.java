@@ -70,5 +70,28 @@ public class ModifyMenuService implements ModifyMenuUseCase {
 
     }
 
+    @Override
+    @Transactional
+    public Response<RichMenu> removeItemFromMenu(RemoveItemFromMenuCommand command, Principal user) {
 
+        Menu menu = menuRepository.getOne(command.getMenuId());
+
+        Item toRemove = itemRepository.getOne(command.getItemId());
+
+        menu.removeItem(toRemove);
+
+        return Response.success(convertToRichMenu(menuRepository.save(menu)));
+
+    }
+
+    @Override
+    public Response<Void> deleteMenu(DeleteMenuCommand command, Principal user) {
+
+        Menu menu = menuRepository.getOne(command.getMenuId());
+
+        if (!userSecurity.isOwner(menu.getUserEntity().getId(), user)) return Response.failure("You're not authorized to modify this menu");
+
+        menuRepository.delete(menu);
+        return Response.success(null);
+    }
 }

@@ -24,6 +24,35 @@
 <div th:if="${object.items.isEmpty()}"><p>Nie masz jeszcze żadnych pozycji w tym menu. Kliknij w przycisk powyżej, by to naprawić!</p></div>
 <div th:unless="${object.items.isEmpty()}">
 
+    <table>
+        <thead>
+        <tr>Nazwa dania</tr>
+        <tr>Zobacz</tr>
+        <tr>Usuń</tr>
+
+        </thead>
+        <tbody>
+        <tr th:each="item : ${object.items}">
+
+            <td th:text="*{item.name}"></td>
+            <td>
+                <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
+                    <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
+                    <input type="submit" th:value="x">
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/menu/remove-item}" th:method="post" th:object="${removeItemFromMenuCommand}">
+                    <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
+                    <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
+                    <input type="submit" value="x">
+                </form>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
 </div>
 
 </body>

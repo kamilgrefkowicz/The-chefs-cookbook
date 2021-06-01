@@ -158,9 +158,9 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     }
     @PostMapping("/delete-item")
     public String deleteItem(Model model, DeleteItemCommand command, Principal user) {
-        Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
-
-        if (!querySuccessful(queried, model)) return ERROR;
+//        Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
+//
+//        if (!querySuccessful(queried, model)) return ERROR;
 
         modifyItem.deleteItem(command, user);
         model.addAttribute(queryItem.findAllItemsBelongingToUser(user));

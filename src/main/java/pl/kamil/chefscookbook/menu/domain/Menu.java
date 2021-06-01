@@ -39,4 +39,7 @@ public class Menu extends BaseEntity {
         this.items.addAll(itemsToAdd);
     }
 
+    public void removeItem(Item toRemove) {
+        this.items.remove(toRemove);
+    }
 }

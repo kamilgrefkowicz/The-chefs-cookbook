@@ -17,6 +17,10 @@ public interface ModifyMenuUseCase {
 
     Response<RichMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user);
 
+    Response<RichMenu> removeItemFromMenu(RemoveItemFromMenuCommand command, Principal user);
+
+    Response<Void> deleteMenu(DeleteMenuCommand command, Principal user);
+
 
     @Data
     @AllArgsConstructor
@@ -34,5 +38,16 @@ public interface ModifyMenuUseCase {
 
         private Long menuId;
         private Long[] itemIds;
+    }
+
+    @Data
+    class RemoveItemFromMenuCommand {
+        private Long menuId;
+        private Long itemId;
+    }
+
+    @Data
+    class DeleteMenuCommand {
+        private Long menuId;
     }
 }

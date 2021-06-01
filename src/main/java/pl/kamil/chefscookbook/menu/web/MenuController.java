@@ -7,11 +7,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.AddItemsToMenuCommand;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.CreateNewMenuCommand;
+import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.DeleteMenuCommand;
+import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.RemoveItemFromMenuCommand;
 import pl.kamil.chefscookbook.menu.application.port.QueryMenuUseCase;
 import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
@@ -32,11 +35,13 @@ public class MenuController extends ValidatedController<RichMenu> {
     private final QueryItemUseCase queryItem;
 
 
-
     @ModelAttribute
     public void addAttributes(Model model) {
+        model.addAttribute("queryItemCommand", new QueryItemWithDependenciesCommand());
         model.addAttribute("createNewMenuCommand", new CreateNewMenuCommand());
         model.addAttribute("addItemsCommand", new AddItemsToMenuCommand());
+        model.addAttribute("removeItemFromMenuCommand", new RemoveItemFromMenuCommand());
+        model.addAttribute("deleteMenuCommand", new DeleteMenuCommand());
     }
 
     @GetMapping("/my-menus")
@@ -51,7 +56,7 @@ public class MenuController extends ValidatedController<RichMenu> {
         return MENU_CREATE;
     }
 
-    @PostMapping ("/new-menu")
+    @PostMapping("/new-menu")
     public String createNewMenu(Model model, @Valid CreateNewMenuCommand command, BindingResult result, Principal user) {
         if (result.hasErrors()) return MENU_CREATE;
 
@@ -65,6 +70,7 @@ public class MenuController extends ValidatedController<RichMenu> {
         model.addAttribute("menu", menuCreated.getData());
         return MENU_VIEW;
     }
+
     @GetMapping("/view-menu")
     public String showMenu(Model model, @RequestParam Long menuId, Principal user) {
 
@@ -89,6 +95,7 @@ public class MenuController extends ValidatedController<RichMenu> {
         return MENU_ADD_ITEMS;
 
     }
+
     @PostMapping("/add-items")
     public String addItemsToMenu(Model model, AddItemsToMenuCommand command, Principal user) {
 
@@ -103,5 +110,35 @@ public class MenuController extends ValidatedController<RichMenu> {
         return MENU_VIEW;
     }
 
+    @PostMapping("/remove-item")
+    public String removeItemFromMenu(Model model, RemoveItemFromMenuCommand command, Principal user) {
 
+        Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
+
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        Response<RichMenu> modification = modifyMenu.removeItemFromMenu(command, user);
+
+        resolveModification(modification, model, queried.getData());
+
+        return MENU_VIEW;
+
+    }
+    @GetMapping("/delete-menu")
+    public String showDeleteMenuConfirmation(Model model, DeleteMenuCommand command, Principal user){
+        Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
+
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        model.addAttribute("object", queried.getData());
+
+        return MENU_DELETE_CONFIRM;
+    }
+    @PostMapping("/delete-menu")
+    public String deleteMenu(Model model, DeleteMenuCommand command, Principal user) {
+        modifyMenu.deleteMenu(command, user);
+
+        model.addAttribute("menuList", queryMenu.getAllMenusBelongingToUser(user));
+        return MENU_LIST;
+    }
 }
