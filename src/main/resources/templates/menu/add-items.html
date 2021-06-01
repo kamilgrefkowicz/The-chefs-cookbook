@@ -13,11 +13,13 @@
 <p>Wybierz pozycje, które chcesz dodać do menu:</p>
 
 <form th:action="@{/menu/add-items}" th:method="post" th:object="${addItemsCommand}">
+    <input type="hidden" th:attr="name='menuId'" th:value="${menuId}">
     <ul>
         <li th:each="item : ${dishes}">
             <input type="checkbox" th:field="*{itemIds}" th:value="${item.id}" th:text="${item.name}">
         </li>
     </ul>
+    <input type="submit">
 </form>
 
 </body>

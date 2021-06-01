@@ -35,5 +35,8 @@ public class Menu extends BaseEntity {
     private Set<Item> items = new HashSet<>();
 
 
+    public void addItemsToMenu(Set<Item> itemsToAdd) {
+        this.items.addAll(itemsToAdd);
+    }
 
 }

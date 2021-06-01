@@ -15,9 +15,8 @@ public interface ModifyMenuUseCase {
 
     Response<PoorMenu> createNewMenu(CreateNewMenuCommand command, Principal user);
 
-    Response<PoorMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user);
+    Response<RichMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user);
 
-    Response<RichMenu> findById(Long menuId, Principal user);
 
     @Data
     @AllArgsConstructor

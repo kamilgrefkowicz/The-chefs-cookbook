@@ -68,11 +68,11 @@ public class MenuController extends ValidatedController<RichMenu> {
     @GetMapping("/view-menu")
     public String showMenu(Model model, @RequestParam Long menuId, Principal user) {
 
-        Response<RichMenu> queried = modifyMenu.findById(menuId, user);
+        Response<RichMenu> queried = queryMenu.findById(menuId, user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        model.addAttribute("menu", queried.getData());
+        model.addAttribute("object", queried.getData());
 
         return MENU_VIEW;
     }
@@ -88,6 +88,19 @@ public class MenuController extends ValidatedController<RichMenu> {
 
         return MENU_ADD_ITEMS;
 
+    }
+    @PostMapping("/add-items")
+    public String addItemsToMenu(Model model, AddItemsToMenuCommand command, Principal user) {
+
+        Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
+
+        if (!querySuccessful(queried, model)) return ERROR;
+
+        Response<RichMenu> modification = modifyMenu.addItemsToMenu(command, user);
+
+        resolveModification(modification, model, queried.getData());
+
+        return MENU_VIEW;
     }
 
 

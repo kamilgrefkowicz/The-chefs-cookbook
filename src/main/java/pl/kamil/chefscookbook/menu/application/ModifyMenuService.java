@@ -2,6 +2,9 @@ package pl.kamil.chefscookbook.menu.application;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
+import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase;
@@ -11,7 +14,12 @@ import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 
+import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static pl.kamil.chefscookbook.menu.application.dto.PoorMenu.convertToPoorMenu;
 import static pl.kamil.chefscookbook.menu.application.dto.RichMenu.convertToRichMenu;
@@ -23,8 +31,10 @@ public class ModifyMenuService implements ModifyMenuUseCase {
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
     private final UserSecurityUseCase userSecurity;
+    private final ItemJpaRepository itemRepository;
 
     @Override
+    @Transactional
     public Response<PoorMenu> createNewMenu(CreateNewMenuCommand command, Principal user) {
         Menu menu = newMenuCommandToMenu(command, user);
 
@@ -41,17 +51,24 @@ public class ModifyMenuService implements ModifyMenuUseCase {
     }
 
     @Override
-    public Response<PoorMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user) {
-        return null;
+    @Transactional
+    public Response<RichMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user) {
+
+        Menu menu = menuRepository.getOne(command.getMenuId());
+
+        Set<Item> itemsToAdd = new HashSet<>();
+
+        for (Long id : command.getItemIds()) {
+            Optional<Item> opt = itemRepository.findById(id);
+            if (opt.isEmpty()) return Response.failure("Item with id: " + id + " does not exist");
+            Item item = opt.get();
+            if (!userSecurity.isOwner(item.getUserEntity().getId(), user)) return Response.failure("You're not authorized to use this item");
+            itemsToAdd.add(item);
+        }
+        menu.addItemsToMenu(itemsToAdd);
+        return Response.success(convertToRichMenu(menuRepository.save(menu)));
+
     }
 
-    @Override
-    public Response<RichMenu> findById(Long menuId, Principal user) {
-        Menu menu = menuRepository.getOne(menuId);
 
-        if (!userSecurity.isOwner(menu.getUserEntity().getId(), user)) return Response.failure("You do not own this menu");
-
-        return Response.success(convertToRichMenu(menu));
-
-    }
 }
