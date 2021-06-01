@@ -30,9 +30,14 @@ My recipes:
     <tr th:each="item : ${poorItemList}">
 
         <td th:text="*{item.id}"></td>
-        <td><a href="#" th:href="@{/food/view-item(itemId=*{item.id})}" th:text="*{item.name}"></a></td>
+        <td th:text="*{item.name}"></td>
         <td th:text="*{item.type}"></td>
-        <td>TODO</td>
+        <td>
+            <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
+                <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
+                <input type="submit" th:value="x">
+            </form>
+        </td>
         <td>
             <form th:action="@{/food/delete-item}" th:method="get" th:object="${deleteItemCommand}">
                 <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">

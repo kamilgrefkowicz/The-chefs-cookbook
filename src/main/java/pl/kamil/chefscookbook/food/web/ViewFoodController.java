@@ -37,7 +37,7 @@ public class ViewFoodController extends ValidatedController<RichItem> {
     @GetMapping({"/", "/my-items"})
     public String showMyItems(Model model, Principal user) {
         model.addAttribute(queryItem.findAllItemsBelongingToUser(user));
-        model.addAttribute("command", new QueryItemWithDependenciesCommand());
+        model.addAttribute("queryItemCommand", new QueryItemWithDependenciesCommand());
         model.addAttribute("deleteItemCommand", new DeleteItemCommand());
 
         return "/food/my-items";

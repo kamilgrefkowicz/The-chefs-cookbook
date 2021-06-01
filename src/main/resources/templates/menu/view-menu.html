@@ -14,12 +14,17 @@
 
 <p>todo: pdf</p>
 
+<p th:text="'Menu: ' + ${object.menuName}"></p>
+
 <form th:action="@{/menu/add-items}" th:method="get">
     <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
     <input type="submit" value="Dodaj">
 </form>
 
 <div th:if="${object.items.isEmpty()}"><p>Nie masz jeszcze żadnych pozycji w tym menu. Kliknij w przycisk powyżej, by to naprawić!</p></div>
+<div th:unless="${object.items.isEmpty()}">
+
+</div>
 
 </body>
 </html>
