@@ -36,10 +36,11 @@ public class ModifyMenuService implements ModifyMenuUseCase {
     @Override
     @Transactional
     public Response<PoorMenu> createNewMenu(CreateNewMenuCommand command, Principal user) {
+
+        if (menuRepository.findByNameAndUserEntityId(command.getMenuName(), Long.valueOf(user.getName())).isPresent())
+            return Response.failure("You already have a menu called: " + command.getMenuName());
+
         Menu menu = newMenuCommandToMenu(command, user);
-
-        //todo:check if name taken
-
         return Response.success(convertToPoorMenu(menuRepository.save(menu)));
     }
 

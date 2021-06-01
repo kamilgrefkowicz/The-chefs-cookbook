@@ -9,6 +9,8 @@
     <title> INSERT </title>
 </head>
 <body>
+<nav th:replace="fragments/layout :: topNavBar"></nav>
+
 <p>Stwórz nowe menu</p>
 
 <form th:action="@{/menu/new-menu}" th:method="post" th:object="${createNewMenuCommand}">

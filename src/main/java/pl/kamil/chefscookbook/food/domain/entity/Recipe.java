@@ -12,8 +12,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+//@AllArgsConstructor
+//@Builder
 public class Recipe extends BaseEntity {
 
     private String description = "";
@@ -26,10 +26,10 @@ public class Recipe extends BaseEntity {
     @MapsId
     private Item parentItem;
 
-    private BigDecimal recipeYield;
+    private BigDecimal recipeYield = BigDecimal.ONE;
 
 
-    public Recipe(BigDecimal recipeYield) {
-        this.recipeYield = recipeYield;
+    public Recipe(Item parentItem) {
+        this.parentItem = parentItem;
     }
 }

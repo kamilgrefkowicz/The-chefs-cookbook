@@ -42,7 +42,7 @@ public class ModifyItemService implements ModifyItemUseCase {
             return Response.failure("You already have an item called " + command.getItemName());
 
         Item item = newItemCommandToItem(command, user);
-        generateRecipeIfApplicable(item);
+
         return Response.success(convertToDto(itemRepository.save(item)));
     }
 
@@ -52,12 +52,19 @@ public class ModifyItemService implements ModifyItemUseCase {
     }
 
     private Item newItemCommandToItem(CreateNewItemCommand command, Principal user) {
-        return Item.builder()
-                .name(command.getItemName())
-                .unit(getUnitFromId(command.getItemUnitId()))
-                .type(getTypeFromId(command.getItemTypeId()))
-                .userEntity(userRepository.getOne(Long.valueOf(user.getName())))
-                .build();
+
+        return  new Item(command.getItemName(),
+                getUnitFromId(command.getItemUnitId()),
+                getTypeFromId(command.getItemTypeId()),
+                userRepository.getOne(Long.valueOf(user.getName())));
+
+
+//        return Item.builder()
+//                .name(command.getItemName())
+//                .unit(getUnitFromId(command.getItemUnitId()))
+//                .type(getTypeFromId(command.getItemTypeId()))
+//                .userEntity(userRepository.getOne(Long.valueOf(user.getName())))
+//                .build();
     }
 
 
@@ -156,8 +163,8 @@ public class ModifyItemService implements ModifyItemUseCase {
 //        parentItem.getIngredients().add(new Ingredient(parentItem.getRecipe(), childItem, amount));
 //    }
 
-
-    private void generateRecipeIfApplicable(Item item) {
-        if (!item.getType().equals(BASIC())) item.setRecipe(new Recipe(BigDecimal.ONE));
-    }
+//
+//    private void generateRecipeIfApplicable(Item item) {
+//        if (!item.getType().equals(BASIC())) item.setRecipe(new Recipe(BigDecimal.ONE));
+//    }
 }

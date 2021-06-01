@@ -15,6 +15,7 @@ import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.Valid;
+import java.net.http.HttpRequest;
 import java.security.Principal;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     }
 
     @PostMapping("/new-item")
-    public String createNewItem(Model model, @Valid CreateNewItemCommand command, BindingResult result, Principal user) {
+    public String createNewItem(Model model, @Valid CreateNewItemCommand command, BindingResult result, Principal user, @RequestParam(required = false) Long itemId) {
 
         if (result.hasErrors()) return ITEM_CREATE;
 
@@ -69,7 +70,16 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
             model.addAttribute(ERROR, itemCreated.getError());
             return ITEM_CREATE;
         }
-        model.addAttribute("object", itemCreated.getData());
+        ItemDto object;
+
+        if (itemId != null && command.getItemTypeId() == 1) {
+            object = queryItem.findById(itemId, user).getData();
+        } else {
+            object = itemCreated.getData();
+        }
+
+
+        model.addAttribute("object", object);
         return ITEM_MODIFY;
     }
 
