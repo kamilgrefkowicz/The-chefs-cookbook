@@ -2,11 +2,10 @@ package pl.kamil.chefscookbook.menu.application;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
-import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
@@ -16,7 +15,6 @@ import pl.kamil.chefscookbook.user.database.UserRepository;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -53,7 +51,7 @@ public class ModifyMenuService implements ModifyMenuUseCase {
 
     @Override
     @Transactional
-    public Response<RichMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user) {
+    public Response<MenuDto> addItemsToMenu(AddItemsToMenuCommand command, Principal user) {
 
         Menu menu = menuRepository.getOne(command.getMenuId());
 
@@ -73,7 +71,7 @@ public class ModifyMenuService implements ModifyMenuUseCase {
 
     @Override
     @Transactional
-    public Response<RichMenu> removeItemFromMenu(RemoveItemFromMenuCommand command, Principal user) {
+    public Response<MenuDto> removeItemFromMenu(RemoveItemFromMenuCommand command, Principal user) {
 
         Menu menu = menuRepository.getOne(command.getMenuId());
 

@@ -56,6 +56,7 @@ public class QueryItemService implements QueryItemUseCase {
     }
 
     @Override
+    //todo: authorize
     public List<PoorItem> findAllItemsAffectedByDelete(Long itemId) {
         return ingredientRepository.findAllByChildItemId(itemId).stream()
                 .map(ingredient -> new PoorItem(ingredient.getParentItem()))
@@ -99,6 +100,7 @@ public class QueryItemService implements QueryItemUseCase {
 
     @Override
     @Transactional
+    //todo: pack into a response
     public Map<ItemDto, BigDecimal> getMapOfAllDependencies(QueryItemWithDependenciesCommand command) {
         Map<ItemDto, BigDecimal> dependencies = new LinkedHashMap<>();
         Item item = itemRepository.getOne(command.getItemId());

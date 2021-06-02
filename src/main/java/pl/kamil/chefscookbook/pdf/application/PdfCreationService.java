@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
+import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
 import pl.kamil.chefscookbook.pdf.application.port.GenerateRecipePageUseCase;
 import pl.kamil.chefscookbook.pdf.application.port.PdfCreationUseCase;
 
@@ -53,6 +54,11 @@ public class PdfCreationService implements PdfCreationUseCase {
 
         return output;
 
+    }
+
+    @Override
+    public ByteArrayOutputStream generatePdfForMenu(FullMenu menu) {
+        return null;
     }
 
 }
