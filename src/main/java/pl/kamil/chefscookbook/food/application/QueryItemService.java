@@ -120,7 +120,7 @@ public class QueryItemService implements QueryItemUseCase {
     }
 
     private void recursivelyGetDependencies(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
-        if (!item.getType().equals(BASIC())) {
+        if (!item.getType().equals(BASIC()) && !targetAmount.equals(BigDecimal.ZERO)) {
             for (Ingredient ingredient : item.getIngredients()) {
                 BigDecimal amountForNext = targetAmount.multiply(ingredient.getRatio());
                 buildMapOfDependencies(ingredient.getChildItem(), amountForNext, map);

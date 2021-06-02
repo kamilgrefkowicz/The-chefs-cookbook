@@ -34,6 +34,7 @@ My recipes:
         <td th:text="*{item.type}"></td>
         <td>
             <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
+                <input type="hidden" th:attr="name='targetAmount'" th:value="1">
                 <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
                 <input type="submit" th:value="x">
             </form>

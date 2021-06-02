@@ -2,6 +2,7 @@ package pl.kamil.chefscookbook.food.application.dto.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public abstract class ItemDto {
 
     private Long id;

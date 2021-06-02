@@ -20,11 +20,13 @@
 
 <label>Dodaj nowy składnik:</label>
 <div th:unless="${error == null}" th:text="${error}"></div>
+
 <div>
     <form th:action="@{/food/add-ingredient}" th:object="${addIngredientCommand}" th:method="post">
 
         <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
 
+        <p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></p>
 
         <input id="ingredientLabel" class="form-control" type="text">
         <input id="ingredientId" type="hidden" name="ingredientId" th:field="*{childItemId}">

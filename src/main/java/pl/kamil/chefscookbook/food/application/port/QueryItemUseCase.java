@@ -11,9 +11,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
@@ -44,6 +42,7 @@ public interface QueryItemUseCase {
 
         @Digits(integer = 4, fraction = 2)
         @DecimalMin(value = "0", inclusive = false)
+        @DecimalMax(value = "10")
         BigDecimal targetAmount;
     }
 

@@ -10,6 +10,7 @@ import pl.kamil.chefscookbook.shared.response.Response;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.security.Principal;
 
@@ -48,7 +49,7 @@ public interface ModifyItemUseCase {
         private Long parentItemId;
         @NotNull
         private Long childItemId;
-        @Positive
+        @PositiveOrZero
         private BigDecimal amount;
     }
 
