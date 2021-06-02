@@ -1,46 +1,34 @@
 package pl.kamil.chefscookbook.pdf.application;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.List;
 import com.itextpdf.layout.element.Paragraph;
 import org.springframework.stereotype.Component;
+import pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-
-import java.io.*;
+import pl.kamil.chefscookbook.pdf.application.port.GenerateRecipePageUseCase;
 
 @Component
-public class PdfFormattingService {
-
-    public ByteArrayOutputStream generatePdfForItem(RichItem item) {
-
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        PdfWriter writer = new PdfWriter(output);
-        PdfDocument pdf = new PdfDocument(writer);
-        Document document = new Document(pdf);
-
-
-
+public class PdfGenerateRecipePage implements GenerateRecipePageUseCase {
+    @Override
+    public void execute(Document document, RichItem item) {
         generateItemNameRow(item, document);
         generateYieldRow(item, document);
         generateIngredientList(item, document);
 
         generateDescriptionArea(item, document);
-
-        document.close();
-
-        return output;
     }
+
 
     private void generateDescriptionArea(RichItem item, Document document) {
         document.add(new Paragraph(item.getDescription()));
     }
 
     private void generateIngredientList(RichItem item, Document document) {
+        //this is an Itext list, not a Java one
         List ingredients = new List();
         item.getIngredients().forEach(ingredient ->
-            ingredients.add(getIngredientRow(ingredient)));
+                ingredients.add(getIngredientRow(ingredient)));
         document.add(ingredients);
     }
 
@@ -52,7 +40,7 @@ public class PdfFormattingService {
         document.add(new Paragraph(item.getName()));
     }
 
-    private String getIngredientRow(pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto ingredient) {
+    private String getIngredientRow(IngredientDto ingredient) {
         return ingredient.getAmount() + " " + ingredient.getChildItem().getUnit() + " " + ingredient.getChildItem().getName();
     }
 }

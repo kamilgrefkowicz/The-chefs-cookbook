@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
-import pl.kamil.chefscookbook.pdf.application.PdfFormattingService;
+import pl.kamil.chefscookbook.pdf.application.port.PdfCreationUseCase;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import java.security.Principal;
@@ -20,7 +20,7 @@ import java.security.Principal;
 @AllArgsConstructor
 public class DisplayPdfController  {
 
-private final PdfFormattingService pdfFormattingService;
+private final PdfCreationUseCase pdfCreation;
 private final QueryItemUseCase queryItem;
 
 
@@ -32,7 +32,7 @@ private final QueryItemUseCase queryItem;
 
         RichItem item = queried.getData();
 
-        Resource resource = new ByteArrayResource(pdfFormattingService.generatePdfForItem(item).toByteArray());
+        Resource resource = new ByteArrayResource(pdfCreation.generatePdfForItem(item).toByteArray());
         String contentDisposition = getContentDisposition(item);
 
         return  ResponseEntity.ok()

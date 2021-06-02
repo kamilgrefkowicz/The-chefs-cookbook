@@ -72,7 +72,8 @@
     <p>Opis przygotowania:</p>
     <form th:action="@{/food/modify-description}" th:method="post" th:object="${updateDescriptionCommand}">
         <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
-        <textarea cols="30" rows="20" th:attr="name='description'" th:value="${object.description}"></textarea>
+        <textarea cols="30" rows="20" th:attr="name='description'" th:field="${object.description}"></textarea>
+<!--        <textarea cols="30" rows="20" th:field="*{description}"></textarea>-->
         <input type="submit" value="Zmien">
     </form>
 </div>
