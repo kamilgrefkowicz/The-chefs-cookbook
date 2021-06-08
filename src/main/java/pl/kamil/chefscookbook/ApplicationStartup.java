@@ -1,5 +1,6 @@
 package pl.kamil.chefscookbook;
 
+import ch.qos.logback.core.subst.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -7,6 +8,7 @@ import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.CreateNewItemCommand;
 
 
+import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
@@ -15,6 +17,7 @@ import pl.kamil.chefscookbook.user.domain.UserEntity;
 import java.security.Principal;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.*;
 import static pl.kamil.chefscookbook.user.domain.MasterUserConfig.getMasterUser;
 
@@ -44,6 +47,7 @@ public class ApplicationStartup implements CommandLineRunner {
 
     private void initializeStartingItems() {
 
+        Type.valueOf("DISH");
 
         Principal ccb = () -> "1";
         modifyItemService.createItem(new CreateNewItemCommand("Ziemniak", BASIC, KILOGRAM), ccb);
