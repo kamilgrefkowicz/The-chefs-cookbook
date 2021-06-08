@@ -26,7 +26,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
-import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToPoorItem;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 
 @Service
@@ -122,7 +121,7 @@ public class QueryItemService implements QueryItemUseCase {
     }
 
     private void recursivelyGetDependencies(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
-        if (!item.getType().equals(BASIC()) && !targetAmount.equals(BigDecimal.ZERO)) {
+        if (!item.getType().equals(BASIC) && !targetAmount.equals(BigDecimal.ZERO)) {
             for (Ingredient ingredient : item.getIngredients()) {
                 BigDecimal amountForNext = targetAmount.multiply(ingredient.getRatio());
                 buildMapOfDependencies(ingredient.getChildItem(), amountForNext, map);

@@ -6,10 +6,11 @@ import com.itextpdf.layout.property.TextAlignment;
 import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.pdf.application.port.GenerateRecipeContentUseCase;
 
 import java.math.BigDecimal;
+
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
 
 
 @Component
@@ -49,7 +50,7 @@ public class GenerateRecipeContent implements GenerateRecipeContentUseCase {
     }
 
     private Paragraph generateYieldRowForIntermediates(RichItem item) {
-        if (item.getType().equals(Type.DISH())) return new Paragraph("");
+        if (item.getType().equals(DISH)) return new Paragraph("");
 
         Paragraph paragraph = new Paragraph("Przepis na " + item.getRecipeYield() + " " + item.getUnit());
         paragraph.setTextAlignment(TextAlignment.CENTER);

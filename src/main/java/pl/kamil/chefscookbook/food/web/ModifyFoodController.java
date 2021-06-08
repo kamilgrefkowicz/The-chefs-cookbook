@@ -11,6 +11,7 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.*;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 
@@ -72,7 +73,7 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
         }
         ItemDto object;
 
-        if (itemId != null && command.getItemTypeId() == 1) {
+        if (itemId != null && command.getType() == Type.BASIC) {
             object = queryItem.findById(itemId, user).getData();
         } else {
             object = itemCreated.getData();

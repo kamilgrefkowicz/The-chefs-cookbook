@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+
 @Entity
 @Builder
 @NoArgsConstructor
@@ -28,16 +30,11 @@ public class Item extends BaseEntity {
     @ManyToOne
     private Unit unit;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
     private Type type;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentItem")
     private Recipe recipe;
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-        recipe.setParentItem(this);
-    }
 
     @ManyToOne(optional = false)
     private UserEntity userEntity;
@@ -59,15 +56,14 @@ public class Item extends BaseEntity {
         this.getIngredients().add(new Ingredient(this.getRecipe(), childItem, amount));
     }
 
-
+    //todo: move to service
     public Set<Item> getDependencies() {
-        if (this.type.equals(Type.BASIC())) return Collections.emptySet();
+        if (this.type.equals(BASIC)) return Collections.emptySet();
         Set<Item> dependencies = this.recipe.getIngredients()
                 .stream()
                 .map(Ingredient::getChildItem).collect(Collectors.toSet());
 
         dependencies
-//        .filter(item -> !item.getType().equals(Type.BASIC()))
         .forEach(item -> dependencies.addAll(item.getDependencies()));
 
         return dependencies;
@@ -78,7 +74,7 @@ public class Item extends BaseEntity {
         this.unit = unit;
         this.type = type;
         this.userEntity = userEntity;
-        if (!type.equals(Type.BASIC())) {
+        if (!type.equals(BASIC)) {
             this.recipe = new Recipe(this);
         }
     }

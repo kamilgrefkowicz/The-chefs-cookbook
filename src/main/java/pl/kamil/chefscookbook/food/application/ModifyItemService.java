@@ -9,20 +9,15 @@ import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
 import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.food.domain.entity.Recipe;
-import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 
 import javax.transaction.Transactional;
 
-import java.math.BigDecimal;
 import java.security.Principal;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.getTypeFromId;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.getUnitFromId;
 
 @Service
@@ -55,16 +50,9 @@ public class ModifyItemService implements ModifyItemUseCase {
 
         return  new Item(command.getItemName(),
                 getUnitFromId(command.getItemUnitId()),
-                getTypeFromId(command.getItemTypeId()),
+                command.getType(),
                 userRepository.getOne(Long.valueOf(user.getName())));
 
-
-//        return Item.builder()
-//                .name(command.getItemName())
-//                .unit(getUnitFromId(command.getItemUnitId()))
-//                .type(getTypeFromId(command.getItemTypeId()))
-//                .userEntity(userRepository.getOne(Long.valueOf(user.getName())))
-//                .build();
     }
 
 

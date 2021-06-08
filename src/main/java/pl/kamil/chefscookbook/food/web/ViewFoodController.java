@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.DeleteItemCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
 import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
-import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
-import pl.kamil.chefscookbook.user.application.UserSecurityService;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -24,6 +21,7 @@ import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.ERROR;
 import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.ITEM_VIEW;
 
@@ -78,7 +76,7 @@ public class ViewFoodController extends ValidatedController<RichItem> {
 
     private void splitMapToBasicsAndIntermediates(Map<ItemDto, BigDecimal> mapOfAllDependencies, Map<PoorItem, BigDecimal> basics, Map<RichItem, BigDecimal> intermediates) {
         for (Map.Entry<ItemDto, BigDecimal> entry : mapOfAllDependencies.entrySet()) {
-            if (entry.getKey().getType().equals(Type.BASIC())) basics.put((PoorItem) entry.getKey(), entry.getValue());
+            if (entry.getKey().getType().equals(BASIC)) basics.put((PoorItem) entry.getKey(), entry.getValue());
             else intermediates.put((RichItem) entry.getKey(), entry.getValue());
         }
     }

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
 import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
@@ -24,7 +23,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
 import static pl.kamil.chefscookbook.menu.application.dto.RichMenu.convertToRichMenu;
 
 
@@ -76,21 +74,21 @@ public class QueryMenu implements QueryMenuUseCase {
 
     private void getAllDependencies(Item item, Set<Item> allDishesAndDependencies) {
         allDishesAndDependencies.add(item);
-        if (!item.getType().equals(BASIC())) {
+        if (!item.getType().equals(BASIC)) {
             item.getIngredients().forEach(ingredient -> getAllDependencies(ingredient.getChildItem(), allDishesAndDependencies));
         }
     }
 
 
     private void placeItemInAppropriateSet(Item item, Set<RichItem> dishes, Set<RichItem> intermediates, Set<PoorItem> basics) {
-        switch (item.getType().getId()) {
-            case 1:
+        switch (item.getType()) {
+            case BASIC:
                 basics.add(new PoorItem(item));
                 return;
-            case 2:
+            case INTERMEDIATE:
                 intermediates.add(new RichItem(item));
                 return;
-            case 3:
+            case DISH:
                 dishes.add(new RichItem(item));
                 return;
             default:
