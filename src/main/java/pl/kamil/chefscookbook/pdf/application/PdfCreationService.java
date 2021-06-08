@@ -12,6 +12,7 @@ import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
@@ -67,55 +68,42 @@ public class PdfCreationService implements PdfCreationUseCase {
     @Override
     public ByteArrayOutputStream generatePdfForMenu(FullMenu menu) {
 
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-        PdfDocument pdfDocument = new PdfDocument(new PdfWriter(output));
-
         font = PdfFontFactory.createFont(FontConstants.HELVETICA, PdfEncodings.CP1250, true);
-        template = new PdfFormXObject(new Rectangle(795, 575, 30, 30));
-        pdfDocument.setTagged();
 
-        pdfDocument.addEventHandler(PdfDocumentEvent.END_PAGE, new PageHandler());
-
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PdfDocument pdfDocument = new PdfDocument(new PdfWriter(output));
         Document document = new Document(pdfDocument);
 
-
+        addEventHandlerForPageNumbering(pdfDocument);
         document.setFont(font);
-
 
         Map<RichItem, Integer> tableOfContentsValues = new LinkedHashMap<>();
 
         generateTitlePage.execute(document, menu);
 
-        generateListOfBasicIngredients.execute(document, menu.getBasics());
-
         generateRecipePages(document, tableOfContentsValues, menu.getIntermediates());
         generateRecipePages(document, tableOfContentsValues, menu.getDishes());
 
+        generateListOfBasicIngredients.execute(document, menu.getBasics());
         generateTableOfContents.execute(document, tableOfContentsValues);
 
-        int totalPages = document.getPdfDocument().getNumberOfPages();
-
-
-
         document.close();
-
 
         return output;
     }
 
-//    private void stampPageNumbers(Document document) {
-//        int totalPages = document.getPdfDocument().getNumberOfPages();
-//
-//        for (int i = 1; i<totalPages; i++) {
-//        document.showTextAligned(new Paragraph(("str " + i)), 559, 806, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0);
-//        }
-//    }
+    private void addEventHandlerForPageNumbering(PdfDocument pdfDocument) {
+        template = new PdfFormXObject(new Rectangle(795, 575, 30, 30));
+        pdfDocument.setTagged();
+        pdfDocument.addEventHandler(PdfDocumentEvent.END_PAGE, new PageHandler());
+    }
+
 
     private void generateRecipePages(Document document, Map<RichItem, Integer> tableOfContents, Set<RichItem> intermediates) {
         for (RichItem item : intermediates) {
             tableOfContents.put(item, generateRecipeContent.execute(document, item));
         }
+        document.add(new AreaBreak());
     }
     public class PageHandler implements IEventHandler {
 

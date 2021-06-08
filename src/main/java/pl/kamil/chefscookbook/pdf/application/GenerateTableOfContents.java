@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 public class GenerateTableOfContents implements GenerateTableOfContentsUseCase {
 
-    private final float[] columnWidths = {100F, 30F, 100F, 30F};
+    private final float[] columnWidths = {100F, 30F, 100F, 30F, 100F, 30F};
 
 
     @Override
@@ -33,8 +33,9 @@ public class GenerateTableOfContents implements GenerateTableOfContentsUseCase {
         Table table = new Table(columnWidths);
         tableOfContents.forEach((item, integer) -> {
             table.addCell(item.getName());
-            table.addCell(String.valueOf(integer));
+            table.addCell("s." + integer);
         });
+        table.useAllAvailableWidth();
         return table;
     }
 

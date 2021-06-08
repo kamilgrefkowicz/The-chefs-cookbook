@@ -9,6 +9,8 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.pdf.application.port.GenerateRecipeContentUseCase;
 
+import java.math.BigDecimal;
+
 
 @Component
 public class GenerateRecipeContent implements GenerateRecipeContentUseCase {
@@ -28,6 +30,7 @@ public class GenerateRecipeContent implements GenerateRecipeContentUseCase {
         table.addCell(generateDescriptionArea(item));
 
         document.add(table);
+        document.add(new Paragraph("").setFontSize(40));
 
         return currentPage;
     }
@@ -46,7 +49,7 @@ public class GenerateRecipeContent implements GenerateRecipeContentUseCase {
     }
 
     private Paragraph generateYieldRowForIntermediates(RichItem item) {
-        if (item.getType().equals(Type.BASIC())) return new Paragraph("");
+        if (item.getType().equals(Type.DISH())) return new Paragraph("");
 
         Paragraph paragraph = new Paragraph("Przepis na " + item.getRecipeYield() + " " + item.getUnit());
         paragraph.setTextAlignment(TextAlignment.CENTER);
@@ -56,12 +59,15 @@ public class GenerateRecipeContent implements GenerateRecipeContentUseCase {
 
     private Paragraph generateItemNameRow(RichItem item) {
         Paragraph paragraph = new Paragraph(item.getName());
-        paragraph.setFontSize(14);
+        paragraph.setFontSize(16);
         paragraph.setTextAlignment(TextAlignment.CENTER);
         return paragraph;
     }
 
     private String getIngredientRow(IngredientDto ingredient) {
+        if (ingredient.getAmount().equals(new BigDecimal("0.00"))) {
+            return "troszkę " + ingredient.getChildItem().getName();
+        }
         return ingredient.getAmount() + " " + ingredient.getChildItem().getUnit() + " " + ingredient.getChildItem().getName();
     }
 }

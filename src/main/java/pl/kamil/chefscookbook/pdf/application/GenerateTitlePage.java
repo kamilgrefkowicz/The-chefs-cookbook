@@ -20,10 +20,15 @@ public class GenerateTitlePage implements GenerateTitlePageUseCase {
         Paragraph generatedBy = getGeneratedByParagraph();
 
         document.add(menuName);
-        document.add(new Paragraph(""));
+        document.add(emptyLine());
         document.add(generatedBy);
+
         document.add(new AreaBreak());
 
+    }
+
+    private Paragraph emptyLine() {
+        return new Paragraph("");
     }
 
     private Paragraph getGeneratedByParagraph() {

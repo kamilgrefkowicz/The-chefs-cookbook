@@ -20,15 +20,12 @@ public class GenerateListOfBasicIngredients implements GenerateListOfBasicIngred
     @Override
     public void execute(Document document, Set<PoorItem> basics) {
 
-
         Paragraph header = getHeaderParagraph();
 
         Table tableOfBasics = getTableOfBasics(basics);
 
         document.add(header);
         document.add(tableOfBasics);
-        document.add(new AreaBreak());
-
 
     }
 
@@ -36,7 +33,6 @@ public class GenerateListOfBasicIngredients implements GenerateListOfBasicIngred
         Table tableOfBasics = new Table(columnWidths);
         basics.forEach(item -> tableOfBasics.addCell(item.getName()));
         tableOfBasics.useAllAvailableWidth();
-        tableOfBasics.setStrokeColor(Color.WHITE);
         return tableOfBasics;
     }
 
