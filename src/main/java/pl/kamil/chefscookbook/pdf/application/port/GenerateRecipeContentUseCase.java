@@ -3,8 +3,8 @@ package pl.kamil.chefscookbook.pdf.application.port;
 import com.itextpdf.layout.Document;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 
-public interface GenerateRecipePageUseCase {
+public interface GenerateRecipeContentUseCase {
 
 
-    void execute(Document document, RichItem item);
+    int execute(Document document, RichItem item);
 }

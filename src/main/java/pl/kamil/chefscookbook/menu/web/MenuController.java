@@ -68,7 +68,7 @@ public class MenuController extends ValidatedController<MenuDto> {
             return MENU_CREATE;
         }
 
-        model.addAttribute("menu", menuCreated.getData());
+        model.addAttribute("object", menuCreated.getData());
         return MENU_VIEW;
     }
 

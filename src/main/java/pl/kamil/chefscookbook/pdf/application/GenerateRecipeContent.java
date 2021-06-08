@@ -1,32 +1,26 @@
 package pl.kamil.chefscookbook.pdf.application;
 
-import com.itextpdf.kernel.geom.Rectangle;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.TextAlignment;
-import com.itextpdf.layout.property.VerticalAlignment;
 import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
-import pl.kamil.chefscookbook.pdf.application.port.GenerateRecipePageUseCase;
+import pl.kamil.chefscookbook.pdf.application.port.GenerateRecipeContentUseCase;
 
 
 @Component
-public class PdfGenerateRecipePage implements GenerateRecipePageUseCase {
-    private final Rectangle[] COLUMNS = {
-            new Rectangle(36, 36, 500, 100),
-            new Rectangle(36, 210, 254, 706),
-            new Rectangle(305, 210, 254, 706)
-    };
+public class GenerateRecipeContent implements GenerateRecipeContentUseCase {
+
     private final float[] columnWidths = {254F, 254F};
 
     @Override
-    public void execute(Document document, RichItem item) {
+    public int execute(Document document, RichItem item) {
 
 
         document.add(generateItemNameRow(item));
+        int currentPage = document.getPdfDocument().getNumberOfPages();
         document.add(generateYieldRowForIntermediates(item));
 
         Table table = new Table(columnWidths);
@@ -35,7 +29,7 @@ public class PdfGenerateRecipePage implements GenerateRecipePageUseCase {
 
         document.add(table);
 
-
+        return currentPage;
     }
 
 

@@ -12,7 +12,12 @@
 
 <nav th:replace="fragments/layout :: topNavBar"></nav>
 
-<p>todo: pdf</p>
+<div>
+    <form th:action="@{/pdf/menu}" th:method="get">
+        <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
+        <input type="submit" value="PDF">
+    </form>
+</div>
 
 <p th:text="'Menu: ' + ${object.menuName}"></p>
 
