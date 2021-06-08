@@ -28,9 +28,12 @@
     <div id="unit">
         <hr>
         <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
-        <span th:each="unit : ${units}">
-    <input type="radio" name="unit" th:value="${unit.id}" th:text="${unit.toString()}"
-           th:field="*{itemUnitId}"></span>
+        <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"
+           th:field="*{unit}"></span>
+        <span><input type="radio" name="unit" th:value="LITRE" th:text="litr"
+                     th:field="*{unit}"></span>
+        <span><input type="radio" name="unit" th:value="PIECE" th:text="szt"
+                     th:field="*{unit}"></span>
 
     </div>
 

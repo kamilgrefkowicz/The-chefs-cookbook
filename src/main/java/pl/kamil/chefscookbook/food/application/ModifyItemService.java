@@ -18,7 +18,6 @@ import javax.transaction.Transactional;
 import java.security.Principal;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
-import static pl.kamil.chefscookbook.food.domain.staticData.Unit.getUnitFromId;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +48,7 @@ public class ModifyItemService implements ModifyItemUseCase {
     private Item newItemCommandToItem(CreateNewItemCommand command, Principal user) {
 
         return  new Item(command.getItemName(),
-                getUnitFromId(command.getItemUnitId()),
+                command.getUnit(),
                 command.getType(),
                 userRepository.getOne(Long.valueOf(user.getName())));
 

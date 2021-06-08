@@ -16,11 +16,9 @@ import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.Valid;
-import java.net.http.HttpRequest;
 import java.security.Principal;
 import java.util.List;
 
-import static pl.kamil.chefscookbook.food.domain.staticData.Unit.unitList;
 import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.*;
 
 @Controller
@@ -36,7 +34,6 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("createNewItemCommand", new CreateNewItemCommand());
-        model.addAttribute("units", unitList());
         model.addAttribute("addIngredientCommand", new AddIngredientCommand());
         model.addAttribute("removeIngredientCommand", new RemoveIngredientFromRecipeCommand());
         model.addAttribute("setYieldCommand", new SetYieldCommand());
@@ -169,9 +166,6 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     }
     @PostMapping("/delete-item")
     public String deleteItem(Model model, DeleteItemCommand command, Principal user) {
-//        Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
-//
-//        if (!querySuccessful(queried, model)) return ERROR;
 
         modifyItem.deleteItem(command, user);
         model.addAttribute(queryItem.findAllItemsBelongingToUser(user));

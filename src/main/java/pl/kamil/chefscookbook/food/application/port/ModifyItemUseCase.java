@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
+import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.constraints.NotBlank;
@@ -39,7 +40,7 @@ public interface ModifyItemUseCase {
         @NotNull
         private Type type;
         @NotNull
-        private int itemUnitId;
+        private Unit unit;
     }
 
     @Data

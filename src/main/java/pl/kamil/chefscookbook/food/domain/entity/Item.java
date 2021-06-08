@@ -27,7 +27,7 @@ public class Item extends BaseEntity {
 
     private String name;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
     private Unit unit;
 
     @Enumerated(EnumType.STRING)
