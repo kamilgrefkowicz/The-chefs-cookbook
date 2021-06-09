@@ -10,6 +10,6 @@ public interface UserSecurityUseCase {
 
      boolean isOwner(Long userId, Principal user);
 
-    Response<Void> validateEligibilityForAddIngredient(Item parentItem, Item childItem, Principal user);
+    boolean validateEligibilityForAddIngredient(Item parentItem, Item childItem, Principal user);
 
 }

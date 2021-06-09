@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.security.Principal;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class ModifyItemService implements ModifyItemUseCase {
     public Response<ItemDto> createItem(CreateNewItemCommand command, Principal user) {
 
         if (nameAlreadyTaken(command, user))
-            return Response.failure("You already have an item called " + command.getItemName());
+            return Response.failure(ITEM_NAME_TAKEN);
 
         Item item = newItemCommandToItem(command, user);
 
@@ -61,8 +62,8 @@ public class ModifyItemService implements ModifyItemUseCase {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Item childItem = itemRepository.getOne(command.getChildItemId());
 
-        Response<Void> eligibilityValidation = userSecurity.validateEligibilityForAddIngredient(parentItem, childItem, user);
-        if (!eligibilityValidation.isSuccess()) return Response.failure(eligibilityValidation.getError());
+        boolean eligibilityValidation = userSecurity.validateEligibilityForAddIngredient(parentItem, childItem, user);
+        if (!eligibilityValidation) return Response.failure(NOT_AUTHORIZED);
 
         Response<Void> verifyLoops = checkForLoops(parentItem, childItem);
         if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());
@@ -74,9 +75,9 @@ public class ModifyItemService implements ModifyItemUseCase {
 
     private Response<Void> checkForLoops(Item parentItem, Item childItem) {
         if (childItem.getDependencies().contains(parentItem))
-            return Response.failure(parentItem.getName() + " is already a dependency of " + childItem.getName());
+            return Response.failure(parentItem.getName() + LOOP_LONG + childItem.getName());
         if (childItem.equals(parentItem)) {
-            return Response.failure("An item cannot depend on itself");
+            return Response.failure(LOOP_SHORT);
         }
         return Response.success(null);
     }
@@ -87,7 +88,7 @@ public class ModifyItemService implements ModifyItemUseCase {
     public Response<RichItem> setYield(SetYieldCommand command, Principal user) {
         Item item = itemRepository.findById(command.getParentItemId()).orElseThrow();
         if (!userSecurity.isOwner(item.getUserEntity().getId(), user))
-            return Response.failure("You do not own this item");
+            return Response.failure(NOT_AUTHORIZED);
 
         item.getRecipe().setRecipeYield(command.getItemYield());
         return Response.success(new RichItem(itemRepository.save(item)));
@@ -98,7 +99,7 @@ public class ModifyItemService implements ModifyItemUseCase {
     public Response<RichItem> updateDescription(UpdateDescriptionCommand command, Principal user) {
         Item item = itemRepository.getOne(command.getParentItemId());
         if (!userSecurity.isOwner(item.getUserEntity().getId(), user))
-            return Response.failure("You're not authorized to modify this item");
+            return Response.failure(NOT_AUTHORIZED);
         item.getRecipe().setDescription(command.getDescription());
         return Response.success(new RichItem(itemRepository.save(item)));
 
@@ -111,7 +112,7 @@ public class ModifyItemService implements ModifyItemUseCase {
         Item item = itemRepository.getOne(command.getItemId());
 
         if (!userSecurity.isOwner(item.getUserEntity().getId(), user))
-            return Response.failure("You're not authorized to modify this item");
+            return Response.failure(NOT_AUTHORIZED);
 
         removeThisItemFromAllDependencies(command.getItemId());
 
@@ -132,7 +133,7 @@ public class ModifyItemService implements ModifyItemUseCase {
         Ingredient ingredientToRemove = ingredientRepository.getOne(command.getIngredientId());
 
         if (!userSecurity.isOwner(parentItem.getUserEntity().getId(), user))
-            return Response.failure("You do not own this item");
+            return Response.failure(NOT_AUTHORIZED);
 
         ingredientToRemove.removeSelf();
 
@@ -140,18 +141,5 @@ public class ModifyItemService implements ModifyItemUseCase {
     }
 
 
-//    private void addIngredient(Item parentItem, Item childItem, BigDecimal amount) {
-//        for (Ingredient ingredient : parentItem.getIngredients()) {
-//            if (ingredient.getChildItem().equals(childItem)) {
-//                ingredient.setAmount(ingredient.getAmount().add(amount));
-//                return;
-//            }
-//        }
-//        parentItem.getIngredients().add(new Ingredient(parentItem.getRecipe(), childItem, amount));
-//    }
 
-//
-//    private void generateRecipeIfApplicable(Item item) {
-//        if (!item.getType().equals(BASIC())) item.setRecipe(new Recipe(BigDecimal.ONE));
-//    }
 }

@@ -10,13 +10,12 @@ import pl.kamil.chefscookbook.user.domain.UserEntity;
 import javax.transaction.Transactional;
 import java.security.Principal;
 
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
 import static pl.kamil.chefscookbook.user.domain.MasterUserConfig.getMasterUser;
 
 @Component
-@AllArgsConstructor
 public class UserSecurityService implements UserSecurityUseCase {
 
-//    private final UserEntity masterUser;
 
     @Override
     public boolean isOwner(Long userId, Principal user) {
@@ -24,15 +23,15 @@ public class UserSecurityService implements UserSecurityUseCase {
     }
 
     @Override
-    public Response<Void> validateEligibilityForAddIngredient(Item parentItem, Item childItem, Principal user) {
+    public boolean validateEligibilityForAddIngredient(Item parentItem, Item childItem, Principal user) {
         Long userId = Long.valueOf(user.getName());
         if (!parentItem.getUserEntity().getId().equals(userId))
-            return Response.failure("You're not authorized to modify this item");
+            return false;
         if ((!childItem.getUserEntity().getId().equals(userId)) &&
                 !childItem.getUserEntity().equals(getMasterUser()))
-            return Response.failure("You do not own this ingredient");
+            return false;
 
-        return Response.success(null);
+        return true;
     }
 
 }

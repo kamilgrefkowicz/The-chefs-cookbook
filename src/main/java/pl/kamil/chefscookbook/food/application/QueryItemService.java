@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +56,6 @@ public class QueryItemService implements QueryItemUseCase {
     }
 
     @Override
-    //todo: authorize
     public List<PoorItem> findAllItemsAffectedByDelete(Long itemId) {
         return ingredientRepository.findAllByChildItemId(itemId).stream()
                 .map(ingredient -> new PoorItem(ingredient.getParentItem()))
@@ -91,7 +91,7 @@ public class QueryItemService implements QueryItemUseCase {
     @Transactional
     public Response<RichItem> findById(Long itemId, Principal user) {
         Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if (optionalItem.isEmpty()) return Response.failure("Item with id " + itemId + " not found");
+        if (optionalItem.isEmpty()) return Response.failure(NOT_FOUND);
         RichItem item = new RichItem(optionalItem.get());
         if (!userSecurity.isOwner(item.getUserEntityId(), user)) return Response.failure("You're not authorized to view this item");
         return Response.success(item);
@@ -99,7 +99,6 @@ public class QueryItemService implements QueryItemUseCase {
 
     @Override
     @Transactional
-    //todo: pack into a response
     public Map<ItemDto, BigDecimal> getMapOfAllDependencies(QueryItemWithDependenciesCommand command) {
         Map<ItemDto, BigDecimal> dependencies = new LinkedHashMap<>();
         Item item = itemRepository.getOne(command.getItemId());

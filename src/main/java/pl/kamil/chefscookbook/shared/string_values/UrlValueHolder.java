@@ -1,4 +1,4 @@
-package pl.kamil.chefscookbook.shared.url_values;
+package pl.kamil.chefscookbook.shared.string_values;
 
 
 public class UrlValueHolder {

@@ -4,7 +4,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import pl.kamil.chefscookbook.shared.response.Response;
 
-import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.ERROR;
+import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.ERROR;
 
 public abstract class ValidatedController<T> {
 

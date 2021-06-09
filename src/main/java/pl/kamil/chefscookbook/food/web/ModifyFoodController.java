@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
-import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.*;
+import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 
 @Controller
 @AllArgsConstructor
@@ -160,7 +160,6 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
 
         model.addAttribute("itemsAffected", itemsAffected);
         model.addAttribute("object", object);
-        model.addAttribute("command", command);
 
         return ITEM_DELETE_CONFIRM;
     }

@@ -1,10 +1,5 @@
 package pl.kamil.chefscookbook.food.domain.staticData;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Value;
-
-import java.util.StringJoiner;
 
 public enum Type {
     BASIC("podstawowy"),

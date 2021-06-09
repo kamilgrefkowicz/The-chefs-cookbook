@@ -22,8 +22,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.ERROR;
-import static pl.kamil.chefscookbook.shared.url_values.UrlValueHolder.ITEM_VIEW;
+import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.ERROR;
+import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.ITEM_VIEW;
 
 @Controller
 @RequiredArgsConstructor

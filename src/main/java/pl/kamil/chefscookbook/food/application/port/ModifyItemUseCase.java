@@ -3,6 +3,7 @@ package pl.kamil.chefscookbook.food.application.port;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
@@ -36,6 +37,7 @@ public interface ModifyItemUseCase {
     @NoArgsConstructor
     class CreateNewItemCommand {
         @NotBlank
+        @Length(min = 3, max = 15)
         private String itemName;
         @NotNull
         private Type type;
