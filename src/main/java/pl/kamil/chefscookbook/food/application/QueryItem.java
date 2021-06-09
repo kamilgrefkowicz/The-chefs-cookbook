@@ -69,7 +69,7 @@ public class QueryItem implements QueryItemService {
 
         return itemRepository.findAllDishesByUser(getUserId(user)).stream()
                 .filter(item -> alreadyInTheMenu(menuId, item))
-                .map(ItemDto::convertToPoorItem)
+                .map(PoorItem::new)
                 .collect(Collectors.toList());
     }
 

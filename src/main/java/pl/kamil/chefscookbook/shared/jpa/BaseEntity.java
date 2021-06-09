@@ -1,9 +1,6 @@
 package pl.kamil.chefscookbook.shared.jpa;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -23,4 +20,6 @@ public abstract class BaseEntity {
     private Long version;
 
     private String uuid = UUID.randomUUID().toString();
+
+
 }

@@ -20,7 +20,7 @@ public class RichItem extends ItemDto{
         super(item.getId(), item.getName(), item.getUnit(), item.getType(), item.getUserEntity().getId());
         this.description = item.getRecipe().getDescription();
         this.ingredients = item.getIngredients().stream()
-        .map(IngredientDto::convertIngredientToDto)
+        .map(IngredientDto::new)
         .collect(Collectors.toSet());
         this.recipeYield = item.getRecipe().getRecipeYield();
     }

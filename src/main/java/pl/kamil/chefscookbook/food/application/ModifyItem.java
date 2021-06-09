@@ -16,8 +16,13 @@ import pl.kamil.chefscookbook.user.database.UserRepository;
 import javax.transaction.Transactional;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.*;
 
 @Service
@@ -48,7 +53,7 @@ public class ModifyItem implements ModifyItemService {
 
     private Item newItemCommandToItem(CreateNewItemCommand command, Principal user) {
 
-        return  new Item(command.getItemName(),
+        return new Item(command.getItemName(),
                 command.getUnit(),
                 command.getType(),
                 userRepository.getOne(Long.valueOf(user.getName())));
@@ -74,7 +79,7 @@ public class ModifyItem implements ModifyItemService {
     }
 
     private Response<Void> checkForLoops(Item parentItem, Item childItem) {
-        if (childItem.getDependencies().contains(parentItem))
+        if (getItemDependencies(childItem).contains(parentItem))
             return Response.failure(parentItem.getName() + LOOP_LONG + childItem.getName());
         if (childItem.equals(parentItem)) {
             return Response.failure(LOOP_SHORT);
@@ -82,6 +87,18 @@ public class ModifyItem implements ModifyItemService {
         return Response.success(null);
     }
 
+    private Collection<Item> getItemDependencies(Item childItem) {
+        if (childItem.getType().equals(BASIC)) return Collections.emptySet();
+        Set<Item> dependencies = childItem.getIngredients()
+                .stream()
+                .map(Ingredient::getChildItem)
+                .collect(Collectors.toSet());
+
+        dependencies
+                .forEach(item -> dependencies.addAll(getItemDependencies(item)));
+
+        return dependencies;
+    }
 
     @Override
     @Transactional
@@ -139,7 +156,6 @@ public class ModifyItem implements ModifyItemService {
 
         return Response.success(new RichItem(itemRepository.save(parentItem)));
     }
-
 
 
 }

@@ -19,7 +19,7 @@ public class RichMenu extends MenuDto{
     public RichMenu(Menu menu) {
         super(menu.getId(), menu.getName());
         this.items = menu.getItems().stream()
-                .map(ItemDto::convertToPoorItem)
+                .map(PoorItem::new)
                 .collect(Collectors.toSet());
     }
     public static RichMenu convertToRichMenu(Menu menu) {

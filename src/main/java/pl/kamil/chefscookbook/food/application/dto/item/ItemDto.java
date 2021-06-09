@@ -25,8 +25,8 @@ public abstract class ItemDto {
         return new RichItem(item);
     }
 
-    public static PoorItem convertToPoorItem(Item item) {
-        return new PoorItem(item);
-    }
+//    public static PoorItem convertToPoorItem(Item item) {
+//        return new PoorItem(item);
+//    }
 
 }

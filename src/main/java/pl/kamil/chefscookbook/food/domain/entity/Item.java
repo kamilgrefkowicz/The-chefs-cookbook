@@ -56,18 +56,7 @@ public class Item extends BaseEntity {
         this.getIngredients().add(new Ingredient(this.getRecipe(), childItem, amount));
     }
 
-    //todo: move to service
-    public Set<Item> getDependencies() {
-        if (this.type.equals(BASIC)) return Collections.emptySet();
-        Set<Item> dependencies = this.recipe.getIngredients()
-                .stream()
-                .map(Ingredient::getChildItem).collect(Collectors.toSet());
 
-        dependencies
-        .forEach(item -> dependencies.addAll(item.getDependencies()));
-
-        return dependencies;
-    }
 
     public Item(String name, Unit unit, Type type, UserEntity userEntity) {
         this.name = name;
