@@ -5,6 +5,6 @@ import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 
 import java.util.List;
 
-public interface IngredientJpaRepository extends JpaRepository<Ingredient, Long> {
+public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     List<Ingredient> findAllByChildItemId(Long id);
 }

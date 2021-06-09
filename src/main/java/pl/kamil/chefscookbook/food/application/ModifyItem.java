@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
-import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
-import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemService;
+import pl.kamil.chefscookbook.food.database.IngredientRepository;
+import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.shared.response.Response;
-import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
+import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 
 import javax.transaction.Transactional;
@@ -22,12 +22,12 @@ import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.*;
 
 @Service
 @RequiredArgsConstructor
-public class ModifyItemService implements ModifyItemUseCase {
+public class ModifyItem implements ModifyItemService {
 
-    private final ItemJpaRepository itemRepository;
-    private final IngredientJpaRepository ingredientRepository;
+    private final ItemRepository itemRepository;
+    private final IngredientRepository ingredientRepository;
     private final UserRepository userRepository;
-    private final UserSecurityUseCase userSecurity;
+    private final UserSecurityService userSecurity;
 
     @Override
     @Transactional
@@ -62,7 +62,7 @@ public class ModifyItemService implements ModifyItemUseCase {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Item childItem = itemRepository.getOne(command.getChildItemId());
 
-        boolean eligibilityValidation = userSecurity.validateEligibilityForAddIngredient(parentItem, childItem, user);
+        boolean eligibilityValidation = userSecurity.isEligibleForAddIngredient(parentItem, childItem, user);
         if (!eligibilityValidation) return Response.failure(NOT_AUTHORIZED);
 
         Response<Void> verifyLoops = checkForLoops(parentItem, childItem);

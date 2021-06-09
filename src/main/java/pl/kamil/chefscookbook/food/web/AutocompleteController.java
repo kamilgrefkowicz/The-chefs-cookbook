@@ -3,7 +3,7 @@ package pl.kamil.chefscookbook.food.web;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 
 import java.security.Principal;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/autocomplete")
 public class AutocompleteController {
 
-    private final QueryItemUseCase queryItem;
+    private final QueryItemService queryItem;
 
     @GetMapping
     @ResponseBody

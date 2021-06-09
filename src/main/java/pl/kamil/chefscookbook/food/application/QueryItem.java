@@ -6,14 +6,14 @@ import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
-import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
-import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
+import pl.kamil.chefscookbook.food.application.port.QueryItemService;
+import pl.kamil.chefscookbook.food.database.IngredientRepository;
+import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 import pl.kamil.chefscookbook.shared.response.Response;
-import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
+import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -27,15 +27,16 @@ import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
-public class QueryItemService implements QueryItemUseCase {
+public class QueryItem implements QueryItemService {
 
-    private final ItemJpaRepository itemRepository;
-    private final UserSecurityUseCase userSecurity;
-    private final IngredientJpaRepository ingredientRepository;
+    private final ItemRepository itemRepository;
+    private final UserSecurityService userSecurity;
+    private final IngredientRepository ingredientRepository;
 
     @Override
     public List<PoorItem> findAllItemsBelongingToUser(Principal user) {
@@ -93,7 +94,7 @@ public class QueryItemService implements QueryItemUseCase {
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isEmpty()) return Response.failure(NOT_FOUND);
         RichItem item = new RichItem(optionalItem.get());
-        if (!userSecurity.isOwner(item.getUserEntityId(), user)) return Response.failure("You're not authorized to view this item");
+        if (!userSecurity.isOwner(item.getUserEntityId(), user)) return Response.failure(NOT_AUTHORIZED);
         return Response.success(item);
     }
 

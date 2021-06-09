@@ -7,7 +7,7 @@ import pl.kamil.chefscookbook.shared.response.Response;
 import java.security.Principal;
 import java.util.List;
 
-public interface QueryMenuUseCase {
+public interface QueryMenuService {
 
     List<RichMenu> getAllMenusBelongingToUser(Principal user);
 

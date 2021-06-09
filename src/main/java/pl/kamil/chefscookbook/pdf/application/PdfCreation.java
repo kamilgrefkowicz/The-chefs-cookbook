@@ -13,13 +13,8 @@ import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.property.TextAlignment;
-import com.itextpdf.layout.property.VerticalAlignment;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
@@ -33,7 +28,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class PdfCreationService implements PdfCreationUseCase {
+public class PdfCreation implements pl.kamil.chefscookbook.pdf.application.port.PdfCreationService {
 
     private final GenerateRecipeContentUseCase generateRecipeContent;
     private final GenerateTitlePageUseCase generateTitlePage;

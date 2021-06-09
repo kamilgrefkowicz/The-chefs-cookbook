@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface ItemJpaRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long> {
 
 
     List<Item> findAllByUserEntityId(Long userId);

@@ -9,14 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
-import pl.kamil.chefscookbook.menu.application.QueryMenu;
+import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
 import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
-import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
-import pl.kamil.chefscookbook.menu.application.port.QueryMenuUseCase;
-import pl.kamil.chefscookbook.menu.domain.Menu;
-import pl.kamil.chefscookbook.pdf.application.port.PdfCreationUseCase;
+import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
+import pl.kamil.chefscookbook.pdf.application.port.PdfCreationService;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import java.security.Principal;
@@ -26,9 +23,9 @@ import java.security.Principal;
 @AllArgsConstructor
 public class DisplayPdfController  {
 
-private final PdfCreationUseCase pdfCreation;
-private final QueryItemUseCase queryItem;
-private final QueryMenuUseCase queryMenu;
+private final PdfCreationService pdfCreation;
+private final QueryItemService queryItem;
+private final QueryMenuService queryMenu;
 
 
     @GetMapping("/item")

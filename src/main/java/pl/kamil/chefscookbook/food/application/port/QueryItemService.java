@@ -17,7 +17,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
-public interface QueryItemUseCase {
+public interface QueryItemService {
 
     Response<RichItem> findById(Long itemId, Principal user);
 

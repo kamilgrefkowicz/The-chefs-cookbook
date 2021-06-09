@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook.user.application.port;
 
 import lombok.Data;
+import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
 import pl.kamil.chefscookbook.user.registration.password_validation.PasswordMatches;
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 public interface CreateUserUseCase {
 
-    UserEntity createNewUser(CreateUserCommand command) throws NameAlreadyTakenException;
+    Response<UserEntity> createNewUser(CreateUserCommand command) throws NameAlreadyTakenException;
 
     @Data
     @PasswordMatches

@@ -5,7 +5,7 @@ import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
 
 import java.io.ByteArrayOutputStream;
 
-public interface PdfCreationUseCase {
+public interface PdfCreationService {
 
     ByteArrayOutputStream generatePdfForItem(RichItem item);
 

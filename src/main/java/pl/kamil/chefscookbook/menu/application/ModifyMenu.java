@@ -2,15 +2,14 @@ package pl.kamil.chefscookbook.menu.application;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
+import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
-import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
 import pl.kamil.chefscookbook.shared.response.Response;
-import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
+import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 
 import javax.transaction.Transactional;
@@ -24,12 +23,12 @@ import static pl.kamil.chefscookbook.menu.application.dto.RichMenu.convertToRich
 
 @Service
 @AllArgsConstructor
-public class ModifyMenuService implements ModifyMenuUseCase {
+public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.ModifyMenuService {
 
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
-    private final UserSecurityUseCase userSecurity;
-    private final ItemJpaRepository itemRepository;
+    private final UserSecurityService userSecurity;
+    private final ItemRepository itemRepository;
 
     @Override
     @Transactional

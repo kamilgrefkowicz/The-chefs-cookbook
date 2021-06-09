@@ -6,10 +6,10 @@ import pl.kamil.chefscookbook.shared.response.Response;
 import javax.validation.constraints.Null;
 import java.security.Principal;
 
-public interface UserSecurityUseCase {
+public interface UserSecurityService {
 
-     boolean isOwner(Long userId, Principal user);
+    boolean isOwner(Long userId, Principal user);
 
-    boolean validateEligibilityForAddIngredient(Item parentItem, Item childItem, Principal user);
+    boolean isEligibleForAddIngredient(Item parentItem, Item childItem, Principal user);
 
 }

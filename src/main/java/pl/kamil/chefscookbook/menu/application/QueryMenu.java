@@ -8,11 +8,11 @@ import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
 import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
-import pl.kamil.chefscookbook.menu.application.port.QueryMenuUseCase;
+import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
 import pl.kamil.chefscookbook.shared.response.Response;
-import pl.kamil.chefscookbook.user.application.port.UserSecurityUseCase;
+import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
@@ -28,10 +28,10 @@ import static pl.kamil.chefscookbook.menu.application.dto.RichMenu.convertToRich
 
 @Service
 @AllArgsConstructor
-public class QueryMenu implements QueryMenuUseCase {
+public class QueryMenu implements QueryMenuService {
 
     private final MenuRepository menuRepository;
-    private final UserSecurityUseCase userSecurity;
+    private final UserSecurityService userSecurity;
 
     @Override
     @Transactional

@@ -17,7 +17,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.security.Principal;
 
-public interface ModifyItemUseCase {
+public interface ModifyItemService {
 
     Response<ItemDto> createItem(CreateNewItemCommand command, Principal user);
 

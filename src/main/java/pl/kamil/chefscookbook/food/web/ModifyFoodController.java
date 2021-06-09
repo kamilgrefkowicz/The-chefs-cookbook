@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.*;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemService;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemService.*;
+import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
@@ -26,8 +26,8 @@ import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 @RequestMapping("/food")
 public class ModifyFoodController extends ValidatedController<RichItem> {
 
-    private final ModifyItemUseCase modifyItem;
-    private final QueryItemUseCase queryItem;
+    private final ModifyItemService modifyItem;
+    private final QueryItemService queryItem;
 
 
 

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
-import pl.kamil.chefscookbook.food.application.port.ModifyItemUseCase.DeleteItemCommand;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemService.DeleteItemCommand;
+import pl.kamil.chefscookbook.food.application.port.QueryItemService;
+import pl.kamil.chefscookbook.food.application.port.QueryItemService.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 
@@ -30,7 +30,7 @@ import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.ITEM_VI
 @RequestMapping("/food")
 public class ViewFoodController extends ValidatedController<RichItem> {
 
-    private final QueryItemUseCase queryItem;
+    private final QueryItemService queryItem;
 
     @GetMapping({"/", "/my-items"})
     public String showMyItems(Model model, Principal user) {

@@ -6,17 +6,17 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase;
-import pl.kamil.chefscookbook.food.application.port.QueryItemUseCase.QueryItemWithDependenciesCommand;
+import pl.kamil.chefscookbook.food.application.port.QueryItemService;
+import pl.kamil.chefscookbook.food.application.port.QueryItemService.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
-import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase;
-import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.AddItemsToMenuCommand;
-import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.CreateNewMenuCommand;
-import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.DeleteMenuCommand;
-import pl.kamil.chefscookbook.menu.application.port.ModifyMenuUseCase.RemoveItemFromMenuCommand;
-import pl.kamil.chefscookbook.menu.application.port.QueryMenuUseCase;
+import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService;
+import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService.AddItemsToMenuCommand;
+import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService.CreateNewMenuCommand;
+import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService.DeleteMenuCommand;
+import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService.RemoveItemFromMenuCommand;
+import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
 import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 
@@ -31,9 +31,9 @@ import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 @RequestMapping("/menu")
 public class MenuController extends ValidatedController<MenuDto> {
 
-    private final ModifyMenuUseCase modifyMenu;
-    private final QueryMenuUseCase queryMenu;
-    private final QueryItemUseCase queryItem;
+    private final ModifyMenuService modifyMenu;
+    private final QueryMenuService queryMenu;
+    private final QueryItemService queryItem;
 
 
     @ModelAttribute

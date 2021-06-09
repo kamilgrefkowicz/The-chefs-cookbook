@@ -11,7 +11,7 @@ import pl.kamil.chefscookbook.shared.response.Response;
 import javax.validation.constraints.NotEmpty;
 import java.security.Principal;
 
-public interface ModifyMenuUseCase {
+public interface ModifyMenuService {
 
     Response<PoorMenu> createNewMenu(CreateNewMenuCommand command, Principal user);
 

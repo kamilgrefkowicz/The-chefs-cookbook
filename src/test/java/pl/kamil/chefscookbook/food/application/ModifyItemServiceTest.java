@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import pl.kamil.chefscookbook.food.database.IngredientJpaRepository;
-import pl.kamil.chefscookbook.food.database.ItemJpaRepository;
+import pl.kamil.chefscookbook.food.database.IngredientRepository;
+import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
@@ -18,16 +18,16 @@ import javax.transaction.Transactional;
 class ModifyItemServiceTest {
 
     @Autowired
-    ModifyItemService modifyItem;
+    ModifyItem modifyItem;
 
     @Autowired
-    QueryItemService queryItem;
+    QueryItem queryItem;
 
     @Autowired
-    IngredientJpaRepository ingredientJpaRepository;
+    IngredientRepository ingredientRepository;
 
     @Autowired
-    ItemJpaRepository itemJpaRepository;
+    ItemRepository itemRepository;
 
     @Autowired
     UserRepository userRepository;
