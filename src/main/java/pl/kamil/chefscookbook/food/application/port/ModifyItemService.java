@@ -48,9 +48,8 @@ public interface ModifyItemService {
     @AllArgsConstructor
     @NoArgsConstructor
     class AddIngredientCommand {
-        @NotNull
+
         private Long parentItemId;
-        @NotNull
         private Long childItemId;
         @PositiveOrZero
         private BigDecimal amount;
@@ -70,9 +69,8 @@ public interface ModifyItemService {
     @AllArgsConstructor
     @NoArgsConstructor
     class UpdateDescriptionCommand {
-        @NotNull
         private Long parentItemId;
-        @NotBlank
+        @Length(min = 0, max = 250)
         private String description;
     }
 
@@ -80,7 +78,6 @@ public interface ModifyItemService {
     @AllArgsConstructor
     @NoArgsConstructor
     class DeleteItemCommand {
-        @NotNull
         private Long itemId;
     }
 
@@ -88,9 +85,7 @@ public interface ModifyItemService {
     @AllArgsConstructor
     @NoArgsConstructor
     class RemoveIngredientFromRecipeCommand {
-        @NotNull
         private Long parentItemId;
-        @NotNull
         private Long ingredientId;
     }
 }
