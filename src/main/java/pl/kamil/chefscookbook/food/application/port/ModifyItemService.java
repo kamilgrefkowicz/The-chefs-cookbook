@@ -36,12 +36,11 @@ public interface ModifyItemService {
     @AllArgsConstructor
     @NoArgsConstructor
     class CreateNewItemCommand {
-        @NotBlank
+
         @Length(min = 3, max = 15)
         private String itemName;
-        @NotNull
+
         private Type type;
-        @NotNull
         private Unit unit;
     }
 

@@ -68,9 +68,12 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
             model.addAttribute(ERROR, itemCreated.getError());
             return ITEM_CREATE;
         }
+        if (itemId == null && command.getType() == Type.BASIC) {
+            return ITEM_CREATE;
+        }
         ItemDto object;
 
-        if (itemId != null && command.getType() == Type.BASIC) {
+        if (itemId != null) {
             object = queryItem.findById(itemId, user).getData();
         } else {
             object = itemCreated.getData();

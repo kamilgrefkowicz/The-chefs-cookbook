@@ -78,6 +78,28 @@
     </form>
 </div>
 
+<div>
+    <p>Brakuje Ci jakiegoś podstawowego składnika? Dodaj go tutaj:</p>
+    <form th:action="@{/food/new-item}" th:method="post" th:object="${createNewItemCommand}">
+        <input type="hidden" th:attr="name='itemId'" th:value="${object.id}">
+        <input type="text" th:attr="name='itemName'" placeholder="Nazwa składnika">
+        <input type="hidden" th:field="*{type}" th:value="PIECE">
+        <div id="unit">
+            <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
+            <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"
+                         th:field="*{unit}"></span>
+            <span><input type="radio" name="unit" th:value="LITRE" th:text="litr"
+                         th:field="*{unit}"></span>
+            <span><input type="radio" name="unit" th:value="PIECE" th:text="szt"
+                         th:field="*{unit}"></span>
+
+        </div>
+        <input type="submit" value="Dodaj!">
+
+
+    </form>
+</div>
+
 
 </body>
 </html>
