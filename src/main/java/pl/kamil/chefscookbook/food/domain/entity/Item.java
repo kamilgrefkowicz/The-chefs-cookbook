@@ -4,15 +4,13 @@ import lombok.*;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.menu.domain.Menu;
-import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
-import pl.kamil.chefscookbook.user.domain.*;
+import pl.kamil.chefscookbook.shared.jpa.OwnedEntity;
+import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 
@@ -23,7 +21,7 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 @Getter
 @Setter
 @ToString(exclude = {"recipe"})
-public class Item extends BaseEntity {
+public class Item extends OwnedEntity {
 
     private String name;
 
@@ -36,8 +34,7 @@ public class Item extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentItem")
     private Recipe recipe;
 
-    @ManyToOne(optional = false)
-    private UserEntity userEntity;
+
 
    @ManyToMany(mappedBy = "items")
    private Set<Menu> menus = new HashSet<>();

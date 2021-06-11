@@ -19,6 +19,6 @@ public class AutocompleteController {
     @ResponseBody
     public List<ItemAutocompleteDto> getPossibleIngredients(@RequestParam String term, Principal user) {
 
-        return queryItem.findForAutocomplete(term, Long.valueOf(user.getName()));
+        return queryItem.findForAutocomplete(term, user);
     }
 }

@@ -26,7 +26,7 @@ public interface QueryItemService {
 
     List<PoorItem> findAllItemsBelongingToUser(Principal user);
 
-    List<ItemAutocompleteDto> findForAutocomplete(String term, Long userId);
+    List<ItemAutocompleteDto> findForAutocomplete(String term, Principal user);
 
     List<PoorItem> findAllItemsAffectedByDelete(Long itemId);
 

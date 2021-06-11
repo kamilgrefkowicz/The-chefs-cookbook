@@ -50,7 +50,7 @@ public class QueryMenu implements QueryMenuService {
         if (opt.isEmpty()) return Response.failure("Menu o id " + menuId + " nie istnieje");
 
         Menu menu = opt.get();
-        if (!userSecurity.isOwner(menu.getUserEntity().getId(), user))
+        if (!userSecurity.belongsTo(menu, user))
             return Response.failure("You do not own this menu");
 
         if (!getFullMenu) return Response.success(convertToRichMenu(menu));

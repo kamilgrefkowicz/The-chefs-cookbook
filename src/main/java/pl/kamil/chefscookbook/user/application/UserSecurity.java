@@ -2,6 +2,7 @@ package pl.kamil.chefscookbook.user.application;
 
 import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.shared.jpa.OwnedEntity;
 
 import java.security.Principal;
 
@@ -12,8 +13,8 @@ public class UserSecurity implements pl.kamil.chefscookbook.user.application.por
 
 
     @Override
-    public boolean isOwner(Long userId, Principal user) {
-        return userId.equals(Long.valueOf(user.getName()));
+    public boolean belongsTo(OwnedEntity object, Principal user) {
+        return object.getUserEntity().getId().equals(Long.valueOf(user.getName()));
     }
 
     @Override

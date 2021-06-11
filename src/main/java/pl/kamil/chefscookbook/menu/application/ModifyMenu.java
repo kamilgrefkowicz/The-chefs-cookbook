@@ -20,6 +20,8 @@ import java.util.Set;
 
 import static pl.kamil.chefscookbook.menu.application.dto.PoorMenu.convertToPoorMenu;
 import static pl.kamil.chefscookbook.menu.application.dto.RichMenu.convertToRichMenu;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -42,10 +44,8 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
     }
 
     private Menu newMenuCommandToMenu(CreateNewMenuCommand command, Principal user) {
-        return  Menu.builder()
-                .name(command.getMenuName())
-                .userEntity(userRepository.getOne(Long.valueOf(user.getName())))
-                .build();
+        return  new Menu(command.getMenuName(), userRepository.getOne(Long.valueOf(user.getName())));
+
     }
 
     @Override
@@ -58,9 +58,9 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
 
         for (Long id : command.getItemIds()) {
             Optional<Item> opt = itemRepository.findById(id);
-            if (opt.isEmpty()) return Response.failure("Item with id: " + id + " does not exist");
+            if (opt.isEmpty()) return Response.failure(NOT_FOUND);
             Item item = opt.get();
-            if (!userSecurity.isOwner(item.getUserEntity().getId(), user)) return Response.failure("You're not authorized to use this item");
+            if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
             itemsToAdd.add(item);
         }
         menu.addItemsToMenu(itemsToAdd);
@@ -87,7 +87,7 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
 
         Menu menu = menuRepository.getOne(command.getMenuId());
 
-        if (!userSecurity.isOwner(menu.getUserEntity().getId(), user)) return Response.failure("You're not authorized to modify this menu");
+        if (!userSecurity.belongsTo(menu, user)) return Response.failure("You're not authorized to modify this menu");
 
         menuRepository.delete(menu);
         return Response.success(null);

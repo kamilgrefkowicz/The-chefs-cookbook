@@ -14,7 +14,6 @@ import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 
 import javax.transaction.Transactional;
-
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Collections;
@@ -104,7 +103,7 @@ public class ModifyItem implements ModifyItemService {
     @Transactional
     public Response<RichItem> setYield(SetYieldCommand command, Principal user) {
         Item item = itemRepository.findById(command.getParentItemId()).orElseThrow();
-        if (!userSecurity.isOwner(item.getUserEntity().getId(), user))
+        if (!userSecurity.belongsTo(item, user))
             return Response.failure(NOT_AUTHORIZED);
 
         item.getRecipe().setRecipeYield(command.getItemYield());
@@ -115,7 +114,7 @@ public class ModifyItem implements ModifyItemService {
     @Transactional
     public Response<RichItem> updateDescription(UpdateDescriptionCommand command, Principal user) {
         Item item = itemRepository.getOne(command.getParentItemId());
-        if (!userSecurity.isOwner(item.getUserEntity().getId(), user))
+        if (!userSecurity.belongsTo(item, user))
             return Response.failure(NOT_AUTHORIZED);
         item.getRecipe().setDescription(command.getDescription());
         return Response.success(new RichItem(itemRepository.save(item)));
@@ -128,7 +127,7 @@ public class ModifyItem implements ModifyItemService {
 
         Item item = itemRepository.getOne(command.getItemId());
 
-        if (!userSecurity.isOwner(item.getUserEntity().getId(), user))
+        if (!userSecurity.belongsTo(item, user))
             return Response.failure(NOT_AUTHORIZED);
 
         removeThisItemFromAllDependencies(command.getItemId());
@@ -149,7 +148,7 @@ public class ModifyItem implements ModifyItemService {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Ingredient ingredientToRemove = ingredientRepository.getOne(command.getIngredientId());
 
-        if (!userSecurity.isOwner(parentItem.getUserEntity().getId(), user))
+        if (!userSecurity.belongsTo(parentItem, user))
             return Response.failure(NOT_AUTHORIZED);
 
         ingredientToRemove.removeSelf();

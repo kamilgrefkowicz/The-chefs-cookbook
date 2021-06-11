@@ -154,7 +154,7 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     }
 
     @GetMapping("/delete-item")
-    //todo: fix whole class to accept itemDto instead of RichItem
+    //todo: fix query for deleting basics
     public String showConfirmPageForDelete(Model model, DeleteItemCommand command, Principal user) {
         Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
 

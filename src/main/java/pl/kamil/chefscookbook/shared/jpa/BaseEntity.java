@@ -1,6 +1,9 @@
 package pl.kamil.chefscookbook.shared.jpa;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -14,12 +17,12 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    protected Long id;
 
     @Version
-    private Long version;
+    protected Long version;
 
-    private String uuid = UUID.randomUUID().toString();
+    protected String uuid = UUID.randomUUID().toString();
 
 
 }

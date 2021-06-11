@@ -1,14 +1,14 @@
 package pl.kamil.chefscookbook.menu.domain;
 
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
+import pl.kamil.chefscookbook.shared.jpa.OwnedEntity;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,13 +18,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-public class Menu extends BaseEntity {
+public class Menu extends OwnedEntity {
 
     private String name;
 
-    @ManyToOne
-    private UserEntity userEntity;
 
     @ManyToMany
     @JoinTable(
@@ -34,6 +31,11 @@ public class Menu extends BaseEntity {
     @Builder.Default
     private Set<Item> items = new HashSet<>();
 
+    public Menu(String name, UserEntity userEntity) {
+        this.name = name;
+        this.userEntity = userEntity;
+        this.items = new HashSet<>();
+    }
 
     public void addItemsToMenu(Set<Item> itemsToAdd) {
         this.items.addAll(itemsToAdd);

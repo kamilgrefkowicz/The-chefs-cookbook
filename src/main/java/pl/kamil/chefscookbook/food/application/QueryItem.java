@@ -49,10 +49,10 @@ public class QueryItem implements QueryItemService {
     }
 
     @Override
-    public List<ItemAutocompleteDto> findForAutocomplete(String term, Long userId) {
-        return itemRepository.findForAutocomplete(term, userId)
+    public List<ItemAutocompleteDto> findForAutocomplete(String term, Principal user) {
+        return itemRepository.findForAutocomplete(term, getUserId(user))
                 .stream()
-                .map(this::convertToAutocompleteDto)
+                .map(ItemAutocompleteDto::new)
                 .collect(Collectors.toList());
 
     }
@@ -82,21 +82,14 @@ public class QueryItem implements QueryItemService {
         return !item.getMenus().stream().map(BaseEntity::getId).collect(Collectors.toSet()).contains(menuId);
     }
 
-
-    private ItemAutocompleteDto convertToAutocompleteDto(Item item) {
-        return new ItemAutocompleteDto(item.getId(), item.getName() + " (" + item.getUnit().toString() + ")");
-    }
-
-
-
     @Override
     @Transactional
     public Response<RichItem> findById(Long itemId, Principal user) {
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isEmpty()) return Response.failure(NOT_FOUND);
-        RichItem item = new RichItem(optionalItem.get());
-        if (!userSecurity.isOwner(item.getUserEntityId(), user)) return Response.failure(NOT_AUTHORIZED);
-        return Response.success(item);
+        Item item = optionalItem.get();
+        if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
+        return Response.success(new RichItem(item));
     }
 
     @Override
