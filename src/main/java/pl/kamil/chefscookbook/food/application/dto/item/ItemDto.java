@@ -30,7 +30,7 @@ public abstract class ItemDto {
         return new RichItem(item);
     }
 
-    public ItemDto(Long id, String name, Unit unit, Type type, Long userEntityId) {
+    protected ItemDto(Long id, String name, Unit unit, Type type, Long userEntityId) {
         this.id = id;
         this.name = name;
         this.unit = unit;

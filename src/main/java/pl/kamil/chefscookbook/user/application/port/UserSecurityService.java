@@ -9,6 +9,5 @@ public interface UserSecurityService {
 
     boolean belongsTo(OwnedEntity object, Principal user);
 
-    boolean isEligibleForAddIngredient(Item parentItem, Item childItem, Principal user);
-
+    boolean belongsToOrIsPublic(Item childItem, Principal user);
 }

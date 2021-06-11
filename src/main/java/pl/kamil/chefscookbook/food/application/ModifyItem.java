@@ -52,7 +52,8 @@ public class ModifyItem implements ModifyItemService {
 
     private Item newItemCommandToItem(CreateNewItemCommand command, Principal user) {
 
-        return new Item(command.getItemName(),
+        return new Item(
+                command.getItemName(),
                 command.getUnit(),
                 command.getType(),
                 userRepository.getOne(Long.valueOf(user.getName())));
@@ -66,7 +67,7 @@ public class ModifyItem implements ModifyItemService {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Item childItem = itemRepository.getOne(command.getChildItemId());
 
-        boolean eligibilityValidation = userSecurity.isEligibleForAddIngredient(parentItem, childItem, user);
+        boolean eligibilityValidation = (userSecurity.belongsTo(parentItem, user) && userSecurity.belongsToOrIsPublic(childItem, user));
         if (!eligibilityValidation) return Response.failure(NOT_AUTHORIZED);
 
         Response<Void> verifyLoops = checkForLoops(parentItem, childItem);

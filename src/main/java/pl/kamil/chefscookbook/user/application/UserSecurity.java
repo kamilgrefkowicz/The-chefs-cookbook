@@ -18,15 +18,10 @@ public class UserSecurity implements pl.kamil.chefscookbook.user.application.por
     }
 
     @Override
-    public boolean isEligibleForAddIngredient(Item parentItem, Item childItem, Principal user) {
-        Long userId = Long.valueOf(user.getName());
-        if (!parentItem.getUserEntity().getId().equals(userId))
-            return false;
-        if ((!childItem.getUserEntity().getId().equals(userId)) &&
-                !childItem.getUserEntity().equals(getMasterUser()))
-            return false;
+    public boolean belongsToOrIsPublic(Item childItem, Principal user) {
 
-        return true;
+        return childItem.getUserEntity().getId().equals(Long.valueOf(user.getName())) || childItem.getUserEntity().equals(getMasterUser());
     }
+
 
 }

@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService.QueryItemWithDependenciesCommand;
@@ -21,21 +22,16 @@ import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
@@ -181,6 +177,98 @@ class QueryItemTest {
 
         verify(itemRepository).getOne(any());
     }
+    @Test
+    void gettingMapOfDependenciesOnItemWithNoDependenciesShouldReturnEmptyMap() {
+        when(itemRepository.getOne(any())).thenReturn(getItem(1L, DISH));
+
+        Map<ItemDto, BigDecimal> queried = queryItem.getMapOfAllDependencies(getQueryItemWithDependenciesCommand());
+
+        assertThat(queried, anEmptyMap());
+    }
+    @Test
+    void gettingMapOfDependenciesOnDishWithDependenciesShouldReturnThem() {
+        Item targetItem = getItem(1L, DISH);
+        Item intermediate = getItem(2L, INTERMEDIATE);
+        Item basic = getItem(3L, BASIC);
+        intermediate.addIngredient(basic, BigDecimal.ONE);
+        targetItem.addIngredient(intermediate, BigDecimal.ONE);
+        when(itemRepository.getOne(any())).thenReturn(targetItem);
+
+        Map<ItemDto, BigDecimal> queried = queryItem.getMapOfAllDependencies(getQueryItemWithDependenciesCommand());
+
+        assertThat(queried, aMapWithSize(2));
+    }
+    @Test
+    void gettingMapOfDependenciesShouldReturnAppropriateDtos() {
+        Item targetItem = getItem(1L, DISH);
+        Item intermediate = getItem(2L, INTERMEDIATE);
+        intermediate.setName("intermediate");
+        Item basic = getItem(3L, BASIC);
+        basic.setName("basic");
+        intermediate.addIngredient(basic, BigDecimal.ONE);
+        targetItem.addIngredient(intermediate, BigDecimal.ONE);
+        when(itemRepository.getOne(any())).thenReturn(targetItem);
+
+        Map<ItemDto, BigDecimal> queried = queryItem.getMapOfAllDependencies(getQueryItemWithDependenciesCommand());
+        final PoorItem[] poorItem = new PoorItem[1];
+        final RichItem[] richItem = new RichItem[1];
+        queried.keySet().forEach(itemDto -> {
+            if (itemDto.getClass().equals(RichItem.class)) richItem[0] = (RichItem) itemDto;
+            else poorItem[0] = (PoorItem) itemDto;
+        });
+
+        assertThat(poorItem[0].getName(), equalTo("basic") );
+        assertThat(richItem[0].getName(), equalTo("intermediate"));
+    }
+    @Test
+    void gettingMapOfDependenciesWithDoubledTargetAmountShouldReturnCalculatedAmountsForDependencies() {
+        Item targetItem = getItem(1L, DISH);
+        Item intermediate = getItem(2L, INTERMEDIATE);
+        intermediate.setName("intermediate");
+        Item basic = getItem(3L, BASIC);
+        basic.setName("basic");
+        intermediate.addIngredient(basic, BigDecimal.ONE);
+        targetItem.addIngredient(intermediate, BigDecimal.ONE);
+        when(itemRepository.getOne(any())).thenReturn(targetItem);
+
+        Map<ItemDto, BigDecimal> queried = queryItem.getMapOfAllDependencies(getQueryItemWithDependenciesCommand(new BigDecimal(2)));
+        final PoorItem[] poorItem = new PoorItem[1];
+        final RichItem[] richItem = new RichItem[1];
+        queried.keySet().forEach(itemDto -> {
+            if (itemDto.getClass().equals(RichItem.class)) richItem[0] = (RichItem) itemDto;
+            else poorItem[0] = (PoorItem) itemDto;
+        });
+
+        assertThat(queried.get(poorItem[0]), equalTo(new BigDecimal("2.000")));
+        assertThat(queried.get(richItem[0]), equalTo(new BigDecimal("2.000")));
+    }
+    @Test
+    void gettingMapOfDependenciesWithHalvedTargetAmountShouldReturnCalculatedAmountsForDependencies() {
+        Item targetItem = getItem(1L, DISH);
+        Item intermediate = getItem(2L, INTERMEDIATE);
+        intermediate.setName("intermediate");
+        Item basic = getItem(3L, BASIC);
+        basic.setName("basic");
+        intermediate.addIngredient(basic, BigDecimal.ONE);
+        targetItem.addIngredient(intermediate, BigDecimal.ONE);
+        when(itemRepository.getOne(any())).thenReturn(targetItem);
+
+        Map<ItemDto, BigDecimal> queried = queryItem.getMapOfAllDependencies(getQueryItemWithDependenciesCommand(new BigDecimal("0.5")));
+        final PoorItem[] poorItem = new PoorItem[1];
+        final RichItem[] richItem = new RichItem[1];
+        queried.keySet().forEach(itemDto -> {
+            if (itemDto.getClass().equals(RichItem.class)) richItem[0] = (RichItem) itemDto;
+            else poorItem[0] = (PoorItem) itemDto;
+        });
+
+        assertThat(queried.get(poorItem[0]), equalTo(new BigDecimal("0.500")));
+        assertThat(queried.get(richItem[0]), equalTo(new BigDecimal("0.500")));
+    }
+
+    private QueryItemWithDependenciesCommand getQueryItemWithDependenciesCommand(BigDecimal targetAmount) {
+        return new QueryItemWithDependenciesCommand(1L, targetAmount);
+    }
+
 
     private QueryItemWithDependenciesCommand getQueryItemWithDependenciesCommand() {
         return new QueryItemWithDependenciesCommand(1L, BigDecimal.ONE);
