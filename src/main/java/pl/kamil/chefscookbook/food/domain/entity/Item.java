@@ -35,9 +35,8 @@ public class Item extends OwnedEntity {
     private Recipe recipe;
 
 
-
-   @ManyToMany(mappedBy = "items")
-   private Set<Menu> menus = new HashSet<>();
+    @ManyToMany(mappedBy = "items")
+    private Set<Menu> menus = new HashSet<>();
 
     public Set<Ingredient> getIngredients() {
         return recipe.getIngredients();
@@ -52,7 +51,6 @@ public class Item extends OwnedEntity {
         }
         this.getIngredients().add(new Ingredient(this.getRecipe(), childItem, amount));
     }
-
 
 
     public Item(String name, Unit unit, Type type, UserEntity userEntity) {

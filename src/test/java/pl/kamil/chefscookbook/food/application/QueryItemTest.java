@@ -7,12 +7,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
+import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
+import pl.kamil.chefscookbook.food.application.port.QueryItemService.QueryItemWithDependenciesCommand;
 import pl.kamil.chefscookbook.food.database.IngredientRepository;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.menu.domain.Menu;
+import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
@@ -21,16 +24,21 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 class QueryItemTest {
@@ -128,7 +136,54 @@ class QueryItemTest {
     }
     @Test
     void findByIdShouldCallRepository() {
+        Principal user = getUserWithIdOf1();
+        queryItem.findById(1L, user);
 
+        verify(itemRepository).findById(1L);
+    }
+    @Test
+    void findByIdShouldReturnFailureIfNoItemWithId() {
+        Principal user = getUserWithIdOf1();
+        when(itemRepository.findById(any())).thenReturn(Optional.empty());
+
+        Response<RichItem> queried= queryItem.findById(1L, user);
+
+        assertFalse(queried.isSuccess());
+        assertThat(queried.getError(), equalTo(NOT_FOUND));
+    }
+    @Test
+    void findByIdShouldReturnFailureIfNotOwnerOfItem() {
+        Principal user = getUserWithIdOf1();
+        when(itemRepository.findById(any())).thenReturn( Optional.of(new Item()));
+        when(userSecurity.belongsTo(any(), any())).thenReturn(false);
+
+        Response<RichItem> queried= queryItem.findById(1L, user);
+
+        assertFalse(queried.isSuccess());
+        assertThat(queried.getError(), equalTo(NOT_AUTHORIZED));
+    }
+    @Test
+    void validFindByIdQueryShouldReturnSuccessfulResponse() {
+        Principal user = getUserWithIdOf1();
+        when(itemRepository.findById(any())).thenReturn( Optional.of(getItem(1L, DISH)));
+        when(userSecurity.belongsTo(any(), any())).thenReturn(true);
+
+        Response<RichItem> queried= queryItem.findById(1L, user);
+
+        assertTrue(queried.isSuccess());
+        assertThat(queried.getData().getId(), equalTo(1L));
+    }
+    @Test
+    void gettingMapOfDependenciesShouldCallRepository() {
+        when(itemRepository.getOne(any())).thenReturn(getItem(1L, DISH));
+
+        queryItem.getMapOfAllDependencies(getQueryItemWithDependenciesCommand());
+
+        verify(itemRepository).getOne(any());
+    }
+
+    private QueryItemWithDependenciesCommand getQueryItemWithDependenciesCommand() {
+        return new QueryItemWithDependenciesCommand(1L, BigDecimal.ONE);
     }
 
 
@@ -144,12 +199,13 @@ class QueryItemTest {
     }
 
     private Item getItem(Long id) {
-        Item item1 = new Item("aa", KILOGRAM, BASIC, new UserEntity());
-        item1.setId(id);
-        return item1;
+        Item item = new Item("aa", KILOGRAM, BASIC, new UserEntity());
+        item.setId(id);
+        return item;
     }
     private Item getItem(Long id, Type type) {
         Item item = new Item("aa", KILOGRAM, type, new UserEntity());
+        item.setId(id);
         return item;
     }
 

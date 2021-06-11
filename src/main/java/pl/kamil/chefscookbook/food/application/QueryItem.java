@@ -108,20 +108,37 @@ public class QueryItem implements QueryItemService {
     }
 
     private void placeItemInMap(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
-        if (item.getType().equals(DISH)) return;
-        targetAmount = targetAmount.setScale(3, RoundingMode.HALF_EVEN);
+        if (isTargetDish(item)) return;
+        targetAmount = levelOff(targetAmount);
         ItemDto toPlace = convertToDto(item);
+        placeNewOrAggregateIfAlreadyInMap(targetAmount, map, toPlace);
+    }
+
+    private BigDecimal levelOff(BigDecimal targetAmount) {
+        targetAmount = targetAmount.setScale(3, RoundingMode.HALF_EVEN);
+        return targetAmount;
+    }
+
+    private void placeNewOrAggregateIfAlreadyInMap(BigDecimal targetAmount, Map<ItemDto, BigDecimal> map, ItemDto toPlace) {
         if (map.containsKey(toPlace)) map.put(toPlace, map.get(toPlace).add(targetAmount));
         else map.put(toPlace, targetAmount);
     }
 
+    private boolean isTargetDish(Item item) {
+        return item.getType().equals(DISH);
+    }
+
     private void recursivelyGetDependencies(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
-        if (!item.getType().equals(BASIC) && !targetAmount.equals(BigDecimal.ZERO)) {
+        if (canContinueRecursion(item, targetAmount)) {
             for (Ingredient ingredient : item.getIngredients()) {
                 BigDecimal amountForNext = targetAmount.multiply(ingredient.getRatio());
                 buildMapOfDependencies(ingredient.getChildItem(), amountForNext, map);
             }
         }
+    }
+
+    private boolean canContinueRecursion(Item item, BigDecimal targetAmount) {
+        return !item.getType().equals(BASIC) && !targetAmount.equals(BigDecimal.ZERO);
     }
 
 
