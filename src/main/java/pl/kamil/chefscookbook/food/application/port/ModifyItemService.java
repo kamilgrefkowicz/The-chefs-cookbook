@@ -10,8 +10,6 @@ import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.response.Response;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
@@ -59,7 +57,6 @@ public interface ModifyItemService {
     @AllArgsConstructor
     @NoArgsConstructor
     class SetYieldCommand {
-        @NotNull
         private Long parentItemId;
         @Positive
         private BigDecimal itemYield;
@@ -70,7 +67,7 @@ public interface ModifyItemService {
     @NoArgsConstructor
     class UpdateDescriptionCommand {
         private Long parentItemId;
-        @Length(min = 0, max = 250)
+        @Length(max = 1000)
         private String description;
     }
 

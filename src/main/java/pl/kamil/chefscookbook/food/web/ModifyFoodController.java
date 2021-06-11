@@ -152,7 +152,9 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
         resolveModification(modification, model, object);
         return ITEM_MODIFY;
     }
+
     @GetMapping("/delete-item")
+    //todo: fix whole class to accept itemDto instead of RichItem
     public String showConfirmPageForDelete(Model model, DeleteItemCommand command, Principal user) {
         Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
 
@@ -170,7 +172,7 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     public String deleteItem(Model model, DeleteItemCommand command, Principal user) {
 
         modifyItem.deleteItem(command, user);
-        model.addAttribute(queryItem.findAllItemsBelongingToUser(user));
+        model.addAttribute("poorItemList", queryItem.findAllItemsBelongingToUser(user));
 
         return ITEMS_LIST;
     }

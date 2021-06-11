@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
@@ -22,8 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.ERROR;
-import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.ITEM_VIEW;
+import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,23 +32,26 @@ public class ViewFoodController extends ValidatedController<RichItem> {
 
     private final QueryItemService queryItem;
 
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("queryItemCommand", new QueryItemWithDependenciesCommand());
+    }
+
     @GetMapping({"/", "/my-items"})
     public String showMyItems(Model model, Principal user) {
         model.addAttribute(queryItem.findAllItemsBelongingToUser(user));
-        model.addAttribute("queryItemCommand", new QueryItemWithDependenciesCommand());
         model.addAttribute("deleteItemCommand", new DeleteItemCommand());
 
-        return "/food/my-items";
+        return ITEMS_LIST;
     }
 
     @GetMapping("/view-item")
     public String showItem(Model model, @Valid QueryItemWithDependenciesCommand command, BindingResult bindingResult, Principal user) {
 
-        if (command.getTargetAmount() == null || bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             command.setTargetAmount(BigDecimal.ONE);
         }
 
-        model.addAttribute("command", command);
         Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
 
         if (!querySuccessful(queried, model)) return ERROR;
@@ -62,7 +65,8 @@ public class ViewFoodController extends ValidatedController<RichItem> {
 
 
     }
-
+    // this splitting of maps is strongly connected to how the result is presented in thymeleaf view
+    // which is why this piece of logic stays in controller
     private void addDependencyMapsToModel(Model model, QueryItemWithDependenciesCommand command) {
         Map<PoorItem, BigDecimal> basics = new LinkedHashMap<>();
         Map<RichItem, BigDecimal> intermediates = new LinkedHashMap<>();

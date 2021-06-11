@@ -49,7 +49,7 @@
 
 
     <p>Przelicz dla :
-    <form th:action="@{/food/view-item}" th:method="get" th:object="${command}">
+    <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
         <input type="hidden" th:field="*{itemId}" th:value="${object.id}">
         <input type="text" th:field="*{targetAmount}">
         <input type="submit" value="przelicz">

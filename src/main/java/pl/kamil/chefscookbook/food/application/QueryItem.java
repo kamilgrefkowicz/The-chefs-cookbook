@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
@@ -114,6 +115,7 @@ public class QueryItem implements QueryItemService {
     }
 
     private void placeItemInMap(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
+        if (item.getType().equals(DISH)) return;
         targetAmount = targetAmount.setScale(3, RoundingMode.HALF_EVEN);
         ItemDto toPlace = convertToDto(item);
         if (map.containsKey(toPlace)) map.put(toPlace, map.get(toPlace).add(targetAmount));

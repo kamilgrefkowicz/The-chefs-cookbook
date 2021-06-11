@@ -10,8 +10,9 @@ import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.shared.response.Response;
 
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
@@ -37,7 +38,6 @@ public interface QueryItemService {
     @AllArgsConstructor
     class QueryItemWithDependenciesCommand {
 
-        @NotNull
         Long itemId;
 
         @Digits(integer = 4, fraction = 2)
