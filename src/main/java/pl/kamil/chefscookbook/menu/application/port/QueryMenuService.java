@@ -1,6 +1,6 @@
 package pl.kamil.chefscookbook.menu.application.port;
 
-import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
+import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.shared.response.Response;
 
@@ -11,6 +11,8 @@ public interface QueryMenuService {
 
     List<RichMenu> getAllMenusBelongingToUser(Principal user);
 
-    Response<MenuDto> findById(Long menuId, Principal user, boolean getFullMenu);
+    Response<RichMenu> findById(Long menuId, Principal user);
+
+    Response<FullMenu> getFullMenu(Long menuId, Principal user);
 
 }

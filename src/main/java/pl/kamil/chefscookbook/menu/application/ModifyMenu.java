@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
-import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
@@ -32,13 +30,13 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
 
     @Override
     @Transactional
-    public Response<PoorMenu> createNewMenu(CreateNewMenuCommand command, Principal user) {
+    public Response<RichMenu> createNewMenu(CreateNewMenuCommand command, Principal user) {
 
         if (menuRepository.findByNameAndUserEntityId(command.getMenuName(), Long.valueOf(user.getName())).isPresent())
             return Response.failure(MENU_NAME_TAKEN);
 
         Menu menu = newMenuCommandToMenu(command, user);
-        return Response.success(new PoorMenu(menuRepository.save(menu)));
+        return Response.success(new RichMenu(menuRepository.save(menu)));
     }
 
     private Menu newMenuCommandToMenu(CreateNewMenuCommand command, Principal user) {
@@ -48,7 +46,7 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
 
     @Override
     @Transactional
-    public Response<MenuDto> addItemsToMenu(AddItemsToMenuCommand command, Principal user) {
+    public Response<RichMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user) {
 
         Menu menu = menuRepository.getOne(command.getMenuId());
 
@@ -68,7 +66,7 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
 
     @Override
     @Transactional
-    public Response<MenuDto> removeItemFromMenu(RemoveItemFromMenuCommand command, Principal user) {
+    public Response<RichMenu> removeItemFromMenu(RemoveItemFromMenuCommand command, Principal user) {
 
         Menu menu = menuRepository.getOne(command.getMenuId());
 

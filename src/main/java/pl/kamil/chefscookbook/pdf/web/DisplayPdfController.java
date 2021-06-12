@@ -7,11 +7,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
-import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
 import pl.kamil.chefscookbook.pdf.application.port.PdfCreationService;
 import pl.kamil.chefscookbook.shared.response.Response;
@@ -48,10 +49,10 @@ private final QueryMenuService queryMenu;
     @GetMapping("/menu")
     public ResponseEntity<Resource> getMenuPdf(@RequestParam Long menuId, Principal user) {
 
-        Response<MenuDto> queried = queryMenu.findById(menuId, user, true);
+        Response<FullMenu> queried = queryMenu.getFullMenu(menuId, user);
         if (!queried.isSuccess()) return ResponseEntity.noContent().build();
 
-        FullMenu menu = (FullMenu) queried.getData();
+        FullMenu menu = queried.getData();
 
         Resource resource = new ByteArrayResource(pdfCreation.generatePdfForMenu(menu).toByteArray());
         String contentDisposition = getContentDisposition(menu.getMenuName());

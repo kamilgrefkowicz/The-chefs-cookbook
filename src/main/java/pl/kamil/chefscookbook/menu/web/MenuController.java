@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService.QueryItemWithDependenciesCommand;
-import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
-import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService.AddItemsToMenuCommand;
@@ -29,7 +27,7 @@ import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/menu")
-public class MenuController extends ValidatedController<MenuDto> {
+public class MenuController extends ValidatedController<RichMenu> {
 
     private final ModifyMenuService modifyMenu;
     private final QueryMenuService queryMenu;
@@ -61,7 +59,7 @@ public class MenuController extends ValidatedController<MenuDto> {
     public String createNewMenu(Model model, @Valid CreateNewMenuCommand command, BindingResult result, Principal user) {
         if (result.hasErrors()) return MENU_CREATE;
 
-        Response<PoorMenu> menuCreated = modifyMenu.createNewMenu(command, user);
+        Response<RichMenu> menuCreated = modifyMenu.createNewMenu(command, user);
 
         if (!menuCreated.isSuccess()) {
             model.addAttribute("error", menuCreated.getError());
@@ -75,7 +73,7 @@ public class MenuController extends ValidatedController<MenuDto> {
     @GetMapping("/view-menu")
     public String showMenu(Model model, @RequestParam Long menuId, Principal user) {
 
-        Response<MenuDto> queried = queryMenu.findById(menuId, user, false);
+        Response<RichMenu> queried = queryMenu.findById(menuId, user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
@@ -100,11 +98,11 @@ public class MenuController extends ValidatedController<MenuDto> {
     @PostMapping("/add-items")
     public String addItemsToMenu(Model model, AddItemsToMenuCommand command, Principal user) {
 
-        Response<MenuDto> queried = queryMenu.findById(command.getMenuId(), user, false);
+        Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        Response<MenuDto> modification = modifyMenu.addItemsToMenu(command, user);
+        Response<RichMenu> modification = modifyMenu.addItemsToMenu(command, user);
 
         resolveModification(modification, model, queried.getData());
 
@@ -114,11 +112,11 @@ public class MenuController extends ValidatedController<MenuDto> {
     @PostMapping("/remove-item")
     public String removeItemFromMenu(Model model, RemoveItemFromMenuCommand command, Principal user) {
 
-        Response<MenuDto> queried = queryMenu.findById(command.getMenuId(), user, false);
+        Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        Response<MenuDto> modification = modifyMenu.removeItemFromMenu(command, user);
+        Response<RichMenu> modification = modifyMenu.removeItemFromMenu(command, user);
 
         resolveModification(modification, model, queried.getData());
 
@@ -127,7 +125,7 @@ public class MenuController extends ValidatedController<MenuDto> {
     }
     @GetMapping("/delete-menu")
     public String showDeleteMenuConfirmation(Model model, DeleteMenuCommand command, Principal user){
-        Response<MenuDto> queried = queryMenu.findById(command.getMenuId(), user, false);
+        Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 

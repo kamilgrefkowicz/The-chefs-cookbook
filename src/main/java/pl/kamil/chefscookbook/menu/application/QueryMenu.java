@@ -6,7 +6,6 @@ import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
-import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
@@ -23,6 +22,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
 
 @Service
@@ -43,16 +44,28 @@ public class QueryMenu implements QueryMenuService {
 
     @Override
     @Transactional
-    public Response<MenuDto> findById(Long menuId, Principal user, boolean getFullMenu) {
+    public Response<RichMenu> findById(Long menuId, Principal user) {
         Optional<Menu> opt = menuRepository.findById(menuId);
 
-        if (opt.isEmpty()) return Response.failure("Menu o id " + menuId + " nie istnieje");
+        if (opt.isEmpty()) return Response.failure(NOT_FOUND);
 
         Menu menu = opt.get();
         if (!userSecurity.belongsTo(menu, user))
-            return Response.failure("You do not own this menu");
+            return Response.failure(NOT_AUTHORIZED);
 
-        if (!getFullMenu) return Response.success(new RichMenu(menu));
+        return Response.success(new RichMenu(menu));
+
+    }
+
+    @Override
+    public Response<FullMenu> getFullMenu(Long menuId, Principal user) {
+        Optional<Menu> opt = menuRepository.findById(menuId);
+
+        if (opt.isEmpty()) return Response.failure(NOT_FOUND);
+
+        Menu menu = opt.get();
+        if (!userSecurity.belongsTo(menu, user))
+            return Response.failure(NOT_AUTHORIZED);
 
         return Response.success(convertToFullMenu(menu));
     }
