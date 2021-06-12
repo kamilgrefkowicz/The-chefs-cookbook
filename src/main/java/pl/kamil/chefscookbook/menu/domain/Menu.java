@@ -41,6 +41,10 @@ public class Menu extends OwnedEntity {
         this.items.addAll(itemsToAdd);
     }
 
+    public void addSingleItemToMenu(Item item) {
+        this.items.add(item);
+    }
+
     public void removeItem(Item toRemove) {
         this.items.remove(toRemove);
     }

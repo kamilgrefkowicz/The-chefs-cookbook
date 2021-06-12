@@ -6,6 +6,7 @@ import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
 import pl.kamil.chefscookbook.menu.application.dto.PoorMenu;
+import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
 import pl.kamil.chefscookbook.shared.response.Response;
@@ -18,10 +19,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static pl.kamil.chefscookbook.menu.application.dto.PoorMenu.convertToPoorMenu;
-import static pl.kamil.chefscookbook.menu.application.dto.RichMenu.convertToRichMenu;
-import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
-import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.*;
 
 @Service
 @AllArgsConstructor
@@ -37,10 +35,10 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
     public Response<PoorMenu> createNewMenu(CreateNewMenuCommand command, Principal user) {
 
         if (menuRepository.findByNameAndUserEntityId(command.getMenuName(), Long.valueOf(user.getName())).isPresent())
-            return Response.failure("You already have a menu called: " + command.getMenuName());
+            return Response.failure(MENU_NAME_TAKEN);
 
         Menu menu = newMenuCommandToMenu(command, user);
-        return Response.success(convertToPoorMenu(menuRepository.save(menu)));
+        return Response.success(new PoorMenu(menuRepository.save(menu)));
     }
 
     private Menu newMenuCommandToMenu(CreateNewMenuCommand command, Principal user) {
@@ -64,7 +62,7 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
             itemsToAdd.add(item);
         }
         menu.addItemsToMenu(itemsToAdd);
-        return Response.success(convertToRichMenu(menuRepository.save(menu)));
+        return Response.success(new RichMenu(menuRepository.save(menu)));
 
     }
 
@@ -78,7 +76,7 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
 
         menu.removeItem(toRemove);
 
-        return Response.success(convertToRichMenu(menuRepository.save(menu)));
+        return Response.success(new RichMenu(menuRepository.save(menu)));
 
     }
 

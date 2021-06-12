@@ -7,9 +7,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.CreateUserUseCase;
 import pl.kamil.chefscookbook.user.application.port.CreateUserUseCase.CreateUserCommand;
-import pl.kamil.chefscookbook.shared.exception.NameAlreadyTakenException;
+import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.validation.Valid;
 
@@ -36,13 +37,15 @@ public class UserController {
 
         }
 
-        try {
-            userService.createNewUser(command);
-        } catch (NameAlreadyTakenException e) {
-            model.addAttribute("message", "An account with this username already exists.");
+        Response<UserEntity> userCreation = userService.createNewUser(command);
+
+        if (!userCreation.isSuccess()) {
+            model.addAttribute("message", userCreation.getError());
             model.addAttribute("user", command);
             return "user/registration";
         }
+
+
         model.addAttribute("message", "Your account has been created");
 
         return "main-page";

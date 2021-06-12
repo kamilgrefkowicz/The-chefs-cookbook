@@ -2,11 +2,9 @@ package pl.kamil.chefscookbook.menu.application.dto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.menu.domain.Menu;
 
-import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,8 +20,4 @@ public class RichMenu extends MenuDto{
                 .map(PoorItem::new)
                 .collect(Collectors.toSet());
     }
-    public static RichMenu convertToRichMenu(Menu menu) {
-        return new RichMenu(menu);
-    }
-
 }

@@ -11,5 +11,6 @@ public class MessageValueHolder {
     public static final String LOOP_SHORT = "Przedmiot nie może zależeć sam od siebie";
     public static final String ITEM_NAME_TAKEN = "Masz już przedmiot o takiej nazwie";
     public static final String USER_NAME_TAKEN = "Użytkownik o takiej nazwie już istnieje";
+    public static final String MENU_NAME_TAKEN = "Masz już menu o takiej nazwie";
 
 }

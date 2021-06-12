@@ -3,13 +3,14 @@ package pl.kamil.chefscookbook.user.application;
 import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.shared.jpa.OwnedEntity;
+import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 
 import java.security.Principal;
 
 import static pl.kamil.chefscookbook.user.domain.MasterUserConfig.getMasterUser;
 
 @Component
-public class UserSecurity implements pl.kamil.chefscookbook.user.application.port.UserSecurityService {
+public class UserSecurity implements UserSecurityService {
 
 
     @Override

@@ -1,12 +1,8 @@
 package pl.kamil.chefscookbook.menu.application.dto;
 
-
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-
 import pl.kamil.chefscookbook.menu.domain.Menu;
-
-
 
 @Value
 @EqualsAndHashCode(callSuper = true)
@@ -17,8 +13,5 @@ public class PoorMenu extends MenuDto {
         super(menu.getId(), menu.getName());
     }
 
-    public static PoorMenu convertToPoorMenu(Menu menu) {
-        return new PoorMenu(menu);
-    }
 
 }

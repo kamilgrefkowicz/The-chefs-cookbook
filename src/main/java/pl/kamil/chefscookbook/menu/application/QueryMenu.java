@@ -23,7 +23,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.menu.application.dto.RichMenu.convertToRichMenu;
 
 
 @Service
@@ -38,7 +37,7 @@ public class QueryMenu implements QueryMenuService {
     public List<RichMenu> getAllMenusBelongingToUser(Principal user) {
         return menuRepository.findAllByUserEntityId(Long.valueOf(user.getName()))
                 .stream()
-                .map(RichMenu::convertToRichMenu)
+                .map(RichMenu::new)
                 .collect(Collectors.toList());
     }
 
@@ -53,7 +52,7 @@ public class QueryMenu implements QueryMenuService {
         if (!userSecurity.belongsTo(menu, user))
             return Response.failure("You do not own this menu");
 
-        if (!getFullMenu) return Response.success(convertToRichMenu(menu));
+        if (!getFullMenu) return Response.success(new RichMenu(menu));
 
         return Response.success(convertToFullMenu(menu));
     }
