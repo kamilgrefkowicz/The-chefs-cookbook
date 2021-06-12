@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -67,15 +68,18 @@ public class ModifyItem implements ModifyItemService {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Item childItem = itemRepository.getOne(command.getChildItemId());
 
-        boolean eligibilityValidation = (userSecurity.belongsTo(parentItem, user) && userSecurity.belongsToOrIsPublic(childItem, user));
-        if (!eligibilityValidation) return Response.failure(NOT_AUTHORIZED);
+        if (!isEligible(user, parentItem, childItem)) return Response.failure(NOT_AUTHORIZED);
 
         Response<Void> verifyLoops = checkForLoops(parentItem, childItem);
         if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());
 
         parentItem.addIngredient(childItem, command.getAmount());
 
-        return Response.success(new RichItem(itemRepository.save(parentItem)));
+        return successfulResponse(parentItem);
+    }
+
+    private boolean isEligible(Principal user, Item parentItem, Item childItem) {
+        return (userSecurity.belongsTo(parentItem, user) && userSecurity.belongsToOrIsPublic(childItem, user));
     }
 
     private Response<Void> checkForLoops(Item parentItem, Item childItem) {
@@ -103,33 +107,40 @@ public class ModifyItem implements ModifyItemService {
     @Override
     @Transactional
     public Response<RichItem> setYield(SetYieldCommand command, Principal user) {
-        Item item = itemRepository.findById(command.getParentItemId()).orElseThrow();
-        if (!userSecurity.belongsTo(item, user))
-            return Response.failure(NOT_AUTHORIZED);
+        Optional<Item> optional = itemRepository.findById(command.getParentItemId());
+        if (optional.isEmpty()) return Response.failure(NOT_FOUND);
+        Item item = optional.get();
+        if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
 
         item.getRecipe().setRecipeYield(command.getItemYield());
-        return Response.success(new RichItem(itemRepository.save(item)));
+        return successfulResponse(item);
     }
 
     @Override
     @Transactional
     public Response<RichItem> updateDescription(UpdateDescriptionCommand command, Principal user) {
-        Item item = itemRepository.getOne(command.getParentItemId());
-        if (!userSecurity.belongsTo(item, user))
-            return Response.failure(NOT_AUTHORIZED);
-        item.getRecipe().setDescription(command.getDescription());
-        return Response.success(new RichItem(itemRepository.save(item)));
+        Optional<Item> optional = itemRepository.findById(command.getParentItemId());
+        if (optional.isEmpty()) return Response.failure(NOT_FOUND);
+        Item item = optional.get();
+        if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
 
+        item.getRecipe().setDescription(command.getDescription());
+        return successfulResponse(item);
+
+    }
+
+    private Response<RichItem> successfulResponse(Item item) {
+        return Response.success(new RichItem(itemRepository.save(item)));
     }
 
     @Override
     @Transactional
     public Response<Void> deleteItem(DeleteItemCommand command, Principal user) {
 
-        Item item = itemRepository.getOne(command.getItemId());
-
-        if (!userSecurity.belongsTo(item, user))
-            return Response.failure(NOT_AUTHORIZED);
+        Optional<Item> optional = itemRepository.findById(command.getItemId());
+        if (optional.isEmpty()) return Response.failure(NOT_FOUND);
+        Item item = optional.get();
+        if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
 
         removeThisItemFromAllDependencies(command.getItemId());
 
@@ -149,12 +160,12 @@ public class ModifyItem implements ModifyItemService {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Ingredient ingredientToRemove = ingredientRepository.getOne(command.getIngredientId());
 
-        if (!userSecurity.belongsTo(parentItem, user))
+        if (!isEligible(user, parentItem, ingredientToRemove.getChildItem()))
             return Response.failure(NOT_AUTHORIZED);
 
         ingredientToRemove.removeSelf();
 
-        return Response.success(new RichItem(itemRepository.save(parentItem)));
+        return successfulResponse(parentItem);
     }
 
 
