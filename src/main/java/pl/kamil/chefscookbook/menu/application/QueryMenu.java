@@ -79,6 +79,7 @@ public class QueryMenu implements QueryMenuService {
 
         menu.getItems().forEach(item -> getAllDependencies(item, allDishesAndDependencies));
 
+        //it's somehow tidier when done in two passes ;)
         allDishesAndDependencies.forEach(item -> placeItemInAppropriateSet(item, dishes, intermediates, basics));
 
         return new FullMenu(menu, dishes, intermediates, basics);
@@ -86,9 +87,13 @@ public class QueryMenu implements QueryMenuService {
 
     private void getAllDependencies(Item item, Set<Item> allDishesAndDependencies) {
         allDishesAndDependencies.add(item);
-        if (!item.getType().equals(BASIC)) {
+        if (canContinueRecursion(item)) {
             item.getIngredients().forEach(ingredient -> getAllDependencies(ingredient.getChildItem(), allDishesAndDependencies));
         }
+    }
+
+    private boolean canContinueRecursion(Item item) {
+        return !item.getType().equals(BASIC);
     }
 
 
