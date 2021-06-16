@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
+import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
 import pl.kamil.chefscookbook.shared.response.Response;
@@ -21,7 +22,7 @@ import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.*;
 
 @Service
 @AllArgsConstructor
-public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.ModifyMenuService {
+public class ModifyMenu implements ModifyMenuService {
 
     private final MenuRepository menuRepository;
     private final UserRepository userRepository;
@@ -36,6 +37,10 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
             return Response.failure(MENU_NAME_TAKEN);
 
         Menu menu = newMenuCommandToMenu(command, user);
+        return successfulResponse(menu);
+    }
+
+    private Response<RichMenu> successfulResponse(Menu menu) {
         return Response.success(new RichMenu(menuRepository.save(menu)));
     }
 
@@ -48,7 +53,9 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
     @Transactional
     public Response<RichMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user) {
 
-        Menu menu = menuRepository.getOne(command.getMenuId());
+        Response<Menu> securityPass = passSecurity(command.getMenuId(), user);
+        if (!securityPass.isSuccess()) return Response.failure(securityPass.getError());
+        Menu menu = securityPass.getData();
 
         Set<Item> itemsToAdd = new HashSet<>();
 
@@ -60,7 +67,7 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
             itemsToAdd.add(item);
         }
         menu.addItemsToMenu(itemsToAdd);
-        return Response.success(new RichMenu(menuRepository.save(menu)));
+        return successfulResponse(menu);
 
     }
 
@@ -68,24 +75,36 @@ public class ModifyMenu implements pl.kamil.chefscookbook.menu.application.port.
     @Transactional
     public Response<RichMenu> removeItemFromMenu(RemoveItemFromMenuCommand command, Principal user) {
 
-        Menu menu = menuRepository.getOne(command.getMenuId());
+        Response<Menu> securityPass = passSecurity(command.getMenuId(), user);
+        if (!securityPass.isSuccess()) return Response.failure(securityPass.getError());
+        Menu menu = securityPass.getData();
 
         Item toRemove = itemRepository.getOne(command.getItemId());
 
         menu.removeItem(toRemove);
 
-        return Response.success(new RichMenu(menuRepository.save(menu)));
+        return successfulResponse(menu);
 
     }
 
     @Override
     public Response<Void> deleteMenu(DeleteMenuCommand command, Principal user) {
 
-        Menu menu = menuRepository.getOne(command.getMenuId());
-
-        if (!userSecurity.belongsTo(menu, user)) return Response.failure("You're not authorized to modify this menu");
+        Response<Menu> securityPass = passSecurity(command.getMenuId(), user);
+        if (!securityPass.isSuccess()) return Response.failure(securityPass.getError());
+        Menu menu = securityPass.getData();
 
         menuRepository.delete(menu);
+
         return Response.success(null);
+    }
+
+    private Response<Menu> passSecurity(Long menuId, Principal user) {
+        Optional<Menu> queried = menuRepository.findById(menuId);
+        if (queried.isEmpty()) return Response.failure(NOT_FOUND);
+        Menu menu = queried.get();
+        if (!userSecurity.belongsTo(menu, user)) return Response.failure(NOT_AUTHORIZED);
+
+        return Response.success(menu);
     }
 }

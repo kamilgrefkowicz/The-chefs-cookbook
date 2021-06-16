@@ -31,6 +31,7 @@ public interface ModifyMenuService {
 
     @Data
     @NoArgsConstructor
+    @AllArgsConstructor
     class AddItemsToMenuCommand {
 
         private Long menuId;
@@ -38,12 +39,16 @@ public interface ModifyMenuService {
     }
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     class RemoveItemFromMenuCommand {
         private Long menuId;
         private Long itemId;
     }
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     class DeleteMenuCommand {
         private Long menuId;
     }
