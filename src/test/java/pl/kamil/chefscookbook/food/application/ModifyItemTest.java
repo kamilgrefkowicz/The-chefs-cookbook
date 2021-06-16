@@ -185,6 +185,7 @@ class ModifyItemTest {
     void addingValidIngredientShouldCallRepositoryToSave() {
         Principal principal = getPrincipal(3L);
         Item childItem = getItem(1L, INTERMEDIATE);
+        childItem.setName("child");
         Item parentItem = getItem(2L, INTERMEDIATE);
         parentItem.setName("parent");
         parentItem.setUserEntity(getUserEntity(1L));
@@ -199,6 +200,7 @@ class ModifyItemTest {
         Item saved = itemCaptor.getValue();
         assertThat(saved.getName(), equalTo("parent"));
         assertThat(saved.getIngredients(), hasSize(1));
+        assertThat(saved.getIngredients().stream().findFirst().get().getChildItem().getName(), equalTo("child"));
     }
     @Test
     void addingValidIngredientShouldReturnSuccessfulResponse() {

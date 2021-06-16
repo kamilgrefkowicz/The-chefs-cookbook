@@ -5,14 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.CreateUserUseCase;
 import pl.kamil.chefscookbook.user.application.port.CreateUserUseCase.CreateUserCommand;
-import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import javax.validation.Valid;
+
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.USER_CREATION_SUCCESSFUL;
+import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.USER_NEW;
 
 @Controller
 @RequestMapping("/user")
@@ -21,32 +24,33 @@ public class UserController {
 
     private final CreateUserUseCase userService;
 
-    @GetMapping("/new-user")
-    public String showRegistrationForm(Model model) {
-        CreateUserCommand command = new CreateUserCommand();
-        model.addAttribute("user", command);
-        return "user/registration";
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("user", new CreateUserCommand());
+    }
+
+    @GetMapping("/register-user")
+    public String showRegistrationForm() {
+
+        return USER_NEW;
     }
 
     @PostMapping("/register-user")
     public String registerUser(Model model, @Valid CreateUserCommand command, BindingResult result) {
 
         if (result.hasErrors()) {
-            model.addAttribute("user", command);
-            return "user/registration";
-
+            return USER_NEW;
         }
 
-        Response<UserEntity> userCreation = userService.createNewUser(command);
+        Response<Void> userCreation = userService.createNewUser(command);
 
         if (!userCreation.isSuccess()) {
             model.addAttribute("message", userCreation.getError());
-            model.addAttribute("user", command);
-            return "user/registration";
+            return USER_NEW;
         }
 
 
-        model.addAttribute("message", "Your account has been created");
+        model.addAttribute("message", USER_CREATION_SUCCESSFUL);
 
         return "main-page";
     }

@@ -18,11 +18,13 @@ public class CreateUser implements CreateUserUseCase {
     private final PasswordEncoder encoder;
 
     @Override
-    public Response<UserEntity> createNewUser(CreateUserCommand command)   {
+    public Response<Void> createNewUser(CreateUserCommand command)   {
         if (usernameTaken(command.getUsername())) return Response.failure(USER_NAME_TAKEN);
 
         UserEntity user = new UserEntity(command.getUsername(), encoder.encode(command.getPassword()));
-        return Response.success(userRepository.save(user));
+
+        userRepository.save(user);
+        return Response.success(null);
     }
 
     private boolean usernameTaken(String username) {

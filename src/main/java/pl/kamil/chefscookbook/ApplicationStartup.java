@@ -5,12 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService.CreateNewItemCommand;
-
-
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
-
 
 import java.security.Principal;
 
@@ -36,8 +33,8 @@ public class ApplicationStartup implements CommandLineRunner {
     private void initializeUser() {
         UserEntity ccb = getMasterUser();
         UserEntity user = new UserEntity("kamil", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
-        userRepository.save(ccb).getId();
-        userRepository.save(user).getId();
+        userRepository.save(ccb);
+        userRepository.save(user);
     }
 
 

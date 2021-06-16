@@ -4,7 +4,7 @@ public class MasterUserConfig {
 
     private MasterUserConfig(){}
 
-    private static final UserEntity masterUser = new UserEntity("CCB", "");
+    private static final UserEntity masterUser = new UserEntity("CCB", "very secret password");
 
     public static UserEntity getMasterUser() {
         masterUser.setId(1L);
