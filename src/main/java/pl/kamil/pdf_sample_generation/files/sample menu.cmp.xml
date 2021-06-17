@@ -1,0 +1,1714 @@
+<root>
+<Document>
+<P bBox="[36 760.54 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Test menu</Span>
+</P>
+<P bBox="[36 752.54 559 760.54 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 714.57 559 752.54 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Wygenerowane przez Chefs CookBook</Span>
+</P>
+<P bBox="[36 774.02 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate0</Span>
+</P>
+<P bBox="[36 748.04 559 774.02 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 725.06 544.5 748.04 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 725.56 290 747.54 ]" o="/Layout" padding="2">
+<L bBox="[38.5 727.56 288 745.54 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 727.56 288 745.54 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 727.56 288 745.54 ]" o="/Layout">
+<Span>
+0.0 KG basic0</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 725.56 544 747.54 ]" o="/Layout" padding="2">
+<P bBox="[292.5 727.56 542 745.54 ]" o="/Layout">
+<Span>
+this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 717.06 559 725.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 685.08 559 717.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate1</Span>
+</P>
+<P bBox="[36 659.1 559 685.08 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 636.12 544.5 659.1 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 636.62 290 658.6 ]" o="/Layout" padding="2">
+<L bBox="[38.5 638.62 288 656.6 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 638.62 288 656.6 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 638.62 288 656.6 ]" o="/Layout">
+<Span>
+0.4 KG basic1</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 636.62 544 658.6 ]" o="/Layout" padding="2">
+<P bBox="[292.5 638.62 542 656.6 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 628.12 559 636.12 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 596.14 559 628.12 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate2</Span>
+</P>
+<P bBox="[36 570.16 559 596.14 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 529.2 544.5 570.16 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 529.7 290 569.66 ]" o="/Layout" padding="2">
+<L bBox="[38.5 549.68 288 567.66 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 549.68 288 567.66 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 549.68 288 567.66 ]" o="/Layout">
+<Span>
+0.8 KG basic2</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 529.7 544 569.66 ]" o="/Layout" padding="2">
+<P bBox="[292.5 531.7 542 567.66 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 521.2 559 529.2 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 489.22 559 521.2 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate3</Span>
+</P>
+<P bBox="[36 463.24 559 489.22 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 422.28 544.5 463.24 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 422.78 290 462.74 ]" o="/Layout" padding="2">
+<L bBox="[38.5 442.76 288 460.74 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 442.76 288 460.74 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 442.76 288 460.74 ]" o="/Layout">
+<Span>
+1.2 KG basic3</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 422.78 544 462.74 ]" o="/Layout" padding="2">
+<P bBox="[292.5 424.78 542 460.74 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 414.28 559 422.28 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 382.3 559 414.28 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate4</Span>
+</P>
+<P bBox="[36 356.32 559 382.3 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 315.35 544.5 356.32 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 315.85 290 355.82 ]" o="/Layout" padding="2">
+<L bBox="[38.5 335.84 288 353.82 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 335.84 288 353.82 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 335.84 288 353.82 ]" o="/Layout">
+<Span>
+1.6 KG basic4</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 315.85 544 355.82 ]" o="/Layout" padding="2">
+<P bBox="[292.5 317.85 542 353.82 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 307.35 559 315.35 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 275.38 559 307.35 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate5</Span>
+</P>
+<P bBox="[36 249.4 559 275.38 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 208.43 544.5 249.4 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 208.93 290 248.9 ]" o="/Layout" padding="2">
+<L bBox="[38.5 228.91 288 246.9 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 228.91 288 246.9 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 228.91 288 246.9 ]" o="/Layout">
+<Span>
+2.0 KG basic5</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 208.93 544 248.9 ]" o="/Layout" padding="2">
+<P bBox="[292.5 210.93 542 246.9 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 200.43 559 208.43 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 168.46 559 200.43 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate6</Span>
+</P>
+<P bBox="[36 142.47 559 168.46 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 119.49 544.5 142.47 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 119.99 290 141.97 ]" o="/Layout" padding="2">
+<L bBox="[38.5 121.99 288 139.97 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 121.99 288 139.97 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 121.99 288 139.97 ]" o="/Layout">
+<Span>
+2.4 KG basic6</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 119.99 544 141.97 ]" o="/Layout" padding="2">
+<P bBox="[292.5 121.99 542 139.97 ]" o="/Layout">
+<Span>
+this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 111.49 559 119.49 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 79.52 559 111.49 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate7</Span>
+</P>
+<P bBox="[36 53.53 559 79.52 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 765.04 544.5 806 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 765.54 290 805.5 ]" o="/Layout" padding="2">
+<L bBox="[38.5 767.54 288 803.5 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 785.52 288 803.5 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 785.52 288 803.5 ]" o="/Layout">
+<Span>
+1.4 KG basic7</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 767.54 288 785.52 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 767.54 288 785.52 ]" o="/Layout">
+<Span>
+1.4 KG basic0</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 765.54 544 805.5 ]" o="/Layout" padding="2">
+<P bBox="[292.5 785.52 542 803.5 ]" o="/Layout">
+<Span>
+this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 757.04 559 765.04 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 725.06 559 757.04 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate8</Span>
+</P>
+<P bBox="[36 699.08 559 725.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 658.11 544.5 699.08 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 658.61 290 698.58 ]" o="/Layout" padding="2">
+<L bBox="[38.5 660.61 288 696.58 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 678.6 288 696.58 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 678.6 288 696.58 ]" o="/Layout">
+<Span>
+1.6 KG basic8</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 660.61 288 678.6 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 660.61 288 678.6 ]" o="/Layout">
+<Span>
+1.6 KG basic1</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 658.61 544 698.58 ]" o="/Layout" padding="2">
+<P bBox="[292.5 678.6 542 696.58 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 650.11 559 658.11 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 618.14 559 650.11 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate9</Span>
+</P>
+<P bBox="[36 592.16 559 618.14 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 551.19 544.5 592.16 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 551.69 290 591.66 ]" o="/Layout" padding="2">
+<L bBox="[38.5 553.69 288 589.66 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 571.67 288 589.66 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 571.67 288 589.66 ]" o="/Layout">
+<Span>
+1.8 KG basic9</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 553.69 288 571.67 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 553.69 288 571.67 ]" o="/Layout">
+<Span>
+1.8 KG basic2</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 551.69 544 591.66 ]" o="/Layout" padding="2">
+<P bBox="[292.5 553.69 542 589.66 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 543.19 559 551.19 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 511.22 559 543.19 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate10</Span>
+</P>
+<P bBox="[36 485.23 559 511.22 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 444.27 544.5 485.23 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 444.77 290 484.73 ]" o="/Layout" padding="2">
+<L bBox="[38.5 446.77 288 482.73 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 464.75 288 482.73 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 464.75 288 482.73 ]" o="/Layout">
+<Span>
+2.0 KG basic10</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 446.77 288 464.75 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 446.77 288 464.75 ]" o="/Layout">
+<Span>
+2.0 KG basic3</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 444.77 544 484.73 ]" o="/Layout" padding="2">
+<P bBox="[292.5 446.77 542 482.73 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 436.27 559 444.27 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 404.29 559 436.27 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate11</Span>
+</P>
+<P bBox="[36 378.31 559 404.29 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 337.35 544.5 378.31 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 337.85 290 377.81 ]" o="/Layout" padding="2">
+<L bBox="[38.5 339.85 288 375.81 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 357.83 288 375.81 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 357.83 288 375.81 ]" o="/Layout">
+<Span>
+2.2 KG basic11</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 339.85 288 357.83 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 339.85 288 357.83 ]" o="/Layout">
+<Span>
+2.2 KG basic4</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 337.85 544 377.81 ]" o="/Layout" padding="2">
+<P bBox="[292.5 339.85 542 375.81 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 329.35 559 337.35 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 297.37 559 329.35 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate12</Span>
+</P>
+<P bBox="[36 271.39 559 297.37 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 230.43 544.5 271.39 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 230.93 290 270.89 ]" o="/Layout" padding="2">
+<L bBox="[38.5 232.93 288 268.89 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 250.91 288 268.89 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 250.91 288 268.89 ]" o="/Layout">
+<Span>
+2.4 KG basic12</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 232.93 288 250.91 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 232.93 288 250.91 ]" o="/Layout">
+<Span>
+2.4 KG basic5</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 230.93 544 270.89 ]" o="/Layout" padding="2">
+<P bBox="[292.5 232.93 542 268.89 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 222.43 559 230.43 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 190.45 559 222.43 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate13</Span>
+</P>
+<P bBox="[36 164.47 559 190.45 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table bBox="[36 123.5 544.5 164.47 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 124 290 163.97 ]" o="/Layout" padding="2">
+<L bBox="[38.5 126 288 161.97 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 143.99 288 161.97 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 143.99 288 161.97 ]" o="/Layout">
+<Span>
+2.6 KG basic13</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 126 288 143.99 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 126 288 143.99 ]" o="/Layout">
+<Span>
+2.6 KG basic6</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 124 544 163.97 ]" o="/Layout" padding="2">
+<P bBox="[292.5 143.99 542 161.97 ]" o="/Layout">
+<Span>
+this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 115.5 559 123.5 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 83.53 559 115.5 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+intermediate14</Span>
+</P>
+<P bBox="[36 57.55 559 83.53 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Przepis na 1 KG</Span>
+</P>
+<Table>
+<TR>
+<TD o="/Layout" padding="2">
+<L>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 38.5 288 55.05 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 38.5 288 55.05 ]" o="/Layout">
+<Span>
+2.8 KG basic14</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 785.52 288 803.5 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 785.52 288 803.5 ]" o="/Layout">
+<Span>
+2.8 KG basic0</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD o="/Layout" padding="2">
+<P bBox="[292.5 38.5 542 55.05 ]" o="/Layout">
+<Span>
+this is a test; this is a test; </Span>
+</P>
+</TD>
+<TD bBox="[290.5 783.52 544 805.5 ]" o="/Layout" padding="2">
+</TD>
+</TR>
+</Table>
+<P bBox="[36 775.02 559 783.02 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 774.02 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 0</Span>
+</P>
+<P bBox="[36 766.02 559 774.02 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 725.06 544.5 766.02 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 725.56 290 765.52 ]" o="/Layout" padding="2">
+<L bBox="[38.5 727.56 288 763.52 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 745.54 288 763.52 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 745.54 288 763.52 ]" o="/Layout">
+<Span>
+0.0 KG basic0</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 727.56 288 745.54 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 727.56 288 745.54 ]" o="/Layout">
+<Span>
+0.0 KG intermediate1</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 725.56 544 765.52 ]" o="/Layout" padding="2">
+<P bBox="[292.5 745.54 542 763.52 ]" o="/Layout">
+<Span>
+this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 717.06 559 725.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 685.08 559 717.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 1</Span>
+</P>
+<P bBox="[36 677.08 559 685.08 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 636.12 544.5 677.08 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 636.62 290 676.58 ]" o="/Layout" padding="2">
+<L bBox="[38.5 638.62 288 674.58 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 656.6 288 674.58 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 656.6 288 674.58 ]" o="/Layout">
+<Span>
+0.2 KG basic1</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 638.62 288 656.6 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 638.62 288 656.6 ]" o="/Layout">
+<Span>
+0.2 KG intermediate2</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 636.62 544 676.58 ]" o="/Layout" padding="2">
+<P bBox="[292.5 656.6 542 674.58 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 628.12 559 636.12 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 596.14 559 628.12 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 2</Span>
+</P>
+<P bBox="[36 588.14 559 596.14 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 547.18 544.5 588.14 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 547.68 290 587.64 ]" o="/Layout" padding="2">
+<L bBox="[38.5 549.68 288 585.64 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 567.66 288 585.64 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 567.66 288 585.64 ]" o="/Layout">
+<Span>
+0.4 KG basic2</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 549.68 288 567.66 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 549.68 288 567.66 ]" o="/Layout">
+<Span>
+0.4 KG intermediate3</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 547.68 544 587.64 ]" o="/Layout" padding="2">
+<P bBox="[292.5 549.68 542 585.64 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 539.18 559 547.18 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 507.2 559 539.18 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 3</Span>
+</P>
+<P bBox="[36 499.2 559 507.2 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 458.24 544.5 499.2 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 458.74 290 498.7 ]" o="/Layout" padding="2">
+<L bBox="[38.5 460.74 288 496.7 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 478.72 288 496.7 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 478.72 288 496.7 ]" o="/Layout">
+<Span>
+0.6 KG basic3</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 460.74 288 478.72 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 460.74 288 478.72 ]" o="/Layout">
+<Span>
+0.6 KG intermediate4</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 458.74 544 498.7 ]" o="/Layout" padding="2">
+<P bBox="[292.5 460.74 542 496.7 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 450.24 559 458.24 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 418.26 559 450.24 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 4</Span>
+</P>
+<P bBox="[36 410.26 559 418.26 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 369.3 544.5 410.26 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 369.8 290 409.76 ]" o="/Layout" padding="2">
+<L bBox="[38.5 371.8 288 407.76 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 389.78 288 407.76 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 389.78 288 407.76 ]" o="/Layout">
+<Span>
+0.8 KG basic4</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 371.8 288 389.78 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 371.8 288 389.78 ]" o="/Layout">
+<Span>
+0.8 KG intermediate5</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 369.8 544 409.76 ]" o="/Layout" padding="2">
+<P bBox="[292.5 371.8 542 407.76 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 361.3 559 369.3 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 329.32 559 361.3 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 5</Span>
+</P>
+<P bBox="[36 321.32 559 329.32 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 280.36 544.5 321.32 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 280.86 290 320.82 ]" o="/Layout" padding="2">
+<L bBox="[38.5 282.86 288 318.82 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 300.84 288 318.82 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 300.84 288 318.82 ]" o="/Layout">
+<Span>
+1.0 KG basic5</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 282.86 288 300.84 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 282.86 288 300.84 ]" o="/Layout">
+<Span>
+1.0 KG intermediate6</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 280.86 544 320.82 ]" o="/Layout" padding="2">
+<P bBox="[292.5 282.86 542 318.82 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 272.36 559 280.36 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 240.38 559 272.36 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 6</Span>
+</P>
+<P bBox="[36 232.38 559 240.38 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 191.42 544.5 232.38 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 191.92 290 231.88 ]" o="/Layout" padding="2">
+<L bBox="[38.5 193.92 288 229.88 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 211.9 288 229.88 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 211.9 288 229.88 ]" o="/Layout">
+<Span>
+1.2 KG basic6</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 193.92 288 211.9 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 193.92 288 211.9 ]" o="/Layout">
+<Span>
+1.2 KG intermediate0</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 191.92 544 231.88 ]" o="/Layout" padding="2">
+<P bBox="[292.5 211.9 542 229.88 ]" o="/Layout">
+<Span>
+this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 183.42 559 191.42 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 151.44 559 183.42 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 7</Span>
+</P>
+<P bBox="[36 143.44 559 151.44 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 102.48 544.5 143.44 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 102.98 290 142.94 ]" o="/Layout" padding="2">
+<L bBox="[38.5 104.98 288 140.94 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 122.96 288 140.94 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 122.96 288 140.94 ]" o="/Layout">
+<Span>
+1.4 KG basic0</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 104.98 288 122.96 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 104.98 288 122.96 ]" o="/Layout">
+<Span>
+1.4 KG intermediate1</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 102.98 544 142.94 ]" o="/Layout" padding="2">
+<P bBox="[292.5 122.96 542 140.94 ]" o="/Layout">
+<Span>
+this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 94.48 559 102.48 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 62.5 559 94.48 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 8</Span>
+</P>
+<P bBox="[36 54.5 559 62.5 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 765.04 544.5 806 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 765.54 290 805.5 ]" o="/Layout" padding="2">
+<L bBox="[38.5 767.54 288 803.5 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 785.52 288 803.5 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 785.52 288 803.5 ]" o="/Layout">
+<Span>
+1.6 KG basic1</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 767.54 288 785.52 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 767.54 288 785.52 ]" o="/Layout">
+<Span>
+1.6 KG intermediate2</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 765.54 544 805.5 ]" o="/Layout" padding="2">
+<P bBox="[292.5 785.52 542 803.5 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 757.04 559 765.04 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 725.06 559 757.04 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 9</Span>
+</P>
+<P bBox="[36 717.06 559 725.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 676.1 544.5 717.06 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 676.6 290 716.56 ]" o="/Layout" padding="2">
+<L bBox="[38.5 678.6 288 714.56 ]" o="/Layout">
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 696.58 288 714.56 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 696.58 288 714.56 ]" o="/Layout">
+<Span>
+1.8 KG basic2</Span>
+</P>
+</LBody>
+</LI>
+<LI>
+<Lbl>
+<Span>
+- </Span>
+</Lbl>
+<LBody bBox="[38.5 678.6 288 696.58 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 678.6 288 696.58 ]" o="/Layout">
+<Span>
+1.8 KG intermediate3</Span>
+</P>
+</LBody>
+</LI>
+</L>
+</TD>
+<TD bBox="[290.5 676.6 544 716.56 ]" o="/Layout" padding="2">
+<P bBox="[292.5 678.6 542 714.56 ]" o="/Layout">
+<Span>
+this is a test; this is a test; this is a test; this is a test; </Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 668.1 559 676.1 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<P bBox="[36 760.54 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Podstawowe sk&#322;adniki u&#380;ywane w menu:</Span>
+</P>
+<Table bBox="[36 535.22 559 760.54 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 738.06 210.17 760.04 ]" o="/Layout" padding="2">
+<P bBox="[38.5 740.06 208.17 758.04 ]" o="/Layout">
+<Span>
+basic0</Span>
+</P>
+</TD>
+<TD bBox="[210.67 738.06 384.33 760.04 ]" o="/Layout" padding="2">
+<P bBox="[212.67 740.06 382.33 758.04 ]" o="/Layout">
+<Span>
+basic1</Span>
+</P>
+</TD>
+<TD bBox="[384.83 738.06 558.5 760.04 ]" o="/Layout" padding="2">
+<P bBox="[386.83 740.06 556.5 758.04 ]" o="/Layout">
+<Span>
+basic2</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 715.57 210.17 737.56 ]" o="/Layout" padding="2">
+<P bBox="[38.5 717.57 208.17 735.56 ]" o="/Layout">
+<Span>
+basic3</Span>
+</P>
+</TD>
+<TD bBox="[210.67 715.57 384.33 737.56 ]" o="/Layout" padding="2">
+<P bBox="[212.67 717.57 382.33 735.56 ]" o="/Layout">
+<Span>
+basic4</Span>
+</P>
+</TD>
+<TD bBox="[384.83 715.57 558.5 737.56 ]" o="/Layout" padding="2">
+<P bBox="[386.83 717.57 556.5 735.56 ]" o="/Layout">
+<Span>
+basic5</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 693.09 210.17 715.07 ]" o="/Layout" padding="2">
+<P bBox="[38.5 695.09 208.17 713.07 ]" o="/Layout">
+<Span>
+basic6</Span>
+</P>
+</TD>
+<TD bBox="[210.67 693.09 384.33 715.07 ]" o="/Layout" padding="2">
+<P bBox="[212.67 695.09 382.33 713.07 ]" o="/Layout">
+<Span>
+basic7</Span>
+</P>
+</TD>
+<TD bBox="[384.83 693.09 558.5 715.07 ]" o="/Layout" padding="2">
+<P bBox="[386.83 695.09 556.5 713.07 ]" o="/Layout">
+<Span>
+basic8</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 670.61 210.17 692.59 ]" o="/Layout" padding="2">
+<P bBox="[38.5 672.61 208.17 690.59 ]" o="/Layout">
+<Span>
+basic9</Span>
+</P>
+</TD>
+<TD bBox="[210.67 670.61 384.33 692.59 ]" o="/Layout" padding="2">
+<P bBox="[212.67 672.61 382.33 690.59 ]" o="/Layout">
+<Span>
+basic10</Span>
+</P>
+</TD>
+<TD bBox="[384.83 670.61 558.5 692.59 ]" o="/Layout" padding="2">
+<P bBox="[386.83 672.61 556.5 690.59 ]" o="/Layout">
+<Span>
+basic11</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 648.13 210.17 670.11 ]" o="/Layout" padding="2">
+<P bBox="[38.5 650.13 208.17 668.11 ]" o="/Layout">
+<Span>
+basic12</Span>
+</P>
+</TD>
+<TD bBox="[210.67 648.13 384.33 670.11 ]" o="/Layout" padding="2">
+<P bBox="[212.67 650.13 382.33 668.11 ]" o="/Layout">
+<Span>
+basic13</Span>
+</P>
+</TD>
+<TD bBox="[384.83 648.13 558.5 670.11 ]" o="/Layout" padding="2">
+<P bBox="[386.83 650.13 556.5 668.11 ]" o="/Layout">
+<Span>
+basic14</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 625.65 210.17 647.63 ]" o="/Layout" padding="2">
+<P bBox="[38.5 627.65 208.17 645.63 ]" o="/Layout">
+<Span>
+basic15</Span>
+</P>
+</TD>
+<TD bBox="[210.67 625.65 384.33 647.63 ]" o="/Layout" padding="2">
+<P bBox="[212.67 627.65 382.33 645.63 ]" o="/Layout">
+<Span>
+basic16</Span>
+</P>
+</TD>
+<TD bBox="[384.83 625.65 558.5 647.63 ]" o="/Layout" padding="2">
+<P bBox="[386.83 627.65 556.5 645.63 ]" o="/Layout">
+<Span>
+basic17</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 603.16 210.17 625.15 ]" o="/Layout" padding="2">
+<P bBox="[38.5 605.16 208.17 623.15 ]" o="/Layout">
+<Span>
+basic18</Span>
+</P>
+</TD>
+<TD bBox="[210.67 603.16 384.33 625.15 ]" o="/Layout" padding="2">
+<P bBox="[212.67 605.16 382.33 623.15 ]" o="/Layout">
+<Span>
+basic19</Span>
+</P>
+</TD>
+<TD bBox="[384.83 603.16 558.5 625.15 ]" o="/Layout" padding="2">
+<P bBox="[386.83 605.16 556.5 623.15 ]" o="/Layout">
+<Span>
+basic20</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 580.68 210.17 602.66 ]" o="/Layout" padding="2">
+<P bBox="[38.5 582.68 208.17 600.66 ]" o="/Layout">
+<Span>
+basic21</Span>
+</P>
+</TD>
+<TD bBox="[210.67 580.68 384.33 602.66 ]" o="/Layout" padding="2">
+<P bBox="[212.67 582.68 382.33 600.66 ]" o="/Layout">
+<Span>
+basic22</Span>
+</P>
+</TD>
+<TD bBox="[384.83 580.68 558.5 602.66 ]" o="/Layout" padding="2">
+<P bBox="[386.83 582.68 556.5 600.66 ]" o="/Layout">
+<Span>
+basic23</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 558.2 210.17 580.18 ]" o="/Layout" padding="2">
+<P bBox="[38.5 560.2 208.17 578.18 ]" o="/Layout">
+<Span>
+basic24</Span>
+</P>
+</TD>
+<TD bBox="[210.67 558.2 384.33 580.18 ]" o="/Layout" padding="2">
+<P bBox="[212.67 560.2 382.33 578.18 ]" o="/Layout">
+<Span>
+basic25</Span>
+</P>
+</TD>
+<TD bBox="[384.83 558.2 558.5 580.18 ]" o="/Layout" padding="2">
+<P bBox="[386.83 560.2 556.5 578.18 ]" o="/Layout">
+<Span>
+basic26</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 535.72 210.17 557.7 ]" o="/Layout" padding="2">
+<P bBox="[38.5 537.72 208.17 555.7 ]" o="/Layout">
+<Span>
+basic27</Span>
+</P>
+</TD>
+<TD bBox="[210.67 535.72 384.33 557.7 ]" o="/Layout" padding="2">
+<P bBox="[212.67 537.72 382.33 555.7 ]" o="/Layout">
+<Span>
+basic28</Span>
+</P>
+</TD>
+<TD bBox="[384.83 535.72 558.5 557.7 ]" o="/Layout" padding="2">
+<P bBox="[386.83 537.72 556.5 555.7 ]" o="/Layout">
+<Span>
+basic29</Span>
+</P>
+</TD>
+</TR>
+</Table>
+<P bBox="[36 768.03 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+Spis tre&#347;ci:</Span>
+</P>
+<Table bBox="[36 565.19 559 768.03 ]" o="/Layout">
+<TR>
+<TD bBox="[36.5 745.55 163.81 767.53 ]" o="/Layout" padding="2">
+<P bBox="[38.5 747.55 161.81 765.53 ]" o="/Layout">
+<Span>
+intermediate0</Span>
+</P>
+</TD>
+<TD bBox="[164.31 745.55 210.17 767.53 ]" o="/Layout" padding="2">
+<P bBox="[166.31 747.55 208.17 765.53 ]" o="/Layout">
+<Span>
+s.2</Span>
+</P>
+</TD>
+<TD bBox="[210.67 745.55 337.98 767.53 ]" o="/Layout" padding="2">
+<P bBox="[212.67 747.55 335.98 765.53 ]" o="/Layout">
+<Span>
+intermediate1</Span>
+</P>
+</TD>
+<TD bBox="[338.48 745.55 384.33 767.53 ]" o="/Layout" padding="2">
+<P bBox="[340.48 747.55 382.33 765.53 ]" o="/Layout">
+<Span>
+s.2</Span>
+</P>
+</TD>
+<TD bBox="[384.83 745.55 512.14 767.53 ]" o="/Layout" padding="2">
+<P bBox="[386.83 747.55 510.14 765.53 ]" o="/Layout">
+<Span>
+intermediate2</Span>
+</P>
+</TD>
+<TD bBox="[512.64 745.55 558.5 767.53 ]" o="/Layout" padding="2">
+<P bBox="[514.64 747.55 556.5 765.53 ]" o="/Layout">
+<Span>
+s.2</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 723.07 163.81 745.05 ]" o="/Layout" padding="2">
+<P bBox="[38.5 725.07 161.81 743.05 ]" o="/Layout">
+<Span>
+intermediate3</Span>
+</P>
+</TD>
+<TD bBox="[164.31 723.07 210.17 745.05 ]" o="/Layout" padding="2">
+<P bBox="[166.31 725.07 208.17 743.05 ]" o="/Layout">
+<Span>
+s.2</Span>
+</P>
+</TD>
+<TD bBox="[210.67 723.07 337.98 745.05 ]" o="/Layout" padding="2">
+<P bBox="[212.67 725.07 335.98 743.05 ]" o="/Layout">
+<Span>
+intermediate4</Span>
+</P>
+</TD>
+<TD bBox="[338.48 723.07 384.33 745.05 ]" o="/Layout" padding="2">
+<P bBox="[340.48 725.07 382.33 743.05 ]" o="/Layout">
+<Span>
+s.2</Span>
+</P>
+</TD>
+<TD bBox="[384.83 723.07 512.14 745.05 ]" o="/Layout" padding="2">
+<P bBox="[386.83 725.07 510.14 743.05 ]" o="/Layout">
+<Span>
+intermediate5</Span>
+</P>
+</TD>
+<TD bBox="[512.64 723.07 558.5 745.05 ]" o="/Layout" padding="2">
+<P bBox="[514.64 725.07 556.5 743.05 ]" o="/Layout">
+<Span>
+s.2</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 700.58 163.81 722.57 ]" o="/Layout" padding="2">
+<P bBox="[38.5 702.58 161.81 720.57 ]" o="/Layout">
+<Span>
+intermediate6</Span>
+</P>
+</TD>
+<TD bBox="[164.31 700.58 210.17 722.57 ]" o="/Layout" padding="2">
+<P bBox="[166.31 702.58 208.17 720.57 ]" o="/Layout">
+<Span>
+s.2</Span>
+</P>
+</TD>
+<TD bBox="[210.67 700.58 337.98 722.57 ]" o="/Layout" padding="2">
+<P bBox="[212.67 702.58 335.98 720.57 ]" o="/Layout">
+<Span>
+intermediate7</Span>
+</P>
+</TD>
+<TD bBox="[338.48 700.58 384.33 722.57 ]" o="/Layout" padding="2">
+<P bBox="[340.48 702.58 382.33 720.57 ]" o="/Layout">
+<Span>
+s.2</Span>
+</P>
+</TD>
+<TD bBox="[384.83 700.58 512.14 722.57 ]" o="/Layout" padding="2">
+<P bBox="[386.83 702.58 510.14 720.57 ]" o="/Layout">
+<Span>
+intermediate8</Span>
+</P>
+</TD>
+<TD bBox="[512.64 700.58 558.5 722.57 ]" o="/Layout" padding="2">
+<P bBox="[514.64 702.58 556.5 720.57 ]" o="/Layout">
+<Span>
+s.3</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 678.1 163.81 700.08 ]" o="/Layout" padding="2">
+<P bBox="[38.5 680.1 161.81 698.08 ]" o="/Layout">
+<Span>
+intermediate9</Span>
+</P>
+</TD>
+<TD bBox="[164.31 678.1 210.17 700.08 ]" o="/Layout" padding="2">
+<P bBox="[166.31 680.1 208.17 698.08 ]" o="/Layout">
+<Span>
+s.3</Span>
+</P>
+</TD>
+<TD bBox="[210.67 678.1 337.98 700.08 ]" o="/Layout" padding="2">
+<P bBox="[212.67 680.1 335.98 698.08 ]" o="/Layout">
+<Span>
+intermediate10</Span>
+</P>
+</TD>
+<TD bBox="[338.48 678.1 384.33 700.08 ]" o="/Layout" padding="2">
+<P bBox="[340.48 680.1 382.33 698.08 ]" o="/Layout">
+<Span>
+s.3</Span>
+</P>
+</TD>
+<TD bBox="[384.83 678.1 512.14 700.08 ]" o="/Layout" padding="2">
+<P bBox="[386.83 680.1 510.14 698.08 ]" o="/Layout">
+<Span>
+intermediate11</Span>
+</P>
+</TD>
+<TD bBox="[512.64 678.1 558.5 700.08 ]" o="/Layout" padding="2">
+<P bBox="[514.64 680.1 556.5 698.08 ]" o="/Layout">
+<Span>
+s.3</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 655.62 163.81 677.6 ]" o="/Layout" padding="2">
+<P bBox="[38.5 657.62 161.81 675.6 ]" o="/Layout">
+<Span>
+intermediate12</Span>
+</P>
+</TD>
+<TD bBox="[164.31 655.62 210.17 677.6 ]" o="/Layout" padding="2">
+<P bBox="[166.31 657.62 208.17 675.6 ]" o="/Layout">
+<Span>
+s.3</Span>
+</P>
+</TD>
+<TD bBox="[210.67 655.62 337.98 677.6 ]" o="/Layout" padding="2">
+<P bBox="[212.67 657.62 335.98 675.6 ]" o="/Layout">
+<Span>
+intermediate13</Span>
+</P>
+</TD>
+<TD bBox="[338.48 655.62 384.33 677.6 ]" o="/Layout" padding="2">
+<P bBox="[340.48 657.62 382.33 675.6 ]" o="/Layout">
+<Span>
+s.3</Span>
+</P>
+</TD>
+<TD bBox="[384.83 655.62 512.14 677.6 ]" o="/Layout" padding="2">
+<P bBox="[386.83 657.62 510.14 675.6 ]" o="/Layout">
+<Span>
+intermediate14</Span>
+</P>
+</TD>
+<TD bBox="[512.64 655.62 558.5 677.6 ]" o="/Layout" padding="2">
+<P bBox="[514.64 657.62 556.5 675.6 ]" o="/Layout">
+<Span>
+s.3</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 633.14 163.81 655.12 ]" o="/Layout" padding="2">
+<P bBox="[38.5 635.14 161.81 653.12 ]" o="/Layout">
+<Span>
+dish 0</Span>
+</P>
+</TD>
+<TD bBox="[164.31 633.14 210.17 655.12 ]" o="/Layout" padding="2">
+<P bBox="[166.31 635.14 208.17 653.12 ]" o="/Layout">
+<Span>
+s.5</Span>
+</P>
+</TD>
+<TD bBox="[210.67 633.14 337.98 655.12 ]" o="/Layout" padding="2">
+<P bBox="[212.67 635.14 335.98 653.12 ]" o="/Layout">
+<Span>
+dish 1</Span>
+</P>
+</TD>
+<TD bBox="[338.48 633.14 384.33 655.12 ]" o="/Layout" padding="2">
+<P bBox="[340.48 635.14 382.33 653.12 ]" o="/Layout">
+<Span>
+s.5</Span>
+</P>
+</TD>
+<TD bBox="[384.83 633.14 512.14 655.12 ]" o="/Layout" padding="2">
+<P bBox="[386.83 635.14 510.14 653.12 ]" o="/Layout">
+<Span>
+dish 2</Span>
+</P>
+</TD>
+<TD bBox="[512.64 633.14 558.5 655.12 ]" o="/Layout" padding="2">
+<P bBox="[514.64 635.14 556.5 653.12 ]" o="/Layout">
+<Span>
+s.5</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 610.66 163.81 632.64 ]" o="/Layout" padding="2">
+<P bBox="[38.5 612.66 161.81 630.64 ]" o="/Layout">
+<Span>
+dish 3</Span>
+</P>
+</TD>
+<TD bBox="[164.31 610.66 210.17 632.64 ]" o="/Layout" padding="2">
+<P bBox="[166.31 612.66 208.17 630.64 ]" o="/Layout">
+<Span>
+s.5</Span>
+</P>
+</TD>
+<TD bBox="[210.67 610.66 337.98 632.64 ]" o="/Layout" padding="2">
+<P bBox="[212.67 612.66 335.98 630.64 ]" o="/Layout">
+<Span>
+dish 4</Span>
+</P>
+</TD>
+<TD bBox="[338.48 610.66 384.33 632.64 ]" o="/Layout" padding="2">
+<P bBox="[340.48 612.66 382.33 630.64 ]" o="/Layout">
+<Span>
+s.5</Span>
+</P>
+</TD>
+<TD bBox="[384.83 610.66 512.14 632.64 ]" o="/Layout" padding="2">
+<P bBox="[386.83 612.66 510.14 630.64 ]" o="/Layout">
+<Span>
+dish 5</Span>
+</P>
+</TD>
+<TD bBox="[512.64 610.66 558.5 632.64 ]" o="/Layout" padding="2">
+<P bBox="[514.64 612.66 556.5 630.64 ]" o="/Layout">
+<Span>
+s.5</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 588.17 163.81 610.16 ]" o="/Layout" padding="2">
+<P bBox="[38.5 590.17 161.81 608.16 ]" o="/Layout">
+<Span>
+dish 6</Span>
+</P>
+</TD>
+<TD bBox="[164.31 588.17 210.17 610.16 ]" o="/Layout" padding="2">
+<P bBox="[166.31 590.17 208.17 608.16 ]" o="/Layout">
+<Span>
+s.5</Span>
+</P>
+</TD>
+<TD bBox="[210.67 588.17 337.98 610.16 ]" o="/Layout" padding="2">
+<P bBox="[212.67 590.17 335.98 608.16 ]" o="/Layout">
+<Span>
+dish 7</Span>
+</P>
+</TD>
+<TD bBox="[338.48 588.17 384.33 610.16 ]" o="/Layout" padding="2">
+<P bBox="[340.48 590.17 382.33 608.16 ]" o="/Layout">
+<Span>
+s.5</Span>
+</P>
+</TD>
+<TD bBox="[384.83 588.17 512.14 610.16 ]" o="/Layout" padding="2">
+<P bBox="[386.83 590.17 510.14 608.16 ]" o="/Layout">
+<Span>
+dish 8</Span>
+</P>
+</TD>
+<TD bBox="[512.64 588.17 558.5 610.16 ]" o="/Layout" padding="2">
+<P bBox="[514.64 590.17 556.5 608.16 ]" o="/Layout">
+<Span>
+s.5</Span>
+</P>
+</TD>
+</TR>
+<TR>
+<TD bBox="[36.5 565.69 163.81 587.67 ]" o="/Layout" padding="2">
+<P bBox="[38.5 567.69 161.81 585.67 ]" o="/Layout">
+<Span>
+dish 9</Span>
+</P>
+</TD>
+<TD bBox="[164.31 565.69 210.17 587.67 ]" o="/Layout" padding="2">
+<P bBox="[166.31 567.69 208.17 585.67 ]" o="/Layout">
+<Span>
+s.6</Span>
+</P>
+</TD>
+</TR>
+</Table>
+</Document>
+</root>

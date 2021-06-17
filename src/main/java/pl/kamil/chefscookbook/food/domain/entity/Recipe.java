@@ -1,11 +1,13 @@
 package pl.kamil.chefscookbook.food.domain.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -17,7 +19,7 @@ public class Recipe extends BaseEntity {
     private String description = "";
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<Ingredient> ingredients = new HashSet<>();
+    private Set<Ingredient> ingredients = new LinkedHashSet<>();
 
     @OneToOne
     @MapsId

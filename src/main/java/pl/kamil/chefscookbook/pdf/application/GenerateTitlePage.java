@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
 import pl.kamil.chefscookbook.pdf.application.port.GenerateTitlePageUseCase;
 
-import java.time.LocalDate;
-
 @Component
 public class GenerateTitlePage implements GenerateTitlePageUseCase {
     @Override
@@ -47,6 +45,6 @@ public class GenerateTitlePage implements GenerateTitlePageUseCase {
     }
 
     private String getGeneratedByText() {
-        return "Wygenerowane przez Chefs CookBook // " + LocalDate.now().toString();
+        return "Wygenerowane przez Chefs CookBook";
     }
 }

@@ -1,15 +1,14 @@
 package pl.kamil.chefscookbook.food.application.dto.item;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.menu.application.dto.MenuDto;
-
-import java.util.stream.Collectors;
 
 
 @Value
 @EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 public class PoorItem extends ItemDto {
 
     public PoorItem(Item item) {
