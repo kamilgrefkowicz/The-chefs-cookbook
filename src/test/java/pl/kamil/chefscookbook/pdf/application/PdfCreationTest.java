@@ -42,17 +42,17 @@ class PdfCreationTest {
     @SneakyThrows
     @Test
     void compareMenu() {
-        String outPdf = PDF_SAMPLE_FOLDER + "sample menu.pdf";
-        String cmpPdf = PDF_TEST_FOLDER + "test menu.pdf";
+        String given = PDF_SAMPLE_FOLDER + "sample menu.pdf";
+        String underTest = PDF_TEST_FOLDER + "test menu.pdf";
         ByteArrayOutputStream output = pdfCreation.generatePdfForMenu(fullMenu);
-        File file = new File(cmpPdf);
+        File file = new File(underTest);
 
         try (OutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(output.toByteArray());
         }
         CompareTool compareTool = new CompareTool();
 
-        String result = compareTool.compareTagStructures(outPdf, cmpPdf);
+        String result = compareTool.compareTagStructures(given, underTest);
 
         // this will be null if the structures of the files are identical
         // changing any text presented in the document will make this fail
