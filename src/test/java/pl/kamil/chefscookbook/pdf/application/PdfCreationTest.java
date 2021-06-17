@@ -42,6 +42,7 @@ class PdfCreationTest {
     @SneakyThrows
     @Test
     void compareMenu() {
+        String outPdf = PDF_SAMPLE_FOLDER + "sample menu.pdf";
         String cmpPdf = PDF_TEST_FOLDER + "test menu.pdf";
         ByteArrayOutputStream output = pdfCreation.generatePdfForMenu(fullMenu);
         File file = new File(cmpPdf);
@@ -51,11 +52,14 @@ class PdfCreationTest {
         }
         CompareTool compareTool = new CompareTool();
 
-        String outPdf = PDF_SAMPLE_FOLDER + "sample menu.pdf";
-
         String result = compareTool.compareTagStructures(outPdf, cmpPdf);
 
-        // this will be null if the pdf contents are identical
+        // this will be null if the structures of the files are identical
+        // changing any text presented in the document will make this fail
+        // some (but not all) changes to internal structure of the document will make this fail
+
+        // next step would be pixel-by-pixel comparison of the documents
+        // I am, however, happy with this test as it is now
         assertNull(result);
 
     }

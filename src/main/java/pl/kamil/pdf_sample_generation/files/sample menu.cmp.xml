@@ -12,6 +12,7 @@ Test menu</Span>
 <Span>
 Wygenerowane przez Chefs CookBook</Span>
 </P>
+<Div>
 <P bBox="[36 774.02 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate0</Span>
@@ -50,6 +51,8 @@ this is a test; this is a test; </Span>
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 685.08 559 717.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate1</Span>
@@ -88,6 +91,8 @@ this is a test; this is a test; this is a test; </Span>
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 596.14 559 628.12 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate2</Span>
@@ -126,6 +131,8 @@ this is a test; this is a test; this is a test; this is a test; </Span>
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 489.22 559 521.2 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate3</Span>
@@ -164,6 +171,8 @@ this is a test; this is a test; this is a test; this is a test; this is a test; 
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 382.3 559 414.28 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate4</Span>
@@ -202,6 +211,8 @@ this is a test; this is a test; this is a test; this is a test; this is a test; 
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 275.38 559 307.35 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate5</Span>
@@ -240,6 +251,8 @@ this is a test; this is a test; this is a test; this is a test; this is a test; 
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 168.46 559 200.43 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate6</Span>
@@ -278,25 +291,27 @@ this is a test; </Span>
 <Span>
 </Span>
 </P>
-<P bBox="[36 79.52 559 111.49 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+</Div>
+<Div>
+<P bBox="[36 774.02 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate7</Span>
 </P>
-<P bBox="[36 53.53 559 79.52 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<P bBox="[36 748.04 559 774.02 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Przepis na 1 KG</Span>
 </P>
-<Table bBox="[36 765.04 544.5 806 ]" o="/Layout">
+<Table bBox="[36 707.08 544.5 748.04 ]" o="/Layout">
 <TR>
-<TD bBox="[36.5 765.54 290 805.5 ]" o="/Layout" padding="2">
-<L bBox="[38.5 767.54 288 803.5 ]" o="/Layout">
+<TD bBox="[36.5 707.58 290 747.54 ]" o="/Layout" padding="2">
+<L bBox="[38.5 709.58 288 745.54 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 785.52 288 803.5 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 785.52 288 803.5 ]" o="/Layout">
+<LBody bBox="[38.5 727.56 288 745.54 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 727.56 288 745.54 ]" o="/Layout">
 <Span>
 1.4 KG basic7</Span>
 </P>
@@ -307,8 +322,8 @@ Przepis na 1 KG</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 767.54 288 785.52 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 767.54 288 785.52 ]" o="/Layout">
+<LBody bBox="[38.5 709.58 288 727.56 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 709.58 288 727.56 ]" o="/Layout">
 <Span>
 1.4 KG basic0</Span>
 </P>
@@ -316,37 +331,39 @@ Przepis na 1 KG</Span>
 </LI>
 </L>
 </TD>
-<TD bBox="[290.5 765.54 544 805.5 ]" o="/Layout" padding="2">
-<P bBox="[292.5 785.52 542 803.5 ]" o="/Layout">
+<TD bBox="[290.5 707.58 544 747.54 ]" o="/Layout" padding="2">
+<P bBox="[292.5 727.56 542 745.54 ]" o="/Layout">
 <Span>
 this is a test; this is a test; </Span>
 </P>
 </TD>
 </TR>
 </Table>
-<P bBox="[36 757.04 559 765.04 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 699.08 559 707.08 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
-<P bBox="[36 725.06 559 757.04 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+</Div>
+<Div>
+<P bBox="[36 667.1 559 699.08 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate8</Span>
 </P>
-<P bBox="[36 699.08 559 725.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<P bBox="[36 641.12 559 667.1 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Przepis na 1 KG</Span>
 </P>
-<Table bBox="[36 658.11 544.5 699.08 ]" o="/Layout">
+<Table bBox="[36 600.16 544.5 641.12 ]" o="/Layout">
 <TR>
-<TD bBox="[36.5 658.61 290 698.58 ]" o="/Layout" padding="2">
-<L bBox="[38.5 660.61 288 696.58 ]" o="/Layout">
+<TD bBox="[36.5 600.66 290 640.62 ]" o="/Layout" padding="2">
+<L bBox="[38.5 602.66 288 638.62 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 678.6 288 696.58 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 678.6 288 696.58 ]" o="/Layout">
+<LBody bBox="[38.5 620.64 288 638.62 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 620.64 288 638.62 ]" o="/Layout">
 <Span>
 1.6 KG basic8</Span>
 </P>
@@ -357,8 +374,8 @@ Przepis na 1 KG</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 660.61 288 678.6 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 660.61 288 678.6 ]" o="/Layout">
+<LBody bBox="[38.5 602.66 288 620.64 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 602.66 288 620.64 ]" o="/Layout">
 <Span>
 1.6 KG basic1</Span>
 </P>
@@ -366,37 +383,39 @@ Przepis na 1 KG</Span>
 </LI>
 </L>
 </TD>
-<TD bBox="[290.5 658.61 544 698.58 ]" o="/Layout" padding="2">
-<P bBox="[292.5 678.6 542 696.58 ]" o="/Layout">
+<TD bBox="[290.5 600.66 544 640.62 ]" o="/Layout" padding="2">
+<P bBox="[292.5 620.64 542 638.62 ]" o="/Layout">
 <Span>
 this is a test; this is a test; this is a test; </Span>
 </P>
 </TD>
 </TR>
 </Table>
-<P bBox="[36 650.11 559 658.11 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 592.16 559 600.16 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
-<P bBox="[36 618.14 559 650.11 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+</Div>
+<Div>
+<P bBox="[36 560.18 559 592.16 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate9</Span>
 </P>
-<P bBox="[36 592.16 559 618.14 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<P bBox="[36 534.2 559 560.18 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Przepis na 1 KG</Span>
 </P>
-<Table bBox="[36 551.19 544.5 592.16 ]" o="/Layout">
+<Table bBox="[36 493.23 544.5 534.2 ]" o="/Layout">
 <TR>
-<TD bBox="[36.5 551.69 290 591.66 ]" o="/Layout" padding="2">
-<L bBox="[38.5 553.69 288 589.66 ]" o="/Layout">
+<TD bBox="[36.5 493.73 290 533.7 ]" o="/Layout" padding="2">
+<L bBox="[38.5 495.73 288 531.7 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 571.67 288 589.66 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 571.67 288 589.66 ]" o="/Layout">
+<LBody bBox="[38.5 513.72 288 531.7 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 513.72 288 531.7 ]" o="/Layout">
 <Span>
 1.8 KG basic9</Span>
 </P>
@@ -407,8 +426,8 @@ Przepis na 1 KG</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 553.69 288 571.67 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 553.69 288 571.67 ]" o="/Layout">
+<LBody bBox="[38.5 495.73 288 513.72 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 495.73 288 513.72 ]" o="/Layout">
 <Span>
 1.8 KG basic2</Span>
 </P>
@@ -416,37 +435,39 @@ Przepis na 1 KG</Span>
 </LI>
 </L>
 </TD>
-<TD bBox="[290.5 551.69 544 591.66 ]" o="/Layout" padding="2">
-<P bBox="[292.5 553.69 542 589.66 ]" o="/Layout">
+<TD bBox="[290.5 493.73 544 533.7 ]" o="/Layout" padding="2">
+<P bBox="[292.5 495.73 542 531.7 ]" o="/Layout">
 <Span>
 this is a test; this is a test; this is a test; this is a test; </Span>
 </P>
 </TD>
 </TR>
 </Table>
-<P bBox="[36 543.19 559 551.19 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 485.23 559 493.23 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
-<P bBox="[36 511.22 559 543.19 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+</Div>
+<Div>
+<P bBox="[36 453.26 559 485.23 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate10</Span>
 </P>
-<P bBox="[36 485.23 559 511.22 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<P bBox="[36 427.28 559 453.26 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Przepis na 1 KG</Span>
 </P>
-<Table bBox="[36 444.27 544.5 485.23 ]" o="/Layout">
+<Table bBox="[36 386.31 544.5 427.28 ]" o="/Layout">
 <TR>
-<TD bBox="[36.5 444.77 290 484.73 ]" o="/Layout" padding="2">
-<L bBox="[38.5 446.77 288 482.73 ]" o="/Layout">
+<TD bBox="[36.5 386.81 290 426.78 ]" o="/Layout" padding="2">
+<L bBox="[38.5 388.81 288 424.78 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 464.75 288 482.73 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 464.75 288 482.73 ]" o="/Layout">
+<LBody bBox="[38.5 406.79 288 424.78 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 406.79 288 424.78 ]" o="/Layout">
 <Span>
 2.0 KG basic10</Span>
 </P>
@@ -457,8 +478,8 @@ Przepis na 1 KG</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 446.77 288 464.75 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 446.77 288 464.75 ]" o="/Layout">
+<LBody bBox="[38.5 388.81 288 406.79 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 388.81 288 406.79 ]" o="/Layout">
 <Span>
 2.0 KG basic3</Span>
 </P>
@@ -466,37 +487,39 @@ Przepis na 1 KG</Span>
 </LI>
 </L>
 </TD>
-<TD bBox="[290.5 444.77 544 484.73 ]" o="/Layout" padding="2">
-<P bBox="[292.5 446.77 542 482.73 ]" o="/Layout">
+<TD bBox="[290.5 386.81 544 426.78 ]" o="/Layout" padding="2">
+<P bBox="[292.5 388.81 542 424.78 ]" o="/Layout">
 <Span>
 this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
 </P>
 </TD>
 </TR>
 </Table>
-<P bBox="[36 436.27 559 444.27 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 378.31 559 386.31 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
-<P bBox="[36 404.29 559 436.27 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+</Div>
+<Div>
+<P bBox="[36 346.34 559 378.31 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate11</Span>
 </P>
-<P bBox="[36 378.31 559 404.29 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<P bBox="[36 320.35 559 346.34 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Przepis na 1 KG</Span>
 </P>
-<Table bBox="[36 337.35 544.5 378.31 ]" o="/Layout">
+<Table bBox="[36 279.39 544.5 320.35 ]" o="/Layout">
 <TR>
-<TD bBox="[36.5 337.85 290 377.81 ]" o="/Layout" padding="2">
-<L bBox="[38.5 339.85 288 375.81 ]" o="/Layout">
+<TD bBox="[36.5 279.89 290 319.85 ]" o="/Layout" padding="2">
+<L bBox="[38.5 281.89 288 317.85 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 357.83 288 375.81 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 357.83 288 375.81 ]" o="/Layout">
+<LBody bBox="[38.5 299.87 288 317.85 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 299.87 288 317.85 ]" o="/Layout">
 <Span>
 2.2 KG basic11</Span>
 </P>
@@ -507,8 +530,8 @@ Przepis na 1 KG</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 339.85 288 357.83 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 339.85 288 357.83 ]" o="/Layout">
+<LBody bBox="[38.5 281.89 288 299.87 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 281.89 288 299.87 ]" o="/Layout">
 <Span>
 2.2 KG basic4</Span>
 </P>
@@ -516,37 +539,39 @@ Przepis na 1 KG</Span>
 </LI>
 </L>
 </TD>
-<TD bBox="[290.5 337.85 544 377.81 ]" o="/Layout" padding="2">
-<P bBox="[292.5 339.85 542 375.81 ]" o="/Layout">
+<TD bBox="[290.5 279.89 544 319.85 ]" o="/Layout" padding="2">
+<P bBox="[292.5 281.89 542 317.85 ]" o="/Layout">
 <Span>
 this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
 </P>
 </TD>
 </TR>
 </Table>
-<P bBox="[36 329.35 559 337.35 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 271.39 559 279.39 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
-<P bBox="[36 297.37 559 329.35 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+</Div>
+<Div>
+<P bBox="[36 239.41 559 271.39 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate12</Span>
 </P>
-<P bBox="[36 271.39 559 297.37 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<P bBox="[36 213.43 559 239.41 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Przepis na 1 KG</Span>
 </P>
-<Table bBox="[36 230.43 544.5 271.39 ]" o="/Layout">
+<Table bBox="[36 172.47 544.5 213.43 ]" o="/Layout">
 <TR>
-<TD bBox="[36.5 230.93 290 270.89 ]" o="/Layout" padding="2">
-<L bBox="[38.5 232.93 288 268.89 ]" o="/Layout">
+<TD bBox="[36.5 172.97 290 212.93 ]" o="/Layout" padding="2">
+<L bBox="[38.5 174.97 288 210.93 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 250.91 288 268.89 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 250.91 288 268.89 ]" o="/Layout">
+<LBody bBox="[38.5 192.95 288 210.93 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 192.95 288 210.93 ]" o="/Layout">
 <Span>
 2.4 KG basic12</Span>
 </P>
@@ -557,8 +582,8 @@ Przepis na 1 KG</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 232.93 288 250.91 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 232.93 288 250.91 ]" o="/Layout">
+<LBody bBox="[38.5 174.97 288 192.95 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 174.97 288 192.95 ]" o="/Layout">
 <Span>
 2.4 KG basic5</Span>
 </P>
@@ -566,37 +591,39 @@ Przepis na 1 KG</Span>
 </LI>
 </L>
 </TD>
-<TD bBox="[290.5 230.93 544 270.89 ]" o="/Layout" padding="2">
-<P bBox="[292.5 232.93 542 268.89 ]" o="/Layout">
+<TD bBox="[290.5 172.97 544 212.93 ]" o="/Layout" padding="2">
+<P bBox="[292.5 174.97 542 210.93 ]" o="/Layout">
 <Span>
 this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; this is a test; </Span>
 </P>
 </TD>
 </TR>
 </Table>
-<P bBox="[36 222.43 559 230.43 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 164.47 559 172.47 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
-<P bBox="[36 190.45 559 222.43 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+</Div>
+<Div>
+<P bBox="[36 132.49 559 164.47 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate13</Span>
 </P>
-<P bBox="[36 164.47 559 190.45 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<P bBox="[36 106.51 559 132.49 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Przepis na 1 KG</Span>
 </P>
-<Table bBox="[36 123.5 544.5 164.47 ]" o="/Layout">
+<Table bBox="[36 65.55 544.5 106.51 ]" o="/Layout">
 <TR>
-<TD bBox="[36.5 124 290 163.97 ]" o="/Layout" padding="2">
-<L bBox="[38.5 126 288 161.97 ]" o="/Layout">
+<TD bBox="[36.5 66.05 290 106.01 ]" o="/Layout" padding="2">
+<L bBox="[38.5 68.05 288 104.01 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 143.99 288 161.97 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 143.99 288 161.97 ]" o="/Layout">
+<LBody bBox="[38.5 86.03 288 104.01 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 86.03 288 104.01 ]" o="/Layout">
 <Span>
 2.6 KG basic13</Span>
 </P>
@@ -607,8 +634,8 @@ Przepis na 1 KG</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 126 288 143.99 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 126 288 143.99 ]" o="/Layout">
+<LBody bBox="[38.5 68.05 288 86.03 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 68.05 288 86.03 ]" o="/Layout">
 <Span>
 2.6 KG basic6</Span>
 </P>
@@ -616,37 +643,39 @@ Przepis na 1 KG</Span>
 </LI>
 </L>
 </TD>
-<TD bBox="[290.5 124 544 163.97 ]" o="/Layout" padding="2">
-<P bBox="[292.5 143.99 542 161.97 ]" o="/Layout">
+<TD bBox="[290.5 66.05 544 106.01 ]" o="/Layout" padding="2">
+<P bBox="[292.5 86.03 542 104.01 ]" o="/Layout">
 <Span>
 this is a test; </Span>
 </P>
 </TD>
 </TR>
 </Table>
-<P bBox="[36 115.5 559 123.5 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 57.55 559 65.55 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
-<P bBox="[36 83.53 559 115.5 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+</Div>
+<Div>
+<P bBox="[36 774.02 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 intermediate14</Span>
 </P>
-<P bBox="[36 57.55 559 83.53 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<P bBox="[36 748.04 559 774.02 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Przepis na 1 KG</Span>
 </P>
-<Table>
+<Table bBox="[36 707.08 544.5 748.04 ]" o="/Layout">
 <TR>
-<TD o="/Layout" padding="2">
-<L>
+<TD bBox="[36.5 707.58 290 747.54 ]" o="/Layout" padding="2">
+<L bBox="[38.5 709.58 288 745.54 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 38.5 288 55.05 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 38.5 288 55.05 ]" o="/Layout">
+<LBody bBox="[38.5 727.56 288 745.54 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 727.56 288 745.54 ]" o="/Layout">
 <Span>
 2.8 KG basic14</Span>
 </P>
@@ -657,8 +686,8 @@ Przepis na 1 KG</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 785.52 288 803.5 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 785.52 288 803.5 ]" o="/Layout">
+<LBody bBox="[38.5 709.58 288 727.56 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 709.58 288 727.56 ]" o="/Layout">
 <Span>
 2.8 KG basic0</Span>
 </P>
@@ -666,20 +695,20 @@ Przepis na 1 KG</Span>
 </LI>
 </L>
 </TD>
-<TD o="/Layout" padding="2">
-<P bBox="[292.5 38.5 542 55.05 ]" o="/Layout">
+<TD bBox="[290.5 707.58 544 747.54 ]" o="/Layout" padding="2">
+<P bBox="[292.5 727.56 542 745.54 ]" o="/Layout">
 <Span>
 this is a test; this is a test; </Span>
 </P>
 </TD>
-<TD bBox="[290.5 783.52 544 805.5 ]" o="/Layout" padding="2">
-</TD>
 </TR>
 </Table>
-<P bBox="[36 775.02 559 783.02 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 699.08 559 707.08 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 774.02 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 dish 0</Span>
@@ -730,6 +759,8 @@ this is a test; this is a test; </Span>
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 685.08 559 717.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 dish 1</Span>
@@ -780,6 +811,8 @@ this is a test; this is a test; this is a test; </Span>
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 596.14 559 628.12 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 dish 2</Span>
@@ -830,6 +863,8 @@ this is a test; this is a test; this is a test; this is a test; </Span>
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 507.2 559 539.18 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 dish 3</Span>
@@ -880,6 +915,8 @@ this is a test; this is a test; this is a test; this is a test; this is a test; 
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 418.26 559 450.24 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 dish 4</Span>
@@ -930,6 +967,8 @@ this is a test; this is a test; this is a test; this is a test; this is a test; 
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 329.32 559 361.3 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 dish 5</Span>
@@ -980,6 +1019,8 @@ this is a test; this is a test; this is a test; this is a test; this is a test; 
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 240.38 559 272.36 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 dish 6</Span>
@@ -1030,6 +1071,8 @@ this is a test; </Span>
 <Span>
 </Span>
 </P>
+</Div>
+<Div>
 <P bBox="[36 151.44 559 183.42 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 dish 7</Span>
@@ -1080,25 +1123,27 @@ this is a test; this is a test; </Span>
 <Span>
 </Span>
 </P>
-<P bBox="[36 62.5 559 94.48 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+</Div>
+<Div>
+<P bBox="[36 774.02 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 dish 8</Span>
 </P>
-<P bBox="[36 54.5 559 62.5 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 766.02 559 774.02 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
-<Table bBox="[36 765.04 544.5 806 ]" o="/Layout">
+<Table bBox="[36 725.06 544.5 766.02 ]" o="/Layout">
 <TR>
-<TD bBox="[36.5 765.54 290 805.5 ]" o="/Layout" padding="2">
-<L bBox="[38.5 767.54 288 803.5 ]" o="/Layout">
+<TD bBox="[36.5 725.56 290 765.52 ]" o="/Layout" padding="2">
+<L bBox="[38.5 727.56 288 763.52 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 785.52 288 803.5 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 785.52 288 803.5 ]" o="/Layout">
+<LBody bBox="[38.5 745.54 288 763.52 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 745.54 288 763.52 ]" o="/Layout">
 <Span>
 1.6 KG basic1</Span>
 </P>
@@ -1109,8 +1154,8 @@ dish 8</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 767.54 288 785.52 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 767.54 288 785.52 ]" o="/Layout">
+<LBody bBox="[38.5 727.56 288 745.54 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 727.56 288 745.54 ]" o="/Layout">
 <Span>
 1.6 KG intermediate2</Span>
 </P>
@@ -1118,37 +1163,39 @@ dish 8</Span>
 </LI>
 </L>
 </TD>
-<TD bBox="[290.5 765.54 544 805.5 ]" o="/Layout" padding="2">
-<P bBox="[292.5 785.52 542 803.5 ]" o="/Layout">
+<TD bBox="[290.5 725.56 544 765.52 ]" o="/Layout" padding="2">
+<P bBox="[292.5 745.54 542 763.52 ]" o="/Layout">
 <Span>
 this is a test; this is a test; this is a test; </Span>
 </P>
 </TD>
 </TR>
 </Table>
-<P bBox="[36 757.04 559 765.04 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
-<Span>
-</Span>
-</P>
-<P bBox="[36 725.06 559 757.04 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
-<Span>
-dish 9</Span>
-</P>
 <P bBox="[36 717.06 559 725.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
-<Table bBox="[36 676.1 544.5 717.06 ]" o="/Layout">
+</Div>
+<Div>
+<P bBox="[36 685.08 559 717.06 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
+<Span>
+dish 9</Span>
+</P>
+<P bBox="[36 677.08 559 685.08 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<Span>
+</Span>
+</P>
+<Table bBox="[36 636.12 544.5 677.08 ]" o="/Layout">
 <TR>
-<TD bBox="[36.5 676.6 290 716.56 ]" o="/Layout" padding="2">
-<L bBox="[38.5 678.6 288 714.56 ]" o="/Layout">
+<TD bBox="[36.5 636.62 290 676.58 ]" o="/Layout" padding="2">
+<L bBox="[38.5 638.62 288 674.58 ]" o="/Layout">
 <LI>
 <Lbl>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 696.58 288 714.56 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 696.58 288 714.56 ]" o="/Layout">
+<LBody bBox="[38.5 656.6 288 674.58 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 656.6 288 674.58 ]" o="/Layout">
 <Span>
 1.8 KG basic2</Span>
 </P>
@@ -1159,8 +1206,8 @@ dish 9</Span>
 <Span>
 - </Span>
 </Lbl>
-<LBody bBox="[38.5 678.6 288 696.58 ]" o="/Layout" startIndent="7.33">
-<P bBox="[45.83 678.6 288 696.58 ]" o="/Layout">
+<LBody bBox="[38.5 638.62 288 656.6 ]" o="/Layout" startIndent="7.33">
+<P bBox="[45.83 638.62 288 656.6 ]" o="/Layout">
 <Span>
 1.8 KG intermediate3</Span>
 </P>
@@ -1168,18 +1215,19 @@ dish 9</Span>
 </LI>
 </L>
 </TD>
-<TD bBox="[290.5 676.6 544 716.56 ]" o="/Layout" padding="2">
-<P bBox="[292.5 678.6 542 714.56 ]" o="/Layout">
+<TD bBox="[290.5 636.62 544 676.58 ]" o="/Layout" padding="2">
+<P bBox="[292.5 638.62 542 674.58 ]" o="/Layout">
 <Span>
 this is a test; this is a test; this is a test; this is a test; </Span>
 </P>
 </TD>
 </TR>
 </Table>
-<P bBox="[36 668.1 559 676.1 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
+<P bBox="[36 628.12 559 636.12 ]" o="/Layout" spaceAfter="4" spaceBefore="4">
 <Span>
 </Span>
 </P>
+</Div>
 <P bBox="[36 760.54 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Podstawowe sk&#322;adniki u&#380;ywane w menu:</Span>

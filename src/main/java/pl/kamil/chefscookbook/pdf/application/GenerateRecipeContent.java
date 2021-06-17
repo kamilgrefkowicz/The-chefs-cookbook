@@ -1,7 +1,10 @@
 package pl.kamil.chefscookbook.pdf.application;
 
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.element.Div;
+import com.itextpdf.layout.element.List;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.application.dto.ingredient.IngredientDto;
@@ -21,18 +24,24 @@ public class GenerateRecipeContent implements GenerateRecipeContentUseCase {
     @Override
     public int execute(Document document, RichItem item) {
 
+        Div template = new Div();
+        template.setKeepTogether(true);
 
-        document.add(generateItemNameRow(item));
+        template.add(generateItemNameRow(item));
         int currentPage = document.getPdfDocument().getNumberOfPages();
-        document.add(generateYieldRowForIntermediates(item));
+        template.add(generateYieldRowForIntermediates(item));
+
+        Paragraph paragraph = new Paragraph();
 
         Table table = new Table(columnWidths);
+        paragraph.add(table);
         table.addCell(generateIngredientList(item));
         table.addCell(generateDescriptionArea(item));
 
-        document.add(table);
-        document.add(new Paragraph("").setFontSize(40));
+        template.add(table);
+        template.add(new Paragraph("").setFontSize(40));
 
+        document.add(template);
         return currentPage;
     }
 

@@ -40,23 +40,23 @@ public class SampleMenuConfiguration {
             Item item = new Item("intermediate" + i, KILOGRAM, INTERMEDIATE, user);
             item.addIngredient(tempBasics.get(i), getMixedAmount(i));
             item.addIngredient(tempBasics.get(i % 7), getMixedAmount(i));
-            item.getRecipe().setDescription(mixedLenghtDescription(i));
+            item.getRecipe().setDescription(mixedLengthDescription(i));
             tempIntermediates.put(i, item);
         }
         for (int i = 0; i < 10; i++) {
             Item item = new Item("dish " + i, PIECE, DISH, user);
             item.addIngredient(tempBasics.get(i % 7), getMixedAmount(i));
             item.addIngredient(tempIntermediates.get((i + 1) % 7), getMixedAmount(i));
-            item.getRecipe().setDescription(mixedLenghtDescription(i));
+            item.getRecipe().setDescription(mixedLengthDescription(i));
             dishes.add(new RichItem(item));
         }
         Set<PoorItem> basics = new LinkedHashSet<>();
 
-        tempBasics.values().stream()
+        tempBasics.values()
                 .forEach(item -> basics.add(new PoorItem(item)));
 
         Set<RichItem> intermediates = new LinkedHashSet<>();
-        tempIntermediates.values().stream()
+        tempIntermediates.values()
                 .forEach(item -> intermediates.add(new RichItem(item)));
 
         return new FullMenu(new Menu("Test menu", user), dishes, intermediates, basics);
@@ -66,7 +66,7 @@ public class SampleMenuConfiguration {
         return new BigDecimal("0.2").multiply(BigDecimal.valueOf(i));
     }
 
-    private String mixedLenghtDescription(int i) {
+    private String mixedLengthDescription(int i) {
         StringBuilder builder = new StringBuilder();
         String template = "this is a test; ";
         for (int j = 0; j < (i + 1) % 7 + 1; j++) {
