@@ -31,7 +31,8 @@ public class Item extends OwnedEntity {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentItem")
+    @OneToOne(mappedBy = "parentItem", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private Recipe recipe;
 
 

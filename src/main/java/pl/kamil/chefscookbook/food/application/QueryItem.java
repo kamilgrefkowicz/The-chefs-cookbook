@@ -46,6 +46,8 @@ public class QueryItem implements QueryItemService {
                 .stream()
                 .map(PoorItem::new)
                 .collect(Collectors.toList());
+
+
     }
 
     @Override

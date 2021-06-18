@@ -17,11 +17,10 @@
 My recipes:
 <hr>
 
-<table>
+<table class="table table-hover">
     <thead>
-    <tr>Id</tr>
     <tr>Nazwa produktu</tr>
-    <tr>Rodzaj produktu</tr>
+    <tr>Jednostka</tr>
     <tr>Zobacz</tr>
     <tr>Usuń</tr>
 
@@ -29,9 +28,8 @@ My recipes:
     <tbody>
     <tr th:each="item : ${poorItemList}">
 
-        <td th:text="*{item.id}"></td>
         <td th:text="*{item.name}"></td>
-        <td th:text="*{item.type}"></td>
+        <td th:text="*{item.unit}"></td>
         <td>
             <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
                 <input type="hidden" th:attr="name='targetAmount'" th:value="1">

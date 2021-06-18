@@ -12,7 +12,8 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
 
-    List<Item> findAllByUserEntityId(Long userId);
+    @Query ("SELECT i from Item i left join fetch i.recipe where i.userEntity.id = :userId")
+    List<Item> findAllByUserEntityId(@Param("userId") Long userId);
 
     Optional<Item> findFirstByNameAndUserEntityId(String itemName, Long userEntityId);
 

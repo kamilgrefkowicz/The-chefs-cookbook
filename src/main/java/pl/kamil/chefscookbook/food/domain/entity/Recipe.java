@@ -21,7 +21,7 @@ public class Recipe extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Ingredient> ingredients = new LinkedHashSet<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     private Item parentItem;
 
