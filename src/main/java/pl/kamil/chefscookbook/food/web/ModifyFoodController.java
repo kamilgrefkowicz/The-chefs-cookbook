@@ -176,6 +176,4 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
 
         return ITEMS_LIST;
     }
-
-
 }
