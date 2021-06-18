@@ -16,8 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.INTERMEDIATE;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
 import static pl.kamil.chefscookbook.user.domain.MasterUserConfig.getMasterUser;
 
@@ -107,6 +106,60 @@ class ItemRepositoryTest {
         List<Item> queried = itemRepository.findForAutocomplete("test", user.getId());
 
         assertThat(queried, hasSize(2));
+    }
+    @Test
+    void findForAutocompleteShouldNotReturnDishes() {
+        UserEntity user = saveUserEntity();
+        saveItem(user, "test first", DISH);
+        saveItem(masterUser, "test second", DISH);
+
+        List<Item> queried = itemRepository.findForAutocomplete("test", user.getId());
+
+        assertThat(queried, empty());
+    }
+    @Test
+    void findForAutocompleteShouldNotReturnItemsByOtherUser() {
+        UserEntity user = saveUserEntity();
+        UserEntity other = saveUserEntity();
+        Item expected = saveItem(user, "test first", BASIC);
+        saveItem(other, "test second", BASIC);
+
+        List<Item> queried = itemRepository.findForAutocomplete("test", user.getId());
+
+        assertThat(queried, hasSize(1));
+        assertThat(queried, contains(expected));
+    }
+    @Test
+    void findAllDishesByUserShouldReturnEmptyListIfNoDishesPresent() {
+        UserEntity user = saveUserEntity();
+
+        List<Item> queried = itemRepository.findAllDishesByUser(user.getId());
+
+        assertThat(queried, empty());
+    }
+    @Test
+    void findAllDishesByUserShouldOnlyReturnDishes() {
+        UserEntity user = saveUserEntity();
+        Item basic = saveItem(user, "", BASIC);
+        Item intermediate = saveItem(user, "", INTERMEDIATE);
+        Item dish = saveItem(user, "", DISH);
+
+        List<Item> queried = itemRepository.findAllDishesByUser(user.getId());
+
+        assertThat(queried, hasSize(1));
+        assertThat(queried, contains(dish));
+    }
+    @Test
+    void findAllDishesByUserOnlyReturnsOwnedItems() {
+        UserEntity user = saveUserEntity();
+        UserEntity other = saveUserEntity();
+        Item owned = saveItem(user, "", DISH);
+        Item notOwned = saveItem(other, "", DISH);
+
+        List<Item> queried = itemRepository.findAllDishesByUser(user.getId());
+
+        assertThat(queried, hasSize(1));
+        assertThat(queried, contains(owned));
     }
 
     private Item saveItem(UserEntity user, String name, Type type) {
