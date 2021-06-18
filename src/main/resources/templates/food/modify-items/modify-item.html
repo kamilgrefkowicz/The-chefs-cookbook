@@ -83,7 +83,7 @@
     <form th:action="@{/food/new-item}" th:method="post" th:object="${createNewItemCommand}">
         <input type="hidden" th:attr="name='itemId'" th:value="${object.id}">
         <input type="text" th:attr="name='itemName'" placeholder="Nazwa składnika">
-        <input type="hidden" th:field="*{type}" th:value="PIECE">
+        <input type="hidden" th:attr="name='type'" th:value="BASIC">
         <div id="unit">
             <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
             <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"

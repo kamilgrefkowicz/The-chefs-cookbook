@@ -56,13 +56,13 @@ class QueryItemTest {
 
         queryItem.findAllItemsBelongingToUser(user);
 
-        verify(itemRepository).findAllByUserEntityId(1L);
+        verify(itemRepository).findAllAdvancedByUserEntityId(1L);
     }
     @Test
     void findAllItemsBelongingToUserShouldMapItemsToPoorItems() {
         Principal user = getUserWithIdOf1();
         List<Item> listOfTwoItems = getListOfTwoItems();
-        when(itemRepository.findAllByUserEntityId(any())).thenReturn(listOfTwoItems);
+        when(itemRepository.findAllAdvancedByUserEntityId(any())).thenReturn(listOfTwoItems);
 
         List<PoorItem> queried = queryItem.findAllItemsBelongingToUser(user);
 

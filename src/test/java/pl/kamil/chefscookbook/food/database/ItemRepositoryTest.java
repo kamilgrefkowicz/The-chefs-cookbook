@@ -38,7 +38,7 @@ class ItemRepositoryTest {
 
     @Test
     void findAllByUserEntityIdShouldReturnEmptyListIfNoItemsByUserPresent() {
-        List<Item> queried = itemRepository.findAllByUserEntityId(1L);
+        List<Item> queried = itemRepository.findAllAdvancedByUserEntityId(1L);
 
         assertThat(queried, empty());
     }
@@ -52,7 +52,7 @@ class ItemRepositoryTest {
         Item owned2 = saveItem(user);
         Item notOwned = saveItem(other);
 
-        List<Item> queried = itemRepository.findAllByUserEntityId(userId);
+        List<Item> queried = itemRepository.findAllAdvancedByUserEntityId(userId);
 
         assertThat(queried, hasSize(2));
         assertThat(queried, contains(owned1, owned2));

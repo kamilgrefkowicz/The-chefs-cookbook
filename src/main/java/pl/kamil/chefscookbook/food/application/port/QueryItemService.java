@@ -32,6 +32,8 @@ public interface QueryItemService {
 
     List<PoorItem> findAllEligibleDishesForMenu(Principal user, Long menuId);
 
+    List<PoorItem> findAllBasicsForUser(Principal user);
+
 
     @Data
     @NoArgsConstructor

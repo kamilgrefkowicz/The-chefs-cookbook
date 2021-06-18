@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
@@ -62,9 +63,15 @@ public class ViewFoodController extends ValidatedController<RichItem> {
         addDependencyMapsToModel(model, command);
 
         return ITEM_VIEW;
-
-
     }
+    @GetMapping("/view-basics")
+    public String showAllBasicItems(Model model, Principal user) {
+        List<PoorItem> basics = queryItem.findAllBasicsForUser(user);
+        model.addAttribute("basics", basics);
+        return BASIC_ITEMS_VIEW;
+    }
+
+
     // this splitting of maps is strongly connected to how the result is presented in thymeleaf view
     // which is why this piece of logic stays in controller
     private void addDependencyMapsToModel(Model model, QueryItemWithDependenciesCommand command) {

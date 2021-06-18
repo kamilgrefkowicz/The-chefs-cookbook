@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
 
-    @Query ("SELECT i from Item i left join fetch i.recipe where i.userEntity.id = :userId")
-    List<Item> findAllByUserEntityId(@Param("userId") Long userId);
+    @Query ("SELECT i from Item i left join fetch i.recipe where i.userEntity.id = :userId and i.type <> pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC")
+    List<Item> findAllAdvancedByUserEntityId(@Param("userId") Long userId);
 
     Optional<Item> findFirstByNameAndUserEntityId(String itemName, Long userEntityId);
 
@@ -25,4 +25,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("select i from Item i where i.userEntity.id = :userId and i.type = pl.kamil.chefscookbook.food.domain.staticData.Type.DISH")
     List<Item> findAllDishesByUser(@Param("userId") Long userId);
+
+    @Query("select i from Item i where (i.userEntity.id = 1 or i.userEntity.id = :userId) and i.type = pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC")
+    List<Item> findAllBasicsForUser(@Param("userId") Long userId);
 }

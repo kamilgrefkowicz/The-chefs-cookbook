@@ -20,6 +20,7 @@ public class UrlValueHolder {
     public static final String ITEM_DELETE_CONFIRM = "food/modify-items/delete-confirm";
     public static final String ITEMS_LIST = "food/my-items";
     public static final String ITEM_VIEW = "food/view-item";
+    public static final String BASIC_ITEMS_VIEW = "food/view-basics";
 
     public static final String USER_NEW = "user/registration";
 

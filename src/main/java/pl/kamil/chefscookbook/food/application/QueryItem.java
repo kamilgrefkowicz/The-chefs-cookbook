@@ -42,7 +42,7 @@ public class QueryItem implements QueryItemService {
     @Override
     public List<PoorItem> findAllItemsBelongingToUser(Principal user) {
 
-        return itemRepository.findAllByUserEntityId(getUserId(user))
+        return itemRepository.findAllAdvancedByUserEntityId(getUserId(user))
                 .stream()
                 .map(PoorItem::new)
                 .collect(Collectors.toList());
@@ -72,6 +72,13 @@ public class QueryItem implements QueryItemService {
 
         return itemRepository.findAllDishesByUser(getUserId(user)).stream()
                 .filter(item -> alreadyInTheMenu(menuId, item))
+                .map(PoorItem::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PoorItem> findAllBasicsForUser(Principal user) {
+        return itemRepository.findAllBasicsForUser(getUserId(user)).stream()
                 .map(PoorItem::new)
                 .collect(Collectors.toList());
     }
