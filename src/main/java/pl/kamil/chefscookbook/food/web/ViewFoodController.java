@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemService.CreateNewItemCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService.DeleteItemCommand;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService.QueryItemWithDependenciesCommand;
@@ -68,6 +69,7 @@ public class ViewFoodController extends ValidatedController<RichItem> {
     public String showAllBasicItems(Model model, Principal user) {
         List<PoorItem> basics = queryItem.findAllBasicsForUser(user);
         model.addAttribute("basics", basics);
+        model.addAttribute("createNewItemCommand", new CreateNewItemCommand());
         return BASIC_ITEMS_VIEW;
     }
 

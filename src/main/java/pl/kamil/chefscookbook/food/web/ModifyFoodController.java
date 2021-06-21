@@ -11,13 +11,13 @@ import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService.*;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService;
-import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 
@@ -28,7 +28,6 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
 
     private final ModifyItemService modifyItem;
     private final QueryItemService queryItem;
-
 
 
     @ModelAttribute
@@ -42,7 +41,7 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     }
 
     @GetMapping("/modify-item")
-    public String showModifyItemForm(Model model, @RequestParam Long itemId, Principal user){
+    public String showModifyItemForm(Model model, @RequestParam Long itemId, Principal user) {
         Response<RichItem> queried = queryItem.findById(itemId, user);
 
         if (!querySuccessful(queried, model)) return ERROR;
@@ -57,8 +56,8 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
         return ITEM_CREATE;
     }
 
-    @PostMapping("/new-item")
-    public String createNewItem(Model model, @Valid CreateNewItemCommand command, BindingResult result, Principal user, @RequestParam(required = false) Long itemId) {
+    @PostMapping("/new-advanced-item")
+    public String createNewAdvancedItem(Model model, @Valid CreateNewItemCommand command, BindingResult result, Principal user) {
 
         if (result.hasErrors()) return ITEM_CREATE;
 
@@ -68,20 +67,45 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
             model.addAttribute(ERROR, itemCreated.getError());
             return ITEM_CREATE;
         }
-        if (itemId == null && command.getType() == Type.BASIC) {
-            return ITEM_CREATE;
-        }
-        ItemDto object;
 
-        if (itemId != null) {
-            object = queryItem.findById(itemId, user).getData();
-        } else {
-            object = itemCreated.getData();
-        }
-
+        ItemDto object = itemCreated.getData();
 
         model.addAttribute("object", object);
         return ITEM_MODIFY;
+    }
+
+    @PostMapping("new-basic-item")
+    public String createNewBasicItem(Model model, @Valid CreateNewItemCommand command, BindingResult result, Principal user, @RequestParam Optional<Long> redirectItemId) {
+
+        if (redirectItemId.isEmpty()) {
+            return redirectBackToBasicItemsView(model, command, result, user);
+        }
+        return redirectBackToModifyItemView(model, command, result, user, redirectItemId);
+    }
+
+    private String redirectBackToModifyItemView(Model model, CreateNewItemCommand command, BindingResult result, Principal user, Optional<Long> redirectItemId) {
+        Response<RichItem> queried = queryItem.findById(redirectItemId.get(), user);
+        if (!querySuccessful(queried, model)) return ERROR;
+        model.addAttribute("object", queried.getData());
+        if (result.hasErrors()) return ITEM_MODIFY;
+
+        Response<ItemDto> response = modifyItem.createItem(command, user);
+        if (!response.isSuccess()) {
+            model.addAttribute("error", response.getError());
+        }
+        return ITEM_MODIFY;
+    }
+
+    private String redirectBackToBasicItemsView(Model model, CreateNewItemCommand command, BindingResult result, Principal user) {
+
+        Response<ItemDto> response = modifyItem.createItem(command, user);
+
+        if (!response.isSuccess()) {
+            model.addAttribute("error", response.getError());
+        }
+        List<PoorItem> basics = queryItem.findAllBasicsForUser(user);
+        model.addAttribute("basics", basics);
+        return BASIC_ITEMS_VIEW;
     }
 
 
@@ -168,6 +192,7 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
 
         return ITEM_DELETE_CONFIRM;
     }
+
     @PostMapping("/delete-item")
     public String deleteItem(Model model, DeleteItemCommand command, Principal user) {
 

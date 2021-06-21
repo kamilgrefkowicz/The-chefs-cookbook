@@ -12,7 +12,7 @@
 <nav th:replace="fragments/layout :: topNavBar"></nav>
 
 
-<form th:action="@{/food/new-item}"
+<form th:action="@{/food/new-advanced-item}"
       th:object="${createNewItemCommand}" method="POST">
 
     <p th:unless="${error == null}" th:text="${error}"></p>
