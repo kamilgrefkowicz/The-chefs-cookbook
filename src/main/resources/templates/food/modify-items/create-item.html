@@ -5,40 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-
+    <script th:src="@{/js/disableUnit.js}"></script>
     <title> INSERT </title>
 </head>
 <body>
 <nav th:replace="fragments/layout :: topNavBar"></nav>
+<div class="container">
+    <div class="row py-4 ">
+        <div class="col-md-7">
+
+            <form th:action="@{/food/new-advanced-item}"
+                  th:object="${createNewItemCommand}" method="POST">
+
+                <p th:unless="${error == null}" th:text="${error}"></p>
+                <input type="text" th:field="*{itemName}" placeholder="Nazwa przepisu">
 
 
-<form th:action="@{/food/new-advanced-item}"
-      th:object="${createNewItemCommand}" method="POST">
 
-    <p th:unless="${error == null}" th:text="${error}"></p>
-    <input type="text" th:field="*{itemName}" placeholder="Nazwa przepisu">
+                <input id="choseDish" type="radio" name="itemType" th:text="Półprodukt"
+                       th:value="INTERMEDIATE" th:field="*{type}">
+                <input id="choseIntermediate" type="radio" name="itemType" th:text="Danie"
+                       th:value="DISH" th:field="*{type}">
 
-    <hr>
+                <div id="unit">
 
-    <input id="choseDish" type="radio" name="itemType" th:text="Półprodukt"
-           th:value="INTERMEDIATE" th:field="*{type}">
-    <input id="choseIntermediate" type="radio" name="itemType" th:text="Danie"
-           th:value="DISH" th:field="*{type}">
-
-    <div id="unit">
-        <hr>
-        <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
-        <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"
-           th:field="*{unit}"></span>
-        <span><input type="radio" name="unit" th:value="LITRE" th:text="litr"
-                     th:field="*{unit}"></span>
-        <span><input type="radio" name="unit" th:value="PIECE" th:text="szt"
-                     th:field="*{unit}"></span>
-
+                    <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
+                    <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"
+                                 th:field="*{unit}"></span>
+                    <span><input type="radio" name="unit" th:value="LITRE" th:text="litr"
+                                 th:field="*{unit}"></span>
+                    <span><input type="radio" name="unit" th:value="PIECE" th:text="szt"
+                                 th:field="*{unit}"></span>
+                </div>
+                <input type="submit" value="Kontynuuj!">
+            </form>
+        </div>
+        <div class="col-md-5">
+            <p class="lead">Stwórz nowy przepis!</p>
+            <p>Najpierw stwórz przepisy na półprodukty, których będziesz używał w swoich daniach</p>
+            <p>Dla półproduktów wybierz jednostkę, której wygodnie będzie Ci używać w budowaniu przepisów z ich użyciem</p>
+            <p>Dania są zawsze liczone na sztuki</p>
+        </div>
     </div>
-
-    <input type="submit" value="Kontynuuj!">
-</form>
+</div>
 
 </body>
 </html>
