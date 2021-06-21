@@ -11,48 +11,54 @@
 <body>
 <nav th:replace="fragments/layout :: topNavBar"></nav>
 
+<div class="container">
+    <div class="row py-4 px-4">
+        <div class="col-md-7">
 
+            <div th:replace="fragments/messages :: backend-message"></div>
 
+            <table class="table table-hover align-middle">
+                <thead>
+                <tr>
+                    <td>Nazwa produktu</td>
+                    <td>Jednostka</td>
+                    <td>Zobacz</td>
+                    <td>Usuń</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${poorItemList}">
 
-My recipes:
-<hr>
+                    <td th:text="*{item.name}">Nazwa przedmiotu</td>
+                    <td th:text="*{item.unit}">Jednostka</td>
+                    <td>
+                        <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
+                            <input type="hidden" th:attr="name='targetAmount'" th:value="1">
+                            <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
+                            <input type="submit" th:value="x" class="btn btn-secondary">
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/food/delete-item}" th:method="get" th:object="${deleteItemCommand}">
+                            <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
 
-<table class="table table-hover">
-    <thead>
-    <tr>Nazwa produktu</tr>
-    <tr>Jednostka</tr>
-    <tr>Zobacz</tr>
-    <tr>Usuń</tr>
-
-    </thead>
-    <tbody>
-    <tr th:each="item : ${poorItemList}">
-
-        <td th:text="*{item.name}"></td>
-        <td th:text="*{item.unit}"></td>
-        <td>
-            <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
-                <input type="hidden" th:attr="name='targetAmount'" th:value="1">
-                <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
-                <input type="submit" th:value="x">
+                            <input type="submit" value="x" class="btn btn-danger">
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-5 px-4">
+            <p class="lead">Po lewej znajdują się Twoje przepisy.</p>
+            <p>Możesz stworzyć nowy tutaj:</p>
+            <form th:action="@{/food/new-item}" th:method="get">
+                <input type="submit" value="Stwórz nowy przepis!" class="btn btn-primary">
             </form>
-        </td>
-        <td>
-            <form th:action="@{/food/delete-item}" th:method="get" th:object="${deleteItemCommand}">
-                <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
-                <input type="submit" value="x">
-            </form>
-        </td>
-    </tr>
 
-    </tbody>
-
-
-
-</table>
-<form th:action="@{/food/new-item}" th:method="get">
-    <input type="submit" value="Stwórz nowy przepis!">
-</form>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

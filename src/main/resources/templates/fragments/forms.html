@@ -13,8 +13,11 @@
 <div th:fragment="add-basic-item-form">
 
     <form th:action="@{/food/new-basic-item}" th:method="post" th:object="${createNewItemCommand}">
+        <div th:if="${#fields.hasAnyErrors()}">
+            <div th:replace="fragments/messages :: validation-error"></div>
+        </div>
         <input th:if="${object != null}" type="hidden" th:attr="name='redirectItemId'" th:value="${object.id}">
-        <input type="text" th:attr="name='itemName'" placeholder="Nazwa składnika">
+        <input type="text" th:attr="name='itemName'" placeholder="Nazwa">
         <input type="hidden" th:attr="name='type'" th:value="BASIC">
         <div id="unit">
             <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
