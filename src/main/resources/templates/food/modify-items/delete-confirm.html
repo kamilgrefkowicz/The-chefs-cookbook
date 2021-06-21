@@ -11,20 +11,22 @@
 <body>
 <nav th:replace="fragments/layout :: topNavBar"></nav>
 
+<div class="text-center">
+    <div class="container">
+        <p class="lead">Czy jesteś pewien, że chcesz usunąć produkt <span th:text="${object.name}"></span> ?</p>
 
-<p>Czy jesteś pewien, że chcesz usunąć produkt <span th:text="${object.name}"></span> ?</p>
+        <form th:action="@{/food/delete-item}" th:method="post" th:object="${deleteItemCommand}">
+            <input type="hidden" th:attr="name='itemId'" th:value="${object.id}">
+            <input type="submit" value="Usuń" class="btn btn-danger">
+        </form>
 
-<form th:action="@{/food/delete-item}" th:method="post" th:object="${deleteItemCommand}">
-    <input type="hidden" th:attr="name='itemId'" th:value="${object.id}">
-    <input type="submit" value="usuń">
-</form>
-
-<div th:unless="${itemsAffected.isEmpty()}">
-    <p>Produkt zostanie usunięty z poniższych przepisów:</p>
-    <ul th:each="item : ${itemsAffected}">
-        <li th:text="*{object.name}"></li>
-    </ul>
+        <div th:unless="${itemsAffected.isEmpty()}" class="p-2">
+            <p>Produkt zostanie usunięty z poniższych przepisów:</p>
+            <ul th:each="item : ${itemsAffected}" class="list-group">
+                <li th:text="*{item.name}" class="list-group-item"></li>
+            </ul>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>

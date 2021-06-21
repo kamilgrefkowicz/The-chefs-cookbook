@@ -3,15 +3,19 @@ package pl.kamil.chefscookbook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService;
+import pl.kamil.chefscookbook.food.application.port.ModifyItemService.AddIngredientCommand;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService.CreateNewItemCommand;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
+import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.*;
 import static pl.kamil.chefscookbook.user.domain.MasterUserConfig.getMasterUser;
 
@@ -22,8 +26,12 @@ public class ApplicationStartup implements CommandLineRunner {
     private final ModifyItemService modifyItemService;
     private final UserRepository userRepository;
 
+    UserEntity user;
+
     @Override
     public void run(String... args) throws Exception {
+
+
 
         initializeUser();
         initializeStartingItems();
@@ -32,7 +40,7 @@ public class ApplicationStartup implements CommandLineRunner {
 
     private void initializeUser() {
         UserEntity ccb = getMasterUser();
-        UserEntity user = new UserEntity("kamil", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
+        user = new UserEntity("kamil", "$2y$12$E1stjX9Ae8Zi8RWHPtUkl.w5046b9GIdgml6maQvjLXdtE0fZb7Be");
         userRepository.save(ccb);
         userRepository.save(user);
     }
@@ -44,6 +52,8 @@ public class ApplicationStartup implements CommandLineRunner {
         Type.valueOf("DISH");
 
         Principal ccb = () -> "1";
+        Principal kamil = () -> String.valueOf(user.getId());
+
         modifyItemService.createItem(new CreateNewItemCommand("Ziemniak", BASIC, KILOGRAM), ccb);
         modifyItemService.createItem(new CreateNewItemCommand("Masło", BASIC, KILOGRAM), ccb);
         modifyItemService.createItem(new CreateNewItemCommand("Bułka maślana", BASIC, PIECE), ccb);
@@ -96,6 +106,10 @@ public class ApplicationStartup implements CommandLineRunner {
         modifyItemService.createItem(new CreateNewItemCommand("Szczypiorek", BASIC, KILOGRAM), ccb);
         modifyItemService.createItem(new CreateNewItemCommand("Tymianek", BASIC, KILOGRAM), ccb);
         modifyItemService.createItem(new CreateNewItemCommand("Rozmaryn", BASIC, KILOGRAM), ccb);
+
+        Response<ItemDto> puree = modifyItemService.createItem(new CreateNewItemCommand("Puree", INTERMEDIATE, KILOGRAM), kamil);
+        Response<ItemDto> schab_z_puree = modifyItemService.createItem(new CreateNewItemCommand("Schab z puree", DISH, PIECE), kamil);
+        modifyItemService.addIngredientToRecipe(new AddIngredientCommand(schab_z_puree.getData().getId(), puree.getData().getId(), BigDecimal.ONE), kamil);
 
     }
 }
