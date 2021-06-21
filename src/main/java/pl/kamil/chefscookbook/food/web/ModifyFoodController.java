@@ -98,11 +98,17 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
 
     private String redirectBackToBasicItemsView(Model model, CreateNewItemCommand command, BindingResult result, Principal user) {
 
+        if (result.hasErrors()) return  redirectBack(model, user);
+
         Response<ItemDto> response = modifyItem.createItem(command, user);
 
         if (!response.isSuccess()) {
             model.addAttribute("error", response.getError());
         }
+        return redirectBack(model, user);
+    }
+
+    private String redirectBack(Model model, Principal user) {
         List<PoorItem> basics = queryItem.findAllBasicsForUser(user);
         model.addAttribute("basics", basics);
         return BASIC_ITEMS_VIEW;

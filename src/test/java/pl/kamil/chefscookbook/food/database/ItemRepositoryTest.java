@@ -44,18 +44,31 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void findAllByUserEntityIdShouldReturnOnlyListOfItemsOwnedByUser() {
+    void findAllAdvancedByUserEntityIdShouldReturnOnlyListOfItemsOwnedByUser() {
         UserEntity user = saveUserEntity();
         Long userId = user.getId();
         UserEntity other = saveUserEntity();
-        Item owned1 = saveItem(user);
-        Item owned2 = saveItem(user);
-        Item notOwned = saveItem(other);
+        Item owned1 = saveItem(user,"", DISH);
+        Item owned2 = saveItem(user,"", DISH);
+        Item notOwned = saveItem(other,"", DISH);
 
         List<Item> queried = itemRepository.findAllAdvancedByUserEntityId(userId);
 
         assertThat(queried, hasSize(2));
         assertThat(queried, contains(owned1, owned2));
+    }
+    @Test
+    void findAllAdvancedByUserEntityIdShouldOnlyReturnIntermediatesAndDishes() {
+        UserEntity user = saveUserEntity();
+        Long userId = user.getId();
+        Item advanced1 = saveItem(user,"", INTERMEDIATE);
+        Item advanced2 = saveItem(user,"", DISH);
+        Item basic = saveItem(user,"", BASIC);
+
+        List<Item> queried = itemRepository.findAllAdvancedByUserEntityId(userId);
+
+        assertThat(queried, hasSize(2));
+        assertThat(queried, contains(advanced1, advanced2));
     }
 
     @Test

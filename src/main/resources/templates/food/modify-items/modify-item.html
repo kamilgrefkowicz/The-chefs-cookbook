@@ -73,31 +73,32 @@
     <form th:action="@{/food/modify-description}" th:method="post" th:object="${updateDescriptionCommand}">
         <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
         <textarea cols="30" rows="20" th:attr="name='description'" th:field="${object.description}"></textarea>
-<!--        <textarea cols="30" rows="20" th:field="*{description}"></textarea>-->
         <input type="submit" value="Zmien">
     </form>
 </div>
 
 <div>
     <p>Brakuje Ci jakiegoś podstawowego składnika? Dodaj go tutaj:</p>
-    <form th:action="@{/food/new-basic-item}" th:method="post" th:object="${createNewItemCommand}">
-        <input type="hidden" th:attr="name='redirectItemId'" th:value="${object.id}">
-        <input type="text" th:attr="name='itemName'" placeholder="Nazwa składnika">
-        <input type="hidden" th:attr="name='type'" th:value="BASIC">
-        <div id="unit">
-            <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
-            <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"
-                         th:field="*{unit}"></span>
-            <span><input type="radio" name="unit" th:value="LITRE" th:text="litr"
-                         th:field="*{unit}"></span>
-            <span><input type="radio" name="unit" th:value="PIECE" th:text="szt"
-                         th:field="*{unit}"></span>
+    <div th:replace="fragments/forms :: add-basic-item-form"></div>
 
-        </div>
-        <input type="submit" value="Dodaj!">
+    <!--    <form th:action="@{/food/new-basic-item}" th:method="post" th:object="${createNewItemCommand}">-->
+<!--        <input type="hidden" th:attr="name='redirectItemId'" th:value="${object.id}">-->
+<!--        <input type="text" th:attr="name='itemName'" placeholder="Nazwa składnika">-->
+<!--        <input type="hidden" th:attr="name='type'" th:value="BASIC">-->
+<!--        <div id="unit">-->
+<!--            <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>-->
+<!--            <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"-->
+<!--                         th:field="*{unit}"></span>-->
+<!--            <span><input type="radio" name="unit" th:value="LITRE" th:text="litr"-->
+<!--                         th:field="*{unit}"></span>-->
+<!--            <span><input type="radio" name="unit" th:value="PIECE" th:text="szt"-->
+<!--                         th:field="*{unit}"></span>-->
+
+<!--        </div>-->
+<!--        <input type="submit" value="Dodaj!">-->
 
 
-    </form>
+<!--    </form>-->
 </div>
 
 

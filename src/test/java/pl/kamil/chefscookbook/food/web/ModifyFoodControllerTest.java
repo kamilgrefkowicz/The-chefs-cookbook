@@ -60,28 +60,28 @@ class ModifyFoodControllerTest {
 
     @Test
     void invalidItemNameShouldResultInValidationError() throws Exception {
-        MockHttpServletRequestBuilder postRequest = getPostRequestForNewItem("ab", BASIC, null);
+        MockHttpServletRequestBuilder postRequest = getPostRequestForNewBasicItem("ab", BASIC, null);
 
         mockMvc.perform(postRequest)
 
                 .andExpect(model().attributeHasErrors("createNewItemCommand"))
-                .andExpect(view().name(ITEM_CREATE));
+                .andExpect(view().name(BASIC_ITEMS_VIEW));
     }
 
     @Test
     void ifNameAlreadyTakenShouldResultInError() throws Exception {
 
-        MockHttpServletRequestBuilder postRequest = getPostRequestForNewItem("abc", BASIC, null);
+        MockHttpServletRequestBuilder postRequest = getPostRequestForNewBasicItem("abc", BASIC, null);
         when(modifyItem.createItem(any(), any())).thenReturn(Response.failure(ITEM_NAME_TAKEN));
 
         mockMvc.perform(postRequest)
-                .andExpect(model().attributeExists(ERROR))
-                .andExpect(view().name(ITEM_CREATE));
+                .andExpect(model().attribute(ERROR, ITEM_NAME_TAKEN))
+                .andExpect(view().name(BASIC_ITEMS_VIEW));
     }
 
     @Test
     void creatingItemShouldCallService() throws Exception {
-        MockHttpServletRequestBuilder postRequest = getPostRequestForNewItem("abc", BASIC, null);
+        MockHttpServletRequestBuilder postRequest = getPostRequestForNewBasicItem("abc", BASIC, null);
         when(modifyItem.createItem(any(), any())).thenReturn(Response.success(null));
 
         mockMvc.perform(postRequest);
@@ -91,19 +91,19 @@ class ModifyFoodControllerTest {
 
 
     @Test
-    void creatingBasicItemFromNewItemPageShouldRedirectBack() throws Exception {
-        MockHttpServletRequestBuilder postRequest = getPostRequestForNewItem("abc", BASIC, null);
+    void creatingBasicItemFromBasicItemsListShouldRedirectBack() throws Exception {
+        MockHttpServletRequestBuilder postRequest = getPostRequestForNewBasicItem("abc", BASIC, null);
         when(modifyItem.createItem(any(), any())).thenReturn(Response.success(null));
 
         mockMvc.perform(postRequest)
 
-                .andExpect(view().name(ITEM_CREATE));
+                .andExpect(view().name(BASIC_ITEMS_VIEW));
     }
 
     @Test
     void creatingBasicItemFromModifyItemPageShouldRedirectBack() throws Exception {
         RichItem redirectedFrom = new RichItem();
-        MockHttpServletRequestBuilder postRequest = getPostRequestForNewItem("abc", BASIC, 1L);
+        MockHttpServletRequestBuilder postRequest = getPostRequestForNewBasicItem("abc", BASIC, 1L);
         when(queryItem.findById(eq(1L), any())).thenReturn(Response.success(redirectedFrom));
         when(modifyItem.createItem(any(), any())).thenReturn(Response.success(null));
 
@@ -116,7 +116,7 @@ class ModifyFoodControllerTest {
     @Test
     void creatingNonBasicItemShouldRedirectToModifyItemPage() throws Exception {
         RichItem newItem = new RichItem();
-        MockHttpServletRequestBuilder postRequest = getPostRequestForNewItem("abc", INTERMEDIATE, null);
+        MockHttpServletRequestBuilder postRequest = getPostRequestForAdvancedItem("abc", INTERMEDIATE);
         when(modifyItem.createItem(any(), any())).thenReturn(Response.success(newItem));
 
         mockMvc.perform(postRequest)
@@ -124,6 +124,16 @@ class ModifyFoodControllerTest {
                 .andExpect(view().name(ITEM_MODIFY))
                 .andExpect(model().attribute("object", newItem));
     }
+
+    private MockHttpServletRequestBuilder getPostRequestForAdvancedItem(String itemName, Type type) {
+        return post("/food/new-advanced-item")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("itemName", itemName)
+                .param("type", type.name())
+                .param("unit", KILOGRAM.name())
+                .with(csrf());
+    }
+
     @Test
     void gettingModifyItemPageShouldReturnModelPopulatedWithCommandsNeededForForms() throws Exception {
         RichItem queried = new RichItem();
@@ -294,15 +304,15 @@ class ModifyFoodControllerTest {
     }
 
 
-    private MockHttpServletRequestBuilder getPostRequestForNewItem(String itemName, Type type, Long itemId) {
-        MockHttpServletRequestBuilder postRequest = post("/food/new-item")
+    private MockHttpServletRequestBuilder getPostRequestForNewBasicItem(String itemName, Type type, Long itemId) {
+        MockHttpServletRequestBuilder postRequest = post("/food/new-basic-item")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("itemName", itemName)
                 .param("type", type.name())
                 .param("unit", KILOGRAM.name())
                 .with(csrf());
 
-        if (itemId != null) postRequest.param("itemId", String.valueOf(itemId));
+        if (itemId != null) postRequest.param("redirectItemId", String.valueOf(itemId));
 
         return postRequest;
     }
