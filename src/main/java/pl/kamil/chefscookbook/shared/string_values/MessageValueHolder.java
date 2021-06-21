@@ -17,4 +17,6 @@ public class MessageValueHolder {
 
     public static final String MENU_NAME_TAKEN = "Masz już menu o takiej nazwie";
 
+    public static final String ITEM_DELETED = "Usunięto produkt";
+
 }

@@ -142,7 +142,7 @@ class QueryItemTest {
         Principal user = getUserWithIdOf1();
         when(itemRepository.findById(any())).thenReturn(Optional.empty());
 
-        Response<RichItem> queried= queryItem.findById(1L, user);
+        Response<ItemDto> queried= queryItem.findById(1L, user);
 
         assertFalse(queried.isSuccess());
         assertThat(queried.getError(), equalTo(NOT_FOUND));
@@ -153,7 +153,7 @@ class QueryItemTest {
         when(itemRepository.findById(any())).thenReturn( Optional.of(new Item()));
         when(userSecurity.belongsTo(any(), any())).thenReturn(false);
 
-        Response<RichItem> queried= queryItem.findById(1L, user);
+        Response<ItemDto> queried= queryItem.findById(1L, user);
 
         assertFalse(queried.isSuccess());
         assertThat(queried.getError(), equalTo(NOT_AUTHORIZED));
@@ -164,7 +164,7 @@ class QueryItemTest {
         when(itemRepository.findById(any())).thenReturn( Optional.of(getItem(1L, DISH)));
         when(userSecurity.belongsTo(any(), any())).thenReturn(true);
 
-        Response<RichItem> queried= queryItem.findById(1L, user);
+        Response<ItemDto> queried= queryItem.findById(1L, user);
 
         assertTrue(queried.isSuccess());
         assertThat(queried.getData().getId(), equalTo(1L));

@@ -145,7 +145,7 @@ class ModifyItemTest {
         Principal principal = getPrincipal(1L);
         when(userSecurity.belongsTo(any(), any())).thenReturn(false);
 
-        Response<RichItem> modification = modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
+        Response<ItemDto> modification = modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
 
         assertFalse(modification.isSuccess());
         assertThat(modification.getError(), equalTo(NOT_AUTHORIZED));
@@ -159,7 +159,7 @@ class ModifyItemTest {
         when(itemRepository.getOne(any())).thenReturn(parentItem);
         passSecurity(true);
 
-        Response<RichItem> modification =modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 1L, BigDecimal.ONE), principal);
+        Response<ItemDto> modification =modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 1L, BigDecimal.ONE), principal);
 
         assertFalse(modification.isSuccess());
         assertThat(modification.getError(), equalTo(LOOP_SHORT));
@@ -175,7 +175,7 @@ class ModifyItemTest {
         when(itemRepository.getOne(2L)).thenReturn(childItem);
         passSecurity(true);
 
-        Response<RichItem> modification =modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
+        Response<ItemDto> modification =modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
 
         assertFalse(modification.isSuccess());
         assertThat(modification.getError(), containsString(LOOP_LONG));
@@ -216,12 +216,13 @@ class ModifyItemTest {
         returned.setUserEntity(getUserEntity(1L));
         when(itemRepository.save(any())).thenReturn(returned);
 
-        Response<RichItem> modified = modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
+        Response<ItemDto> response = modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
+        RichItem modified = (RichItem) response.getData();
 
-        assertTrue(modified.isSuccess());
-        assertThat(modified.getData().getId(), equalTo(2L));
-        assertThat(modified.getData().getIngredients(), hasSize(1));
-        assertThat(modified.getData().getUserEntityId(), equalTo(1L));
+        assertTrue(response.isSuccess());
+        assertThat(modified.getId(), equalTo(2L));
+        assertThat(modified.getIngredients(), hasSize(1));
+        assertThat(modified.getUserEntityId(), equalTo(1L));
     }
     //repeated security logic is not tested
     @Test

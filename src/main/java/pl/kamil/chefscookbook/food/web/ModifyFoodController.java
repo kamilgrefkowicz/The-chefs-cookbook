@@ -7,7 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
-import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService.*;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService;
@@ -19,12 +18,13 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.ITEM_DELETED;
 import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/food")
-public class ModifyFoodController extends ValidatedController<RichItem> {
+public class ModifyFoodController extends ValidatedController<ItemDto> {
 
     private final ModifyItemService modifyItem;
     private final QueryItemService queryItem;
@@ -42,11 +42,11 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
 
     @GetMapping("/modify-item")
     public String showModifyItemForm(Model model, @RequestParam Long itemId, Principal user) {
-        Response<RichItem> queried = queryItem.findById(itemId, user);
+        Response<ItemDto> queried = queryItem.findById(itemId, user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem object = queried.getData();
+        ItemDto object = queried.getData();
         model.addAttribute("object", object);
         return ITEM_MODIFY;
     }
@@ -80,11 +80,11 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
         if (redirectItemId.isEmpty()) {
             return redirectBackToBasicItemsView(model, command, result, user);
         }
-        return redirectBackToModifyItemView(model, command, result, user, redirectItemId);
+        return redirectBackToModifyItemView(model, command, result, user, redirectItemId.get());
     }
 
-    private String redirectBackToModifyItemView(Model model, CreateNewItemCommand command, BindingResult result, Principal user, Optional<Long> redirectItemId) {
-        Response<RichItem> queried = queryItem.findById(redirectItemId.get(), user);
+    private String redirectBackToModifyItemView(Model model, CreateNewItemCommand command, BindingResult result, Principal user, Long redirectItemId) {
+        Response<ItemDto> queried = queryItem.findById(redirectItemId, user);
         if (!querySuccessful(queried, model)) return ERROR;
         model.addAttribute("object", queried.getData());
         if (result.hasErrors()) return ITEM_MODIFY;
@@ -119,15 +119,15 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
 
     @PostMapping("/add-ingredient")
     public String addIngredient(Model model, @Valid AddIngredientCommand command, BindingResult bindingResult, Principal user) {
-        Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
+        Response<ItemDto> queried = queryItem.findById(command.getParentItemId(), user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem object = queried.getData();
+        ItemDto object = queried.getData();
 
         if (!validationSuccessful(bindingResult, model, object)) return ITEM_MODIFY;
 
-        Response<RichItem> modification = modifyItem.addIngredientToRecipe(command, user);
+        Response<ItemDto> modification = modifyItem.addIngredientToRecipe(command, user);
 
         resolveModification(modification, model, object);
 
@@ -138,13 +138,13 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     @PostMapping("/remove-ingredient")
     public String removeIngredient(Model model, RemoveIngredientFromRecipeCommand command, Principal user) {
 
-        Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
+        Response<ItemDto> queried = queryItem.findById(command.getParentItemId(), user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem object = queried.getData();
+        ItemDto object = queried.getData();
 
-        Response<RichItem> modification = modifyItem.removeIngredientFromRecipe(command, user);
+        Response<ItemDto> modification = modifyItem.removeIngredientFromRecipe(command, user);
 
         resolveModification(modification, model, object);
         return ITEM_MODIFY;
@@ -153,14 +153,14 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     @PostMapping("/set-yield")
     public String setYield(Model model, @Valid SetYieldCommand command, BindingResult bindingResult, Principal user) {
 
-        Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
+        Response<ItemDto> queried = queryItem.findById(command.getParentItemId(), user);
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem object = queried.getData();
+        ItemDto object = queried.getData();
 
         if (!validationSuccessful(bindingResult, model, object)) return ITEM_MODIFY;
 
-        Response<RichItem> modification = modifyItem.setYield(command, user);
+        Response<ItemDto> modification = modifyItem.setYield(command, user);
 
         resolveModification(modification, model, object);
 
@@ -171,15 +171,15 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     @PostMapping("/modify-description")
     public String updateDescription(Model model, @Valid UpdateDescriptionCommand command, BindingResult bindingResult, Principal user) {
 
-        Response<RichItem> queried = queryItem.findById(command.getParentItemId(), user);
+        Response<ItemDto> queried = queryItem.findById(command.getParentItemId(), user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
-        RichItem object = queried.getData();
+        ItemDto object = queried.getData();
 
         if (!validationSuccessful(bindingResult, model, object)) return ITEM_MODIFY;
 
-        Response<RichItem> modification = modifyItem.updateDescription(command, user);
+        Response<ItemDto> modification = modifyItem.updateDescription(command, user);
 
         resolveModification(modification, model, object);
         return ITEM_MODIFY;
@@ -188,7 +188,7 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
     @GetMapping("/delete-item")
     //todo: fix query for deleting basics
     public String showConfirmPageForDelete(Model model, DeleteItemCommand command, Principal user) {
-        Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
+        Response<ItemDto> queried = queryItem.findById(command.getItemId(), user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 
@@ -198,6 +198,7 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
         model.addAttribute("itemsAffected", itemsAffected);
         model.addAttribute("object", object);
 
+
         return ITEM_DELETE_CONFIRM;
     }
 
@@ -206,6 +207,7 @@ public class ModifyFoodController extends ValidatedController<RichItem> {
 
         modifyItem.deleteItem(command, user);
         model.addAttribute("poorItemList", queryItem.findAllItemsBelongingToUser(user));
+        model.addAttribute("message", ITEM_DELETED);
 
         return ITEMS_LIST;
     }

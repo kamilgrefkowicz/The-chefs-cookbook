@@ -5,11 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
-import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.response.Response;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
@@ -19,15 +19,15 @@ public interface ModifyItemService {
 
     Response<ItemDto> createItem(CreateNewItemCommand command, Principal user);
 
-    Response<RichItem> addIngredientToRecipe(AddIngredientCommand command, Principal user) ;
+    Response<ItemDto> addIngredientToRecipe(AddIngredientCommand command, Principal user) ;
 
-    Response<RichItem> setYield(SetYieldCommand command, Principal user);
+    Response<ItemDto> setYield(SetYieldCommand command, Principal user);
 
-    Response<RichItem> updateDescription(UpdateDescriptionCommand command, Principal user);
+    Response<ItemDto> updateDescription(UpdateDescriptionCommand command, Principal user);
 
     Response<Void> deleteItem(DeleteItemCommand command, Principal user);
 
-    Response<RichItem> removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command, Principal user);
+    Response<ItemDto> removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command, Principal user);
 
 
     @Data
@@ -38,7 +38,9 @@ public interface ModifyItemService {
         @Length(min = 3, max = 15)
         private String itemName;
 
+        @NotNull
         private Type type;
+
         private Unit unit;
     }
 

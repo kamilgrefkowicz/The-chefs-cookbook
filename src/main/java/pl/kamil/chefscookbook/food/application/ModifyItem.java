@@ -9,6 +9,7 @@ import pl.kamil.chefscookbook.food.database.IngredientRepository;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.database.UserRepository;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
+import static pl.kamil.chefscookbook.food.domain.staticData.Unit.PIECE;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.*;
 
 @Service
@@ -55,16 +58,21 @@ public class ModifyItem implements ModifyItemService {
 
         return new Item(
                 command.getItemName(),
-                command.getUnit(),
+                getUnitOrInferPiece(command),
                 command.getType(),
                 userRepository.getOne(Long.valueOf(user.getName())));
 
     }
 
+    private Unit getUnitOrInferPiece(CreateNewItemCommand command) {
+        if (command.getType().equals(DISH)) return PIECE;
+        return command.getUnit();
+    }
+
 
     @Transactional
     @Override
-    public Response<RichItem> addIngredientToRecipe(AddIngredientCommand command, Principal user) {
+    public Response<ItemDto> addIngredientToRecipe(AddIngredientCommand command, Principal user) {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Item childItem = itemRepository.getOne(command.getChildItemId());
 
@@ -106,7 +114,7 @@ public class ModifyItem implements ModifyItemService {
 
     @Override
     @Transactional
-    public Response<RichItem> setYield(SetYieldCommand command, Principal user) {
+    public Response<ItemDto> setYield(SetYieldCommand command, Principal user) {
         Optional<Item> optional = itemRepository.findById(command.getParentItemId());
         if (optional.isEmpty()) return Response.failure(NOT_FOUND);
         Item item = optional.get();
@@ -118,7 +126,7 @@ public class ModifyItem implements ModifyItemService {
 
     @Override
     @Transactional
-    public Response<RichItem> updateDescription(UpdateDescriptionCommand command, Principal user) {
+    public Response<ItemDto> updateDescription(UpdateDescriptionCommand command, Principal user) {
         Optional<Item> optional = itemRepository.findById(command.getParentItemId());
         if (optional.isEmpty()) return Response.failure(NOT_FOUND);
         Item item = optional.get();
@@ -129,7 +137,7 @@ public class ModifyItem implements ModifyItemService {
 
     }
 
-    private Response<RichItem> successfulResponse(Item item) {
+    private Response<ItemDto> successfulResponse(Item item) {
         return Response.success(new RichItem(itemRepository.save(item)));
     }
 
@@ -156,7 +164,7 @@ public class ModifyItem implements ModifyItemService {
 
     @Override
     @Transactional
-    public Response<RichItem> removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command, Principal user) {
+    public Response<ItemDto> removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command, Principal user) {
         Item parentItem = itemRepository.getOne(command.getParentItemId());
         Ingredient ingredientToRemove = ingredientRepository.getOne(command.getIngredientId());
 

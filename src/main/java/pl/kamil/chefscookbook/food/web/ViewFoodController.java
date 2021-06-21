@@ -30,7 +30,7 @@ import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/food")
-public class ViewFoodController extends ValidatedController<RichItem> {
+public class ViewFoodController extends ValidatedController<ItemDto> {
 
     private final QueryItemService queryItem;
 
@@ -54,7 +54,7 @@ public class ViewFoodController extends ValidatedController<RichItem> {
             command.setTargetAmount(BigDecimal.ONE);
         }
 
-        Response<RichItem> queried = queryItem.findById(command.getItemId(), user);
+        Response<ItemDto> queried = queryItem.findById(command.getItemId(), user);
 
         if (!querySuccessful(queried, model)) return ERROR;
 

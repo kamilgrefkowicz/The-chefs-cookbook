@@ -14,8 +14,10 @@ import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.ModifyItemService;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService;
+import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.shared.response.Response;
+import pl.kamil.chefscookbook.user.domain.UserEntity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -82,18 +84,24 @@ class ModifyFoodControllerTest {
     @Test
     void creatingItemShouldCallService() throws Exception {
         MockHttpServletRequestBuilder postRequest = getPostRequestForNewBasicItem("abc", BASIC, null);
-        when(modifyItem.createItem(any(), any())).thenReturn(Response.success(null));
+        PoorItem returned = getPoorItem();
+        when(modifyItem.createItem(any(), any())).thenReturn(Response.success(returned));
 
         mockMvc.perform(postRequest);
 
         verify(modifyItem, times(1)).createItem(any(), any());
     }
 
+    private PoorItem getPoorItem() {
+        return new PoorItem(new Item("", KILOGRAM, BASIC, new UserEntity()));
+    }
+
 
     @Test
     void creatingBasicItemFromBasicItemsListShouldRedirectBack() throws Exception {
         MockHttpServletRequestBuilder postRequest = getPostRequestForNewBasicItem("abc", BASIC, null);
-        when(modifyItem.createItem(any(), any())).thenReturn(Response.success(null));
+        PoorItem returned = getPoorItem();
+        when(modifyItem.createItem(any(), any())).thenReturn(Response.success(returned));
 
         mockMvc.perform(postRequest)
 

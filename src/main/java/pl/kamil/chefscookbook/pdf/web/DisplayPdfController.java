@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
@@ -32,12 +33,12 @@ private final QueryMenuService queryMenu;
     @GetMapping("/item")
     public ResponseEntity<Resource> getSingleRecipePdf(@RequestParam Long itemId, Principal user) {
 
-        Response<RichItem> queried = queryItem.findById(itemId, user);
+        Response<ItemDto> queried = queryItem.findById(itemId, user);
         if (!queried.isSuccess()) return ResponseEntity.noContent().build();
 
-        RichItem item = queried.getData();
+        ItemDto item = queried.getData();
 
-        Resource resource = new ByteArrayResource(pdfCreation.generatePdfForItem(item).toByteArray());
+        Resource resource = new ByteArrayResource(pdfCreation.generatePdfForItem((RichItem) item).toByteArray());
         String contentDisposition = getContentDisposition(item.getName());
 
         return  ResponseEntity.ok()

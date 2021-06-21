@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
-import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 import pl.kamil.chefscookbook.food.database.IngredientRepository;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
@@ -93,12 +92,12 @@ public class QueryItem implements QueryItemService {
 
     @Override
     @Transactional
-    public Response<RichItem> findById(Long itemId, Principal user) {
+    public Response<ItemDto> findById(Long itemId, Principal user) {
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isEmpty()) return Response.failure(NOT_FOUND);
         Item item = optionalItem.get();
         if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
-        return Response.success(new RichItem(item));
+        return Response.success(convertToDto(item));
     }
 
     @Override
