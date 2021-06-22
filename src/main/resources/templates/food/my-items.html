@@ -20,10 +20,11 @@
             <table class="table table-hover align-middle">
                 <thead>
                 <tr>
-                    <td>Nazwa produktu</td>
-                    <td>Jednostka</td>
-                    <td>Zobacz</td>
-                    <td>Usuń</td>
+                    <th>Nazwa produktu</th>
+                    <th>Jednostka</th>
+                    <th>Zobacz</th>
+                    <th>Edytuj</th>
+                    <th>Usuń</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,12 @@
                             <input type="hidden" th:attr="name='targetAmount'" th:value="1">
                             <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
                             <input type="submit" th:value="x" class="btn btn-secondary">
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/food/modify-item}" th:method="get" >
+                            <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
+                            <input type="submit" th:value="x" class="btn btn-info">
                         </form>
                     </td>
                     <td>

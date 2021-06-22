@@ -121,7 +121,8 @@ class ModifyItemTest {
 
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
 
-        verify(itemRepository, times(2)).getOne(any());
+        verify(itemRepository).getOne(1L);
+        verify(itemRepository).findById(2L);
     }
 
     @Test
@@ -130,7 +131,7 @@ class ModifyItemTest {
         Item parentItem = getItem(1L);
         Item childItem = getItem(2L);
         when(itemRepository.getOne(1L)).thenReturn(parentItem);
-        when(itemRepository.getOne(2L)).thenReturn(childItem);
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(childItem));
         when(userSecurity.belongsTo(any(), any())).thenReturn(true);
 
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
@@ -144,6 +145,7 @@ class ModifyItemTest {
     void addingNonEligibleIngredientShouldReturnFailure() {
         Principal principal = getPrincipal(1L);
         when(userSecurity.belongsTo(any(), any())).thenReturn(false);
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(new Item()));
 
         Response<ItemDto> modification = modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
 
@@ -156,7 +158,8 @@ class ModifyItemTest {
     void attemptingToMakeAnItemItsOwnIngredientShouldResultInShortLoopError() {
         Principal principal = getPrincipal(3L);
         Item parentItem = getBasicItem("test");
-        when(itemRepository.getOne(any())).thenReturn(parentItem);
+        when(itemRepository.getOne(1L)).thenReturn(parentItem);
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(parentItem));
         passSecurity(true);
 
         Response<ItemDto> modification =modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 1L, BigDecimal.ONE), principal);
@@ -172,7 +175,7 @@ class ModifyItemTest {
         Item parentItem = getItem(2L, INTERMEDIATE);
         childItem.addIngredient(parentItem, BigDecimal.ONE);
         when(itemRepository.getOne(1L)).thenReturn(parentItem);
-        when(itemRepository.getOne(2L)).thenReturn(childItem);
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(childItem));
         passSecurity(true);
 
         Response<ItemDto> modification =modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
@@ -190,7 +193,7 @@ class ModifyItemTest {
         parentItem.setName("parent");
         parentItem.setUserEntity(getUserEntity(1L));
         when(itemRepository.getOne(1L)).thenReturn(parentItem);
-        when(itemRepository.getOne(2L)).thenReturn(childItem);
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(childItem));
         passSecurity(true);
         when(itemRepository.save(any())).thenReturn(getItem(1L, INTERMEDIATE));
 
@@ -209,7 +212,7 @@ class ModifyItemTest {
         Item parentItem = getItem(2L, INTERMEDIATE);
         parentItem.setUserEntity(getUserEntity(1L));
         when(itemRepository.getOne(1L)).thenReturn(parentItem);
-        when(itemRepository.getOne(2L)).thenReturn(childItem);
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(childItem));
         passSecurity(true);
         Item returned = getItem(2L, INTERMEDIATE);
         returned.addIngredient(childItem, BigDecimal.ONE);
@@ -325,12 +328,7 @@ class ModifyItemTest {
     }
 
     private Principal getPrincipal(long id) {
-        return new Principal() {
-            @Override
-            public String getName() {
-                return String.valueOf(id);
-            }
-        };
+        return () -> String.valueOf(id);
     }
 
     private Item getBasicItem(String name) {

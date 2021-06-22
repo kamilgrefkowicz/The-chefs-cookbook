@@ -88,7 +88,6 @@ public class ModifyItem implements ModifyItemService {
         if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());
 
         parentItem.addIngredient(childItem, command.getAmount());
-        itemRepository.save(parentItem);
 
         return successfulResponse(parentItem, INGREDIENT_ADDED);
     }
@@ -144,11 +143,8 @@ public class ModifyItem implements ModifyItemService {
 
     }
 
-    private Response<ItemDto> successfulResponse(Item item) {
-        return Response.success(new RichItem(itemRepository.save(item)));
-    }
     private Response<ItemDto> successfulResponse(Item item, String message) {
-        return Response.success(new RichItem(item), message);
+        return Response.success(new RichItem(itemRepository.save(item)), message);
     }
 
     @Override

@@ -26,11 +26,8 @@
                     <div th:replace="fragments/messages :: backend-message"></div>
                 </div>
             </div>
-
-
-            <label>Dodaj nowy składnik:</label>
-
-            <div class="form-group w-75 border p-3">
+            <div class="form-group w-75 border p-3 my-2">
+            <label class="form-label text-body">Dodaj nowy składnik:</label>
                 <form th:action="@{/food/add-ingredient}" th:object="${addIngredientCommand}" th:method="post">
                     <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
                     <div th:replace="fragments/messages :: validation-error"></div>
@@ -76,10 +73,10 @@
                     <div th:replace="fragments/messages :: validation-error"></div>
                     <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
                     <label for="yield">Ile gotowego produktu otrzymasz z tego przepisu?</label>
-                    <input type="text" id="yield" th:attr="name='itemYield'" th:value="${object.recipeYield}"
+                    <input type="number" step="0.01" id="yield" th:attr="name='itemYield'" th:value="${object.recipeYield}"
                            th:text="${object.unit}">
 
-                    <input type="submit" value="Zmien" class="btn btn-primary">
+                    <input type="submit" value="Zmień" class="btn btn-primary">
                 </form>
             </div>
             <div class="form-group w-75 border p-3 my-2">
@@ -89,7 +86,7 @@
                     <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
                     <textarea class="form-control" rows="4" id="description" th:attr="name='description'"
                               th:field="${object.description}"></textarea>
-                    <input type="submit" value="Zmien" class="btn btn-primary">
+                    <input type="submit" value="Zmień" class="btn btn-primary my-1">
                 </form>
             </div>
         </div>

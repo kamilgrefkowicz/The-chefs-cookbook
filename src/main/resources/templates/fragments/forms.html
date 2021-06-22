@@ -21,12 +21,19 @@
         <input type="hidden" th:attr="name='type'" th:value="BASIC">
         <div id="unit">
             <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
-            <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"
-                         th:field="*{unit}"></span>
-            <span><input type="radio" name="unit" th:value="LITRE" th:text="litr"
-                         th:field="*{unit}"></span>
-            <span><input type="radio" name="unit" th:value="PIECE" th:text="szt"
-                         th:field="*{unit}"></span>
+            <div class="btn-group my-2">
+                <input type="radio" name="unit" th:value="KILOGRAM"
+                       th:field="*{unit}" class="btn-check" id="kg">
+                <label class="btn btn-outline-secondary" for="kg">kilogram</label>
+                <input type="radio" name="unit" th:value="LITRE"
+                       th:field="*{unit}" class="btn-check" id="lt">
+                <label class="btn btn-outline-secondary" for="lt">litr</label>
+
+                <input type="radio" name="unit" th:value="PIECE"
+                       th:field="*{unit}" class="btn-check" id="pc">
+                <label class="btn btn-outline-secondary" for="pc">sztuka</label>
+
+            </div>
 
         </div>
         <input type="submit" value="Dodaj!">

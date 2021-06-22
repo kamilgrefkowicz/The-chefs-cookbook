@@ -56,11 +56,16 @@ public class Item extends OwnedEntity {
 
     public Item(String name, Unit unit, Type type, UserEntity userEntity) {
         this.name = name;
-        this.unit = unit;
+        this.unit = passedOrDefaultToKg(unit);
         this.type = type;
         this.userEntity = userEntity;
         if (!type.equals(BASIC)) {
             this.recipe = new Recipe(this);
         }
+    }
+
+    private Unit passedOrDefaultToKg(Unit unit) {
+        if (unit == null) return Unit.KILOGRAM;
+        return unit;
     }
 }

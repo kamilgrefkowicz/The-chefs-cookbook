@@ -43,7 +43,7 @@ public interface QueryItemService {
 
         @Digits(integer = 4, fraction = 2)
         @DecimalMin(value = "0", inclusive = false)
-        @DecimalMax(value = "10")
+        @DecimalMax(value = "300")
         BigDecimal targetAmount;
     }
 

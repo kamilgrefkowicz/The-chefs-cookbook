@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
@@ -116,7 +115,6 @@ public class QueryItem implements QueryItemService {
     }
 
     private void placeItemInMap(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
-        if (isTargetDish(item)) return;
         targetAmount = levelOff(targetAmount);
         ItemDto toPlace = convertToDto(item);
         placeNewOrAggregateIfAlreadyInMap(targetAmount, map, toPlace);
@@ -132,9 +130,7 @@ public class QueryItem implements QueryItemService {
         else map.put(toPlace, targetAmount);
     }
 
-    private boolean isTargetDish(Item item) {
-        return item.getType().equals(DISH);
-    }
+
 
     private void recursivelyGetDependencies(Item item, BigDecimal targetAmount, Map<ItemDto, BigDecimal> map) {
         if (canContinueRecursion(item, targetAmount)) {
