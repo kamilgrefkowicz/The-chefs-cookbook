@@ -51,6 +51,7 @@ public interface ModifyItemService {
 
         private Long parentItemId;
         private Long childItemId;
+
         @PositiveOrZero
         private BigDecimal amount;
     }

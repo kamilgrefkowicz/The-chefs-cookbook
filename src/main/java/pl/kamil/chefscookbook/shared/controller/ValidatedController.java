@@ -26,10 +26,11 @@ public abstract class ValidatedController<T> {
 
      protected void resolveModification(Response<T> modification, Model model, T object) {
         if (!modification.isSuccess()) {
-            model.addAttribute(ERROR, modification.getError());
             model.addAttribute("object", object);
+            model.addAttribute(ERROR, modification.getError());
         } else {
             model.addAttribute("object", modification.getData());
+            model.addAttribute("message", modification.getMessage());
         }
     }
 

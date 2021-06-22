@@ -73,8 +73,14 @@ public class ModifyItem implements ModifyItemService {
     @Transactional
     @Override
     public Response<ItemDto> addIngredientToRecipe(AddIngredientCommand command, Principal user) {
+
+        if (command.getChildItemId() == null) return Response.failure(CHOOSE_FROM_LIST);
+
         Item parentItem = itemRepository.getOne(command.getParentItemId());
-        Item childItem = itemRepository.getOne(command.getChildItemId());
+        Optional<Item> optionalChild = itemRepository.findById(command.getChildItemId());
+
+        if (optionalChild.isEmpty()) return Response.failure(NOT_FOUND);
+        Item childItem = optionalChild.get();
 
         if (!isEligible(user, parentItem, childItem)) return Response.failure(NOT_AUTHORIZED);
 
@@ -82,8 +88,9 @@ public class ModifyItem implements ModifyItemService {
         if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());
 
         parentItem.addIngredient(childItem, command.getAmount());
+        itemRepository.save(parentItem);
 
-        return successfulResponse(parentItem);
+        return successfulResponse(parentItem, INGREDIENT_ADDED);
     }
 
     private boolean isEligible(Principal user, Item parentItem, Item childItem) {
@@ -121,7 +128,7 @@ public class ModifyItem implements ModifyItemService {
         if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
 
         item.getRecipe().setRecipeYield(command.getItemYield());
-        return successfulResponse(item);
+        return successfulResponse(item, YIELD_SET);
     }
 
     @Override
@@ -133,12 +140,15 @@ public class ModifyItem implements ModifyItemService {
         if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
 
         item.getRecipe().setDescription(command.getDescription());
-        return successfulResponse(item);
+        return successfulResponse(item, DESCRIPTION_MODIFIED);
 
     }
 
     private Response<ItemDto> successfulResponse(Item item) {
         return Response.success(new RichItem(itemRepository.save(item)));
+    }
+    private Response<ItemDto> successfulResponse(Item item, String message) {
+        return Response.success(new RichItem(item), message);
     }
 
     @Override
@@ -153,7 +163,7 @@ public class ModifyItem implements ModifyItemService {
         removeThisItemFromAllDependencies(command.getItemId());
 
         itemRepository.deleteById(command.getItemId());
-        return Response.success(null);
+        return Response.success(null, ITEM_DELETED);
 
     }
 
@@ -173,7 +183,7 @@ public class ModifyItem implements ModifyItemService {
 
         ingredientToRemove.removeSelf();
 
-        return successfulResponse(parentItem);
+        return successfulResponse(parentItem, INGREDIENT_REMOVED);
     }
 
 

@@ -10,7 +10,9 @@
 </head>
 <body>
 
-<div th:fragment="validation-error" class="alert alert-warning" th:text="${#fields.allErrors()}"></div>
+<div th:fragment="validation-error" >
+    <div th:if="${#fields.hasAnyErrors()}" class="alert alert-warning" th:text="${#fields.allErrors()}" ></div>
+</div>
 
 <div th:fragment="backend-message">
 

@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Recipe extends BaseEntity {
 
+    @Column(length = 1000)
     private String description = "";
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", fetch = FetchType.LAZY, orphanRemoval = true)

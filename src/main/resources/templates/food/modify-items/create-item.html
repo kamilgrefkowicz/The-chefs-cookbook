@@ -13,37 +13,55 @@
 <div class="container">
     <div class="row py-4 ">
         <div class="col-md-7">
+            <div th:replace="fragments/messages :: backend-message"></div>
 
             <form th:action="@{/food/new-advanced-item}"
                   th:object="${createNewItemCommand}" method="POST">
 
-                <p th:unless="${error == null}" th:text="${error}"></p>
-                <input type="text" th:field="*{itemName}" placeholder="Nazwa przepisu">
+                <div class="form-group w-50 border p-3">
+                    <div th:replace="/fragments/messages ::  validation-error"></div>
 
 
+                    <input type="text" th:field="*{itemName}" placeholder="Nazwa przepisu" id="itemName" class="form-control mb-2 mr-sm-2">
 
-                <input id="choseDish" type="radio" name="itemType" th:text="Półprodukt"
-                       th:value="INTERMEDIATE" th:field="*{type}">
-                <input id="choseIntermediate" type="radio" name="itemType" th:text="Danie"
-                       th:value="DISH" th:field="*{type}">
+                    <div class="btn-group my-2">
 
-                <div id="unit">
+                        <input id="choseIntermediate" type="radio" name="itemType"
+                               th:value="INTERMEDIATE" th:field="*{type}" class="btn-check">
+                        <label class="btn btn-outline-secondary" for="choseIntermediate">Półprodukt</label>
 
-                    <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>
-                    <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"
-                                 th:field="*{unit}"></span>
-                    <span><input type="radio" name="unit" th:value="LITRE" th:text="litr"
-                                 th:field="*{unit}"></span>
-                    <span><input type="radio" name="unit" th:value="PIECE" th:text="szt"
-                                 th:field="*{unit}"></span>
+                        <input id="choseDish" type="radio" name="itemType"
+                               th:value="DISH" th:field="*{type}" class="btn-check">
+                        <label class="btn btn-outline-secondary" for="choseDish">Danie</label>
+
+                    </div>
+
+
+                    <div id="unit">
+                        <p class="p-2">Jednostka: </p>
+                        <div class="btn-group my-2">
+                            <input type="radio" name="unit" th:value="KILOGRAM"
+                                   th:field="*{unit}" class="btn-check" id="kg">
+                            <label class="btn btn-outline-secondary" for="kg">kilogram</label>
+                            <input type="radio" name="unit" th:value="LITRE"
+                                   th:field="*{unit}" class="btn-check" id="lt">
+                            <label class="btn btn-outline-secondary" for="lt">litr</label>
+
+                            <input type="radio" name="unit" th:value="PIECE"
+                                   th:field="*{unit}" class="btn-check" id="pc">
+                            <label class="btn btn-outline-secondary" for="pc">sztuka</label>
+
+                        </div>
+                    </div>
+                    <input type="submit" value="Kontynuuj!" class="btn btn-primary">
                 </div>
-                <input type="submit" value="Kontynuuj!">
             </form>
         </div>
         <div class="col-md-5">
             <p class="lead">Stwórz nowy przepis!</p>
             <p>Najpierw stwórz przepisy na półprodukty, których będziesz używał w swoich daniach</p>
-            <p>Dla półproduktów wybierz jednostkę, której wygodnie będzie Ci używać w budowaniu przepisów z ich użyciem</p>
+            <p>Dla półproduktów wybierz jednostkę, której wygodnie będzie Ci używać w budowaniu przepisów z ich
+                użyciem</p>
             <p>Dania są zawsze liczone na sztuki</p>
         </div>
     </div>

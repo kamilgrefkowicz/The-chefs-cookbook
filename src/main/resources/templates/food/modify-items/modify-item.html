@@ -13,92 +13,95 @@
 </head>
 <body>
 <nav th:replace="fragments/layout :: topNavBar"></nav>
+<div class="container">
+    <div class="row py-4 ">
+        <div class="col-md-7">
 
-<div>
-    <p th:text="'Dodaj/Usuń składniki z przepisu na ' + ${object.name}">
-</div>
-
-<label>Dodaj nowy składnik:</label>
-<div th:unless="${error == null}" th:text="${error}"></div>
-
-<div>
-    <form th:action="@{/food/add-ingredient}" th:object="${addIngredientCommand}" th:method="post">
-
-        <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
-
-        <p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></p>
-
-        <input id="ingredientLabel" class="form-control" type="text">
-        <input id="ingredientId" type="hidden" name="ingredientId" th:field="*{childItemId}">
-
-        <input id="amount" type="text" name="amount" th:field="*{amount}">
-
-        <input type="submit" value="Dodaj składnik"/>
-    </form>
-</div>
-<table th:unless="${object.ingredients == null}">
-    <thead>
-    <tr>
-        <th>Składnik</th>
-        <th>Ilość</th>
-
-        <th>Usuń</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="ingredient : ${object.ingredients}">
-        <td th:text="${ingredient.childItem.name}"></td>
-        <td th:text="${ingredient.amount} + ${ingredient.childItem.unit}"></td>
-        <td>
-            <form th:action="@{/food/remove-ingredient}" th:method="post" th:object="${removeIngredientCommand}">
-                <input type="hidden" th:attr="name='ingredientId'" th:value="${ingredient.ingredientId}">
-                <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
-                <input type="submit" value="click">
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<div>
-    <p>Ile gotowego produktu otrzymasz z tego przepisu?</p>
-    <form th:action="@{/food/set-yield}" th:method="post" th:object="${setYieldCommand}">
-        <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
-        <input type="text" th:attr="name='itemYield'" th:value="${object.recipeYield}" th:text="${object.unit}">
-
-        <input type="submit" value="Zmien">
-    </form>
-</div>
-<div>
-    <p>Opis przygotowania:</p>
-    <form th:action="@{/food/modify-description}" th:method="post" th:object="${updateDescriptionCommand}">
-        <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
-        <textarea cols="30" rows="20" th:attr="name='description'" th:field="${object.description}"></textarea>
-        <input type="submit" value="Zmien">
-    </form>
-</div>
-
-<div>
-    <p>Brakuje Ci jakiegoś podstawowego składnika? Dodaj go tutaj:</p>
-    <div th:replace="fragments/forms :: add-basic-item-form"></div>
-
-    <!--    <form th:action="@{/food/new-basic-item}" th:method="post" th:object="${createNewItemCommand}">-->
-<!--        <input type="hidden" th:attr="name='redirectItemId'" th:value="${object.id}">-->
-<!--        <input type="text" th:attr="name='itemName'" placeholder="Nazwa składnika">-->
-<!--        <input type="hidden" th:attr="name='type'" th:value="BASIC">-->
-<!--        <div id="unit">-->
-<!--            <p>Jak najwygodniej będzie Ci mierzyć ten produkt:</p>-->
-<!--            <span><input type="radio" name="unit" th:value="KILOGRAM" th:text="kilogram"-->
-<!--                         th:field="*{unit}"></span>-->
-<!--            <span><input type="radio" name="unit" th:value="LITRE" th:text="litr"-->
-<!--                         th:field="*{unit}"></span>-->
-<!--            <span><input type="radio" name="unit" th:value="PIECE" th:text="szt"-->
-<!--                         th:field="*{unit}"></span>-->
-
-<!--        </div>-->
-<!--        <input type="submit" value="Dodaj!">-->
+            <div>
+                <div class="font-weight-bold">
+                    <h2 th:text="${object.name}"></h2>
+                </div>
+                <hr>
+                <div class="w-75">
+                    <div th:replace="fragments/messages :: backend-message"></div>
+                </div>
+            </div>
 
 
-<!--    </form>-->
+            <label>Dodaj nowy składnik:</label>
+
+            <div class="form-group w-75 border p-3">
+                <form th:action="@{/food/add-ingredient}" th:object="${addIngredientCommand}" th:method="post">
+                    <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
+                    <div th:replace="fragments/messages :: validation-error"></div>
+                    <label for="ingredientLabel">Co:</label>
+                    <input id="ingredientLabel" class="form-control my-1" type="text">
+                    <input id="ingredientId" type="hidden" name="ingredientId" th:field="*{childItemId}">
+                    <label for="amount">Ile:</label>
+
+                    <input id="amount" type="number" step=0.001 name="amount" th:field="*{amount}"
+                           class="form-control my-1">
+
+                    <input type="submit" value="Dodaj składnik" class="btn btn-primary my-2"/>
+                </form>
+            </div>
+            <div th:unless="${object.ingredients.size == 0}" class="form-group w-75 p-3">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Składnik</th>
+                        <th>Ilość</th>
+                        <th>Usuń</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="ingredient : ${object.ingredients}">
+                        <td th:text="${ingredient.childItem.name}"></td>
+                        <td th:text="${ingredient.amount} + ${ingredient.childItem.unit}"></td>
+                        <td>
+                            <form th:action="@{/food/remove-ingredient}" th:method="post"
+                                  th:object="${removeIngredientCommand}">
+                                <input type="hidden" th:attr="name='ingredientId'"
+                                       th:value="${ingredient.ingredientId}">
+                                <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
+                                <input type="submit" value="x" class="btn btn-danger">
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group w-75 border p-3">
+                <form th:action="@{/food/set-yield}" th:method="post" th:object="${setYieldCommand}">
+                    <div th:replace="fragments/messages :: validation-error"></div>
+                    <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
+                    <label for="yield">Ile gotowego produktu otrzymasz z tego przepisu?</label>
+                    <input type="text" id="yield" th:attr="name='itemYield'" th:value="${object.recipeYield}"
+                           th:text="${object.unit}">
+
+                    <input type="submit" value="Zmien" class="btn btn-primary">
+                </form>
+            </div>
+            <div class="form-group w-75 border p-3 my-2">
+                <label for="description">Opis przygotowania:</label>
+                <form th:action="@{/food/modify-description}" th:method="post" th:object="${updateDescriptionCommand}">
+                    <div th:replace="fragments/messages :: validation-error"></div>
+                    <input type="hidden" th:attr="name='parentItemId'" th:value="${object.id}">
+                    <textarea class="form-control" rows="4" id="description" th:attr="name='description'"
+                              th:field="${object.description}"></textarea>
+                    <input type="submit" value="Zmien" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <p class="lead">Tutaj możesz modyfikować swój przepis</p>
+            <p>Dodawaj i usuwaj składniki, ustal ile produktu otrzymasz z przepisu, opisz sposób przygotowania</p>
+            <p>Jeśli brakuje Ci jakiegoś podstawowego produktu, możesz dodać go tutaj:</p>
+            <div th:replace="fragments/forms :: add-basic-item-form"></div>
+
+
+        </div>
+    </div>
 </div>
 
 

@@ -18,7 +18,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.ITEM_DELETED;
+import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.BASIC_ITEM_CREATED;
 import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 
 @Controller
@@ -93,6 +93,7 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
         if (!response.isSuccess()) {
             model.addAttribute("error", response.getError());
         }
+        model.addAttribute("message", BASIC_ITEM_CREATED);
         return ITEM_MODIFY;
     }
 
@@ -105,7 +106,7 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
         if (!response.isSuccess()) {
             model.addAttribute("error", response.getError());
         } else {
-            model.addAttribute("message", "Dodano produkt: " + response.getData().getName());
+            model.addAttribute("message", BASIC_ITEM_CREATED);
         }
         return redirectBack(model, user);
     }
@@ -186,7 +187,6 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
     }
 
     @GetMapping("/delete-item")
-    //todo: fix query for deleting basics
     public String showConfirmPageForDelete(Model model, DeleteItemCommand command, Principal user) {
         Response<ItemDto> queried = queryItem.findById(command.getItemId(), user);
 
@@ -207,7 +207,7 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
 
         modifyItem.deleteItem(command, user);
         model.addAttribute("poorItemList", queryItem.findAllItemsBelongingToUser(user));
-        model.addAttribute("message", ITEM_DELETED);
+        model.addAttribute("message");
 
         return ITEMS_LIST;
     }
