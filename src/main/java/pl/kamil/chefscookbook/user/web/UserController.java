@@ -26,7 +26,7 @@ public class UserController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        model.addAttribute("user", new CreateUserCommand());
+        model.addAttribute("createUserCommand", new CreateUserCommand());
     }
 
     @GetMapping("/register-user")
@@ -45,7 +45,7 @@ public class UserController {
         Response<Void> userCreation = userService.createNewUser(command);
 
         if (!userCreation.isSuccess()) {
-            model.addAttribute("message", userCreation.getError());
+            model.addAttribute("error", userCreation.getError());
             return USER_NEW;
         }
 

@@ -86,6 +86,6 @@ class CreateUserTest {
     }
 
     private CreateUserCommand getCommand(String username) {
-        return new CreateUserCommand(username, "test", "test");
+        return new CreateUserCommand(username, "test", "test", false);
     }
 }

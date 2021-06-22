@@ -29,5 +29,6 @@ public interface CreateUserUseCase {
         @Length(min=3, max=15)
         private String password;
         private String passwordMatch;
+        private boolean testUser;
     }
 }

@@ -9,17 +9,28 @@
     <title> INSERT </title>
 </head>
 <body>
+<div class="container vh-100">
+    <div class="row align-items-center" style="height: 75%">
+        <div class="w-25 border p-3">
+            <div th:replace="fragments/messages :: backend-message"></div>
+            <h2>Załóż konto w Chefs CookBook</h2>
+            <p>Jeśli zaznaczysz 'test', Twoje konto zapełnimy przykładowymi przepisami</p>
 
-<div th:unless="${message} == null">
-    <p th:text="${message}"></p>
+        <div class="input-group">
+        <form th:action="@{/user/register-user}" th:method="post" th:object="${createUserCommand}">
+            <div th:replace="fragments/messages :: validation-error"></div>
+            <input type="text" placeholder="username" th:field="*{username}" class="form-control my-2">
+            <input type="password" placeholder="password" th:field="*{password}"class="form-control my-2">
+            <input type="password" placeholder="repeat password" th:field="*{passwordMatch}"class="form-control my-2">
+            <input type="submit" value="Załóż konto" class="btn btn-primary" th:field="*{testUser}">
+            <input type="checkbox" class="form-check-inline mx-3" id="testAccount">
+            <label for="testAccount">test</label>
+
+        </form>
+        </div>
+    </div>
+
 </div>
-<form th:action="@{/user/register-user}" th:method="post" th:object="${user}">
-    <input type="text" placeholder="username" th:field="*{username}">
-    <input type="password" placeholder="password" th:field="*{password}">
-    <input type="password" placeholder="repeat password" th:field="*{passwordMatch}">
-    <input type="submit" >
-
-</form>
-
+</div>
 </body>
 </html>
