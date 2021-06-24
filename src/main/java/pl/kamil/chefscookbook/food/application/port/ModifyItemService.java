@@ -35,13 +35,13 @@ public interface ModifyItemService {
     @NoArgsConstructor
     class CreateNewItemCommand {
 
+
         @Length(min = 3, max = 15)
         private String itemName;
 
+        private Unit unit;
         @NotNull
         private Type type;
-
-        private Unit unit;
     }
 
     @Data

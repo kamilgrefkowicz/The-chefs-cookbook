@@ -56,7 +56,7 @@ class ModifyItemTest {
         Item alreadyExists = getBasicItem("test item");
         when(itemRepository.findFirstByNameAndUserEntityId(any(), any())).thenReturn(Optional.of(alreadyExists));
 
-        modifyItem.createItem(new CreateNewItemCommand("test", BASIC, Unit.KILOGRAM), user);
+        modifyItem.createItem(new CreateNewItemCommand("test", Unit.KILOGRAM, BASIC), user);
 
         verify(itemRepository).findFirstByNameAndUserEntityId("test", 1L);
     }
@@ -67,7 +67,7 @@ class ModifyItemTest {
         Item alreadyExists = getBasicItem("test item");
         when(itemRepository.findFirstByNameAndUserEntityId(any(), any())).thenReturn(Optional.of(alreadyExists));
 
-        Response<ItemDto> created = modifyItem.createItem(new CreateNewItemCommand("test", BASIC, Unit.KILOGRAM), user);
+        Response<ItemDto> created = modifyItem.createItem(new CreateNewItemCommand("test", Unit.KILOGRAM, BASIC), user);
 
         assertFalse(created.isSuccess());
         assertThat(created.getError(), equalTo(ITEM_NAME_TAKEN));
@@ -85,7 +85,7 @@ class ModifyItemTest {
         when(userRepository.getOne(any())).thenReturn(userEntity);
         when(itemRepository.save(any())).thenReturn(returned);
 
-        modifyItem.createItem(new CreateNewItemCommand("test", BASIC, Unit.KILOGRAM), user);
+        modifyItem.createItem(new CreateNewItemCommand("test", Unit.KILOGRAM, BASIC), user);
 
         verify(itemRepository).save(itemCaptor.capture());
         Item saved = itemCaptor.getValue();
@@ -105,7 +105,7 @@ class ModifyItemTest {
         when(userRepository.getOne(any())).thenReturn(userEntity);
         when(itemRepository.save(any())).thenReturn(returned);
 
-        Response<ItemDto> created = modifyItem.createItem(new CreateNewItemCommand("test", BASIC, Unit.KILOGRAM), principal);
+        Response<ItemDto> created = modifyItem.createItem(new CreateNewItemCommand("test", Unit.KILOGRAM, BASIC), principal);
 
         assertTrue(created.isSuccess());
         ItemDto dto = created.getData();

@@ -26,9 +26,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("select i from Item i where i.userEntity.id = :userId and i.type = pl.kamil.chefscookbook.food.domain.staticData.Type.DISH")
     List<Item> findAllDishesByUser(@Param("userId") Long userId);
 
-    @Query("select i from Item i where (i.userEntity.id = 1 or i.userEntity.id = :userId) and i.type = pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC order by i.name")
+    @Query("select i from Item i left join fetch i.recipe where (i.userEntity.id = 1 or i.userEntity.id = :userId) and i.type = pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC order by i.name")
     List<Item> findAllBasicsForUser(@Param("userId") Long userId);
 
     @Query("select i from Item i where i.name = :itemName and i.userEntity.id = 1")
-    Item findPublicItemByName(String itemName);
+    Optional<Item> findPublicItemByName(String itemName);
 }
