@@ -178,12 +178,12 @@ class QueryItemTest {
         verify(itemRepository).getOne(any());
     }
     @Test
-    void gettingMapOfDependenciesOnItemWithNoDependenciesShouldReturnEmptyMap() {
+    void gettingMapOfDependenciesOnItemWithNoDependenciesShouldReturnMapWithTheDishOnly() {
         when(itemRepository.getOne(any())).thenReturn(getItem(1L, DISH));
 
         Map<ItemDto, BigDecimal> queried = queryItem.getMapOfAllDependencies(getQueryItemWithDependenciesCommand());
 
-        assertThat(queried, anEmptyMap());
+        assertThat(queried, aMapWithSize(1));
     }
     @Test
     void gettingMapOfDependenciesOnDishWithDependenciesShouldReturnThem() {
@@ -196,7 +196,7 @@ class QueryItemTest {
 
         Map<ItemDto, BigDecimal> queried = queryItem.getMapOfAllDependencies(getQueryItemWithDependenciesCommand());
 
-        assertThat(queried, aMapWithSize(2));
+        assertThat(queried, aMapWithSize(3));
     }
     @Test
     void gettingMapOfDependenciesShouldReturnAppropriateDtos() {

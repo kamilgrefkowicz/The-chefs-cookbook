@@ -30,7 +30,7 @@ import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.USER_NE
 class UserControllerTest {
 
     @MockBean
-    CreateUserUseCase userService;
+    CreateUserUseCase createUser;
 
     @Autowired
     MockMvc mockMvc;
@@ -40,7 +40,7 @@ class UserControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/register-user"))
 
-                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeExists("createUserCommand"))
                 .andExpect(view().name(USER_NEW));
     }
     @Test
@@ -60,24 +60,24 @@ class UserControllerTest {
     }
     @Test
     void unsuccessfulUserCreationShouldReturnCorrectMav() throws Exception {
-        when(userService.execute(any())).thenReturn(Response.failure("test"));
+        when(createUser.execute(any())).thenReturn(Response.failure("test"));
 
         mockMvc.perform(getPostRequestForCreateUser())
 
-                .andExpect(model().attribute("message", "test"))
+                .andExpect(model().attribute("error", "test"))
                 .andExpect(view().name(USER_NEW));
     }
     @Test
     void registeringUserWithValidDataShouldCallServiceToSave() throws Exception {
-        when(userService.execute(any())).thenReturn(Response.failure("test"));
+        when(createUser.execute(any())).thenReturn(Response.failure("test"));
 
         mockMvc.perform(getPostRequestForCreateUser());
 
-        verify(userService).execute(any());
+        verify(createUser).execute(any());
     }
     @Test
     void successfullyCreatingUserShouldReturnCorrectMav() throws Exception {
-        when(userService.execute(any())).thenReturn(Response.success(null));
+        when(createUser.execute(any())).thenReturn(Response.success(null));
 
         mockMvc.perform(getPostRequestForCreateUser())
 

@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.menu.database.MenuRepository;
+import pl.kamil.chefscookbook.menu.domain.Menu;
 import pl.kamil.chefscookbook.user.application.port.FillTestUserWithRecipesUseCase;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
@@ -19,14 +21,15 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
 public class FillTestUserWithRecipes implements FillTestUserWithRecipesUseCase {
 
     private final ItemRepository itemRepository;
+    private final MenuRepository menuRepository;
 
     @Override
     public void execute(UserEntity user) {
 
         Map<String, Item> intermediates = generateIntermediates(user);
-        List<Long> dishes = generateDishes(user, intermediates);
+        Set<Item> dishes = generateDishes(user, intermediates);
+        generateAndPopulateMenu(user, dishes);
     }
-
 
     private Map<String, Item> generateIntermediates(UserEntity user) {
 
@@ -107,8 +110,8 @@ public class FillTestUserWithRecipes implements FillTestUserWithRecipesUseCase {
         return intermediates;
     }
 
-    private List<Long> generateDishes(UserEntity user, Map<String, Item> intermediates) {
-        List<Long> dishIds = new ArrayList<>();
+    private Set<Item> generateDishes(UserEntity user, Map<String, Item> intermediates) {
+        Set<Item> dishes = new HashSet<>();
 
         Item cottageRoll = new Item("Bułka z twarożkiem", null, DISH, user);
         addPublicIngredient(cottageRoll, "Bułka maślana", 1);
@@ -117,21 +120,21 @@ public class FillTestUserWithRecipes implements FillTestUserWithRecipesUseCase {
         addPublicIngredient(cottageRoll, "Sałata rzymska", 0.01);
         cottageRoll.addIngredient(intermediates.get("Pasta z twarożkiem"), BigDecimal.valueOf(0.05));
         cottageRoll.getRecipe().setDescription("Bułkę rozkrój i podpiecz. Posmaruj pastą, dodaj posiekane warzywa. Wydawaj na małym talerzu.");
-        saveAndStore(cottageRoll, dishIds);
+        saveAndStore(cottageRoll, dishes);
 
         Item eggRoll = new Item("Bułka z pastą jajeczną", null, DISH, user);
         addPublicIngredient(eggRoll, "Bułka maślana", 1);
         addPublicIngredient(eggRoll, "Sałata rzymska", 0.01);
         eggRoll.addIngredient(intermediates.get("Pasta jajeczna"), BigDecimal.valueOf(0.05));
         eggRoll.getRecipe().setDescription("Bułkę rozkrój i podpiecz. Posmaruj pastą, dodaj posiekaną sałatę. Wydawaj na małym talerzu.");
-        saveAndStore(eggRoll, dishIds);
+        saveAndStore(eggRoll, dishes);
 
         Item tunaRoll = new Item("Bułka z pastą z tuńczyka", null, DISH, user);
         addPublicIngredient(tunaRoll, "Jajko", 1);
         addPublicIngredient(tunaRoll, "Sałata rzymska", 0.05);
         addPublicIngredient(tunaRoll, "Bułka maślana", 1);
         tunaRoll.addIngredient(intermediates.get("Pasta z tuńczyka"), BigDecimal.valueOf(0.05));
-        saveAndStore(tunaRoll, dishIds);
+        saveAndStore(tunaRoll, dishes);
 
         Item hamAndCheeseRoll = new Item("Bułka z szynką i pieczarkami", null, DISH, user);
         addPublicIngredient(hamAndCheeseRoll, "Bułka maślana", 1);
@@ -143,7 +146,7 @@ public class FillTestUserWithRecipes implements FillTestUserWithRecipesUseCase {
         hamAndCheeseRoll.addIngredient(intermediates.get("Aioli"), BigDecimal.valueOf(0.01));
         hamAndCheeseRoll.addIngredient(intermediates.get("Sos pomodoro"), BigDecimal.valueOf(0.01));
         hamAndCheeseRoll.getRecipe().setDescription("Pieczarki i szynkę posiekaj w plastry 1mm x 2cm x 3cm, usmaż na niewielkiej ilości oleju. Bułkę rozkrój, jedną część posmaruj pomodoro, drugą aioli. Na jedną część połóż plaster cheddara. Obie części podpiecz. Sałatę i mix z szynki i pieczarek wyłóż na bułkę i zamknij.");
-        saveAndStore(hamAndCheeseRoll, dishIds);
+        saveAndStore(hamAndCheeseRoll, dishes);
 
         Item omelette = new Item("Omlet górski", null, DISH, user);
         addPublicIngredient(omelette, "Jajko", 2);
@@ -156,7 +159,7 @@ public class FillTestUserWithRecipes implements FillTestUserWithRecipesUseCase {
         addPublicIngredient(omelette, "Olej", 0);
         omelette.addIngredient(intermediates.get("Dżem z chilli"), BigDecimal.valueOf(0.01));
         omelette.getRecipe().setDescription("Szynkę podsmaż na oleju na małej patelni, dodaj rozbełtane jajka. Gdy jajka będą w 75% ścięte, posyp serami i dodaj kilka kleksów dżemu z chilli. Złóż w trójkąt i połóż na podpieczonej foccacii. Posyp posiekanym szczypiorkiem.");
-        saveAndStore(omelette, dishIds);
+        saveAndStore(omelette, dishes);
 
         Item shakshuka = new Item("Shakshuka z kozim serem", null, DISH, user);
         addPublicIngredient(shakshuka, "Jajko", 2);
@@ -167,15 +170,22 @@ public class FillTestUserWithRecipes implements FillTestUserWithRecipesUseCase {
         addPublicIngredient(shakshuka, "Pieprz", 0);
         shakshuka.addIngredient(intermediates.get("Shakshuka baza"), BigDecimal.valueOf(0.2));
         shakshuka.getRecipe().setDescription("Bazę podgrzej, jajka zrób sadzone. Bazę wlej do miski, na wierzch połóż jajka, posyp kozim serem i szczypiorkiem");
-        saveAndStore(shakshuka, dishIds);
+        saveAndStore(shakshuka, dishes);
 
 
-        return dishIds;
+        return dishes;
+    }
+    private void generateAndPopulateMenu(UserEntity user, Set<Item> dishes) {
+        Menu menu = new Menu("Menu testowe", user);
+        menu.addItemsToMenu(dishes);
+        menuRepository.save(menu);
+
+
     }
 
-    private void saveAndStore(Item item, List<Long> dishIds) {
+    private void saveAndStore(Item item, Set<Item> dishes) {
         item = itemRepository.save(item);
-        dishIds.add(item.getId());
+        dishes.add(item);
     }
 
     private void saveAndStore(Item item, Map<String, Item> intermediateIds) {
