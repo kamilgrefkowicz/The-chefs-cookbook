@@ -44,7 +44,7 @@
                     <td th:unless="${ingredient.amount == 0}" th:text="${ingredient.amount}"></td>
                     <td th:unless="${ingredient.amount == 0}" th:text="${ingredient.childItem.unit}"></td>
 
-                    <td th:if="${ingredient.amount == 0}"> --troszkę--</td>
+                    <td th:if="${ingredient.amount == 0}"> troszkę</td>
                 </tr>
                 </tbody>
             </table>

@@ -13,6 +13,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
+import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
+import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
+import static pl.kamil.chefscookbook.food.domain.staticData.Unit.PIECE;
 
 @Entity
 @Builder
@@ -56,7 +59,7 @@ public class Item extends OwnedEntity {
 
     public Item(String name, Unit unit, Type type, UserEntity userEntity) {
         this.name = name;
-        this.unit = passedOrDefaultToKg(unit);
+        this.unit = passedOrDefault(unit, type);
         this.type = type;
         this.userEntity = userEntity;
         if (!type.equals(BASIC)) {
@@ -64,8 +67,9 @@ public class Item extends OwnedEntity {
         }
     }
 
-    private Unit passedOrDefaultToKg(Unit unit) {
-        if (unit == null) return Unit.KILOGRAM;
+    private Unit passedOrDefault(Unit unit, Type type) {
+        if (type == DISH) return PIECE;
+        if (unit == null) return KILOGRAM;
         return unit;
     }
 }
