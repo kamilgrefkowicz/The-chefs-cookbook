@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 
 public interface CreateUserUseCase {
 
-    Response<Void> createNewUser(CreateUserCommand command) ;
+    Response<Void> execute(CreateUserCommand command) ;
 
     @Data
     @PasswordMatches

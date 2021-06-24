@@ -22,8 +22,8 @@
             <input type="text" placeholder="username" th:field="*{username}" class="form-control my-2">
             <input type="password" placeholder="password" th:field="*{password}"class="form-control my-2">
             <input type="password" placeholder="repeat password" th:field="*{passwordMatch}"class="form-control my-2">
-            <input type="submit" value="Załóż konto" class="btn btn-primary" th:field="*{testUser}">
-            <input type="checkbox" class="form-check-inline mx-3" id="testAccount">
+            <input type="submit" value="Załóż konto" class="btn btn-primary" >
+            <input type="checkbox" class="form-check-inline mx-3" id="testAccount" th:field="*{testUser}">
             <label for="testAccount">test</label>
 
         </form>

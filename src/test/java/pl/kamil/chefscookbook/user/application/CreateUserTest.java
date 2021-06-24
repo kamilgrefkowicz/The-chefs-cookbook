@@ -31,6 +31,9 @@ class CreateUserTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    FillTestUserWithRecipes fillTestUserWithRecipes;
+
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     CreateUser createUser;
@@ -40,15 +43,15 @@ class CreateUserTest {
 
     @BeforeEach
     void setUp() {
-        createUser = new CreateUser(userRepository, passwordEncoder);
+        createUser = new CreateUser(userRepository, passwordEncoder, fillTestUserWithRecipes);
     }
 
     @Test
-    void creatingNewUserShouldCallRepositoryToCheckIfNameTaken(){
+    void creatingNewUserShouldCallRepositoryToCheckIfNameTaken() {
         when(userRepository.findByUsername(any())).thenReturn(Optional.of(new UserEntity()));
         CreateUserCommand command = getCommand("testUsername");
 
-        createUser.createNewUser(command);
+        createUser.execute(command);
 
         verify(userRepository).findByUsername("testUsername");
     }
@@ -58,29 +61,31 @@ class CreateUserTest {
         when(userRepository.findByUsername(any())).thenReturn(Optional.of(new UserEntity()));
         CreateUserCommand command = getCommand("testUsername");
 
-        Response<Void> response = createUser.createNewUser(command);
+        Response<Void> response = createUser.execute(command);
 
         assertFalse(response.isSuccess());
         assertThat(response.getError(), equalTo(USER_NAME_TAKEN));
     }
+
     @Test
     void creatingValidUserShouldCallRepositoryToSave() {
         when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
         CreateUserCommand command = getCommand("testUsername");
 
-        createUser.createNewUser(command);
+        createUser.execute(command);
 
         verify(userRepository).save(userEntityCaptor.capture());
         UserEntity saved = userEntityCaptor.getValue();
         assertThat(saved.getUsername(), equalTo("testUsername"));
         assertTrue(passwordEncoder.matches("test", saved.getPassword()));
     }
+
     @Test
     void creatingValidUserShouldReturnSuccessfulResponse() {
         when(userRepository.findByUsername(any())).thenReturn(Optional.empty());
         CreateUserCommand command = getCommand("testUsername");
 
-        Response<Void> response = createUser.createNewUser(command);
+        Response<Void> response = createUser.execute(command);
 
         assertTrue(response.isSuccess());
     }

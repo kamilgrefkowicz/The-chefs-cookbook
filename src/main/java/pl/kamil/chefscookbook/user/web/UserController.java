@@ -42,7 +42,7 @@ public class UserController {
             return USER_NEW;
         }
 
-        Response<Void> userCreation = userService.createNewUser(command);
+        Response<Void> userCreation = userService.execute(command);
 
         if (!userCreation.isSuccess()) {
             model.addAttribute("error", userCreation.getError());

@@ -5,8 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.CreateUserUseCase;
+import pl.kamil.chefscookbook.user.application.port.FillTestUserWithRecipesUseCase;
 import pl.kamil.chefscookbook.user.database.UserRepository;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
+
+import javax.transaction.Transactional;
 
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.USER_NAME_TAKEN;
 
@@ -16,14 +19,19 @@ public class CreateUser implements CreateUserUseCase {
 
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
+    private final FillTestUserWithRecipesUseCase fillTestUserWithRecipes;
 
     @Override
-    public Response<Void> createNewUser(CreateUserCommand command)   {
+    @Transactional
+    public Response<Void> execute(CreateUserCommand command)   {
         if (usernameTaken(command.getUsername())) return Response.failure(USER_NAME_TAKEN);
 
         UserEntity user = new UserEntity(command.getUsername(), encoder.encode(command.getPassword()));
 
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+        if (command.isTestUser()) fillTestUserWithRecipes.execute(user);
+
         return Response.success(null);
     }
 

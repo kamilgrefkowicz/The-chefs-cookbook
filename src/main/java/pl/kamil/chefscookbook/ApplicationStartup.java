@@ -105,6 +105,10 @@ public class ApplicationStartup implements CommandLineRunner {
         Response<ItemDto> tymianek = modifyItemService.createItem(new CreateNewItemCommand("Tymianek", BASIC, KILOGRAM), ccb);
         Response<ItemDto> rozmaryn = modifyItemService.createItem(new CreateNewItemCommand("Rozmaryn", BASIC, KILOGRAM), ccb);
         Response<ItemDto> schab = modifyItemService.createItem(new CreateNewItemCommand("Schab", BASIC, KILOGRAM), ccb);
+        Response<ItemDto> cebula_czerwona = modifyItemService.createItem(new CreateNewItemCommand("Cebula czerwona", BASIC, KILOGRAM), ccb);
+        Response<ItemDto> cebula_żółta = modifyItemService.createItem(new CreateNewItemCommand("Cebula żółta", BASIC, KILOGRAM), ccb);
+        Response<ItemDto> kmin_rzymski = modifyItemService.createItem(new CreateNewItemCommand("Kmin rzymski", BASIC, KILOGRAM), ccb);
+        Response<ItemDto> oliwa_z_oliwek = modifyItemService.createItem(new CreateNewItemCommand("Oliwa z oliwek", BASIC, LITRE), ccb);
 
         Response<ItemDto> puree = modifyItemService.createItem(new CreateNewItemCommand("Puree", INTERMEDIATE, KILOGRAM), kamil);
         Response<ItemDto> schab_z_puree = modifyItemService.createItem(new CreateNewItemCommand("Schab z puree", DISH, PIECE), kamil);

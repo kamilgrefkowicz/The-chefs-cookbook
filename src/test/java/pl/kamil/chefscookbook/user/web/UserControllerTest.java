@@ -60,7 +60,7 @@ class UserControllerTest {
     }
     @Test
     void unsuccessfulUserCreationShouldReturnCorrectMav() throws Exception {
-        when(userService.createNewUser(any())).thenReturn(Response.failure("test"));
+        when(userService.execute(any())).thenReturn(Response.failure("test"));
 
         mockMvc.perform(getPostRequestForCreateUser())
 
@@ -69,15 +69,15 @@ class UserControllerTest {
     }
     @Test
     void registeringUserWithValidDataShouldCallServiceToSave() throws Exception {
-        when(userService.createNewUser(any())).thenReturn(Response.failure("test"));
+        when(userService.execute(any())).thenReturn(Response.failure("test"));
 
         mockMvc.perform(getPostRequestForCreateUser());
 
-        verify(userService).createNewUser(any());
+        verify(userService).execute(any());
     }
     @Test
     void successfullyCreatingUserShouldReturnCorrectMav() throws Exception {
-        when(userService.createNewUser(any())).thenReturn(Response.success(null));
+        when(userService.execute(any())).thenReturn(Response.success(null));
 
         mockMvc.perform(getPostRequestForCreateUser())
 
