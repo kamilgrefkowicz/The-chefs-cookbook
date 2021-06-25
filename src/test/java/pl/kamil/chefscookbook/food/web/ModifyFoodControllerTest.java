@@ -110,7 +110,7 @@ class ModifyFoodControllerTest {
 
     @Test
     void creatingBasicItemFromModifyItemPageShouldRedirectBack() throws Exception {
-        RichItem redirectedFrom = new RichItem();
+        RichItem redirectedFrom = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForNewBasicItem("abc", BASIC, 1L);
         when(queryItem.findById(eq(1L), any())).thenReturn(Response.success(redirectedFrom));
         when(modifyItem.createItem(any(), any())).thenReturn(Response.success(null));
@@ -123,7 +123,7 @@ class ModifyFoodControllerTest {
 
     @Test
     void creatingNonBasicItemShouldRedirectToModifyItemPage() throws Exception {
-        RichItem newItem = new RichItem();
+        RichItem newItem = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForAdvancedItem("abc", INTERMEDIATE);
         when(modifyItem.createItem(any(), any())).thenReturn(Response.success(newItem));
 
@@ -144,7 +144,7 @@ class ModifyFoodControllerTest {
 
     @Test
     void gettingModifyItemPageShouldReturnModelPopulatedWithCommandsNeededForForms() throws Exception {
-        RichItem queried = new RichItem();
+        RichItem queried = getRichItem();
         MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders.get("/food/modify-item")
                 .queryParam("itemId", String.valueOf(1L));
         when(queryItem.findById(any(), any())).thenReturn(Response.success(queried));
@@ -172,7 +172,7 @@ class ModifyFoodControllerTest {
     @Test
     void negativeAmountForAddIngredientShouldReturnValidationError() throws Exception {
         MockHttpServletRequestBuilder postRequest = getPostRequestForAddIngredient(new BigDecimal(-1));
-        when(queryItem.findById(any(), any())).thenReturn(Response.success(new RichItem()));
+        when(queryItem.findById(any(), any())).thenReturn(Response.success(getRichItem()));
 
         mockMvc.perform(postRequest)
                 .andExpect(model().attributeHasErrors("addIngredientCommand"))
@@ -181,7 +181,7 @@ class ModifyFoodControllerTest {
     }
     @Test
     void unsuccessfulAddIngredientShouldReturnItemBeforeChange() throws Exception {
-        RichItem beforeChange = new RichItem();
+        RichItem beforeChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForAddIngredient(new BigDecimal(1));
         when(queryItem.findById(any(), any())).thenReturn(Response.success(beforeChange));
         when(modifyItem.addIngredientToRecipe(any(), any())).thenReturn(Response.failure("error"));
@@ -193,8 +193,8 @@ class ModifyFoodControllerTest {
     }
     @Test
     void successfulAddIngredientShouldReturnChangedItem() throws Exception {
-        RichItem beforeChange = new RichItem();
-        RichItem afterChange = new RichItem();
+        RichItem beforeChange = getRichItem();
+        RichItem afterChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForAddIngredient(new BigDecimal(1));
         when(queryItem.findById(any(), any())).thenReturn(Response.success(beforeChange));
         when(modifyItem.addIngredientToRecipe(any(), any())).thenReturn(Response.success(afterChange));
@@ -210,8 +210,8 @@ class ModifyFoodControllerTest {
 
     @Test
     void successfulRemoveIngredientShouldReturnChangedItem() throws Exception {
-        RichItem beforeChange = new RichItem();
-        RichItem afterChange = new RichItem();
+        RichItem beforeChange = getRichItem();
+        RichItem afterChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = post("/food/remove-ingredient")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("parentItemId", String.valueOf(1L))
@@ -227,7 +227,7 @@ class ModifyFoodControllerTest {
     }
     @Test
     void settingNegativeYieldShouldResultInValidationError() throws Exception {
-        RichItem beforeChange = new RichItem();
+        RichItem beforeChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForSetYield(new BigDecimal(-1));
         when(queryItem.findById(any(), any())).thenReturn(Response.success(beforeChange));
 
@@ -239,8 +239,8 @@ class ModifyFoodControllerTest {
     }
     @Test
     void settingValidYieldShouldReturnChangedItem() throws Exception {
-        RichItem beforeChange = new RichItem();
-        RichItem afterChange = new RichItem();
+        RichItem beforeChange = getRichItem();
+        RichItem afterChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForSetYield(new BigDecimal(1));
         when(queryItem.findById(any(), any())).thenReturn(Response.success(beforeChange));
         when(modifyItem.setYield(any(), any())).thenReturn(Response.success(afterChange));
@@ -251,7 +251,7 @@ class ModifyFoodControllerTest {
     }
     @Test
     void settingDescriptionOver1000CharactersShouldResultInValidationError() throws Exception {
-        RichItem beforeChange = new RichItem();
+        RichItem beforeChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForModifyDescription(getLongDescription());
         when(queryItem.findById(any(), any())).thenReturn(Response.success(beforeChange));
 
@@ -264,8 +264,8 @@ class ModifyFoodControllerTest {
     }
     @Test
     void settingValidDescriptionShouldReturnChangedItem() throws Exception {
-        RichItem beforeChange = new RichItem();
-        RichItem afterChange = new RichItem();
+        RichItem beforeChange = getRichItem();
+        RichItem afterChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForModifyDescription("aa");
         when(queryItem.findById(any(), any())).thenReturn(Response.success(beforeChange));
         when(modifyItem.updateDescription(any(), any())).thenReturn(Response.success(afterChange));
@@ -275,6 +275,11 @@ class ModifyFoodControllerTest {
                 .andExpect(model().attribute("object", afterChange))
                 .andExpect(view().name(ITEM_MODIFY));
     }
+
+    private RichItem getRichItem() {
+        return new RichItem(new Item("", KILOGRAM, INTERMEDIATE, new UserEntity()));
+    }
+
     @Test
     void attemptingToDeleteItemShouldReturnWarningPage() throws Exception {
         List<PoorItem> list = new ArrayList<>();

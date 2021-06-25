@@ -141,6 +141,8 @@ class MenuControllerTest {
 
     @Test
     void gettingAddItemsPageShouldQueryItemServiceForEligibleDishes() throws Exception {
+        when(queryMenu.findById(eq(1L), any())).thenReturn(Response.success(getRichMenu()));
+
         mockMvc.perform(get("/menu/add-items")
                 .queryParam("menuId", String.valueOf(1L)));
 
@@ -149,11 +151,12 @@ class MenuControllerTest {
 
     @Test
     void gettingAddItemsPageShouldPopulateModelWithQueriedDishes() throws Exception {
+        when(queryMenu.findById(eq(1L), any())).thenReturn(Response.success(getRichMenu()));
+
         mockMvc.perform(get("/menu/add-items")
                 .queryParam("menuId", String.valueOf(1L)))
 
                 .andExpect(model().attribute("dishes", Collections.emptyList()))
-                .andExpect(model().attribute("menuId", 1L))
                 .andExpect(view().name(MENU_ADD_ITEMS));
     }
 
