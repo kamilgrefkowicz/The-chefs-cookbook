@@ -19,9 +19,9 @@
         <div class="input-group">
         <form th:action="@{/user/register-user}" th:method="post" th:object="${createUserCommand}">
             <div th:replace="fragments/messages :: validation-error"></div>
-            <input type="text" placeholder="username" th:field="*{username}" class="form-control my-2">
-            <input type="password" placeholder="password" th:field="*{password}"class="form-control my-2">
-            <input type="password" placeholder="repeat password" th:field="*{passwordMatch}"class="form-control my-2">
+            <input type="text" placeholder="nazwa użytkownika" th:field="*{username}" class="form-control my-2">
+            <input type="password" placeholder="hasło" th:field="*{password}"class="form-control my-2">
+            <input type="password" placeholder="powtórz hasło" th:field="*{passwordMatch}"class="form-control my-2">
             <input type="submit" value="Załóż konto" class="btn btn-primary" >
             <input type="checkbox" class="form-check-inline mx-3" id="testAccount" th:field="*{testUser}">
             <label for="testAccount">test</label>
