@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: generatesql
+      flyway.enabled: false
+  jpa.properties.javax.persistence.schema-generation.scripts:
+    action: create
+    create-target: V1__initial.sql
+    create-source: metadata
+  datasource:
+    url: jdbc:mysql://localhost:3306/cookbook?useSSL=false&useUnicode=yes&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    data-username: admin
+    data-password: testhaslo
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    platform: org.hibernate.dialect.MySql8Dialect
+
