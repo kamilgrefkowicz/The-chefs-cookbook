@@ -6,9 +6,9 @@
 
 * [General Info](#general-information)
 * [Technologies Used](#technologies-used)
-* [Features](#features)
 * [Setup](#setup)
-* [Screenshots](#screenshots)
+* [Features](#features)
+
 
 ## General Information
 
@@ -45,6 +45,6 @@ The front-end has been tested on a pc screen. It will most probably break when v
 - Application allows for any number of layers of intermediate items. Items will be tracked, so that the user can easily see how much of each basic item goes into the dish.
   
 - User can calculate how much stuff will be needed to prepare an item with a single click. Need to know how much flour you'll need for 500 pierogi? No problem ;)
-- Completed dishes can be added to menus. Once a menu is completed, user can generate a recipe book that will contain all
+- Completed dishes can be added to menus. Once a menu is completed, user can generate a recipe book that will contain recipes for all dishes and all intermediates used in the menu, as well as a list of basic ingredients used throughout (that's important. Seriously.) and a table of contents.
 
 

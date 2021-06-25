@@ -1,11 +1,9 @@
 package pl.kamil.chefscookbook.food.domain.staticData;
 
-import java.util.StringJoiner;
-
 public enum Unit {
-    KILOGRAM("KG"),
-    LITRE("LT"),
-    PIECE("SZT");
+    KILOGRAM("kg"),
+    LITRE("l"),
+    PIECE("szt");
 
     String namePl;
 
