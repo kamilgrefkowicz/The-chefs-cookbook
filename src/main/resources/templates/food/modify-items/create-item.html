@@ -19,7 +19,7 @@
                   th:object="${createNewItemCommand}" method="POST">
 
                 <div class="form-group w-50 border p-3">
-                    <div th:replace="/fragments/messages ::  validation-error"></div>
+                    <div th:replace="fragments/messages ::  validation-error"></div>
 
 
                     <input type="text" th:field="*{itemName}" placeholder="Nazwa przepisu" id="itemName" class="form-control mb-2 mr-sm-2">
