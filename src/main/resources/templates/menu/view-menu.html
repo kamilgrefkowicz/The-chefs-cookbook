@@ -11,54 +11,69 @@
 <body>
 
 <nav th:replace="fragments/layout :: topNavBar"></nav>
+<div class="container">
+    <div class="row py-4 px-4">
+        <div class="col-md-7">
 
-<div>
-    <form th:action="@{/pdf/menu}" th:method="get">
-        <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
-        <input type="submit" value="PDF">
-    </form>
-</div>
-
-<p th:text="'Menu: ' + ${object.menuName}"></p>
-
-<form th:action="@{/menu/add-items}" th:method="get">
-    <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
-    <input type="submit" value="Dodaj">
-</form>
-
-<div th:if="${object.items.isEmpty()}"><p>Nie masz jeszcze żadnych pozycji w tym menu. Kliknij w przycisk powyżej, by to naprawić!</p></div>
-<div th:unless="${object.items.isEmpty()}">
-
-    <table>
-        <thead>
-        <tr>Nazwa dania</tr>
-        <tr>Zobacz</tr>
-        <tr>Usuń</tr>
-
-        </thead>
-        <tbody>
-        <tr th:each="item : ${object.items}">
-
-            <td th:text="*{item.name}"></td>
-            <td>
-                <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
-                    <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
-                    <input type="submit" th:value="x">
-                </form>
-            </td>
-            <td>
-                <form th:action="@{/menu/remove-item}" th:method="post" th:object="${removeItemFromMenuCommand}">
-                    <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
+            <div class="font-weight-bold">
+                <h2 th:text="'Menu: ' + ${object.menuName}"></h2>
+            </div>
+            <div class="btn-group py-2 my-2">
+                <form th:action="@{/pdf/menu}" th:method="get">
                     <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
-                    <input type="submit" value="x">
+                    <input type="submit" value="PDF" class="btn btn-info mx-2">
                 </form>
-            </td>
-        </tr>
+                <form th:action="@{/menu/add-items}" th:method="get">
+                    <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
+                    <input type="submit" value="Dodaj pozycje" class="btn btn-info">
+                </form>
+            </div>
 
-        </tbody>
-    </table>
+            <div th:if="${object.items.isEmpty()}"><p>Nie masz jeszcze żadnych pozycji w tym menu. Kliknij w przycisk
+                powyżej, by to naprawić!</p></div>
+            <div th:unless="${object.items.isEmpty()}">
 
+                <table>
+                    <thead>
+                    <tr>Nazwa dania</tr>
+                    <tr>Zobacz</tr>
+                    <tr>Usuń</tr>
+
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${object.items}">
+
+                        <td th:text="*{item.name}"></td>
+                        <td>
+                            <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
+                                <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
+                                <input type="submit" th:value="x">
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{/menu/remove-item}" th:method="post"
+                                  th:object="${removeItemFromMenuCommand}">
+                                <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
+                                <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
+                                <input type="submit" value="x">
+                            </form>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="col-md-5">
+            <p class="lead">Tutaj możesz dodawać i usuwać pozycje w karcie</p>
+            <p>Możesz też pobrać pdf z księgą przepisów</p>
+            <p>Do menu dodajesz same dania. Księga przepisów automatycznie zawrze wszystkie półprodukty używane w
+                karcie</p>
+        </div>
+
+
+    </div>
 </div>
-
 </body>
 </html>

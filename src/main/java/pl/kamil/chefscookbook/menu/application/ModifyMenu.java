@@ -37,11 +37,11 @@ public class ModifyMenu implements ModifyMenuService {
             return Response.failure(MENU_NAME_TAKEN);
 
         Menu menu = newMenuCommandToMenu(command, user);
-        return successfulResponse(menu);
+        return successfulResponse(menu, MENU_CREATED);
     }
 
-    private Response<RichMenu> successfulResponse(Menu menu) {
-        return Response.success(new RichMenu(menuRepository.save(menu)));
+    private Response<RichMenu> successfulResponse(Menu menu, String message) {
+        return Response.success(new RichMenu(menuRepository.save(menu)), message);
     }
 
     private Menu newMenuCommandToMenu(CreateNewMenuCommand command, Principal user) {
@@ -67,7 +67,7 @@ public class ModifyMenu implements ModifyMenuService {
             itemsToAdd.add(item);
         }
         menu.addItemsToMenu(itemsToAdd);
-        return successfulResponse(menu);
+        return successfulResponse(menu, ITEMS_ADDED);
 
     }
 
@@ -83,7 +83,7 @@ public class ModifyMenu implements ModifyMenuService {
 
         menu.removeItem(toRemove);
 
-        return successfulResponse(menu);
+        return successfulResponse(menu, ITEMS_REMOVED);
 
     }
 
@@ -96,7 +96,7 @@ public class ModifyMenu implements ModifyMenuService {
 
         menuRepository.delete(menu);
 
-        return Response.success(null);
+        return Response.success(null, MENU_DELETED);
     }
 
     private Response<Menu> passSecurity(Long menuId, Principal user) {

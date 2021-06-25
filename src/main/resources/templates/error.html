@@ -9,10 +9,11 @@
     <title> Oops </title>
 </head>
 <body>
-
-<div>
-    <p th:text="${error}"></p>
+<div class="container vh-100">
+    <div class="row align-items-center" style="height: 75%">
+        <h3>Coś poszło nie tak :(</h3>
+        <div th:replace="fragments/messages :: backend-message"></div>
+    </div>
 </div>
-
 </body>
 </html>

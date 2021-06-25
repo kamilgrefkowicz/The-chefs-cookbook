@@ -9,7 +9,6 @@ import pl.kamil.chefscookbook.food.database.IngredientRepository;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
-import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.database.UserRepository;
@@ -24,8 +23,6 @@ import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.food.domain.staticData.Type.DISH;
-import static pl.kamil.chefscookbook.food.domain.staticData.Unit.PIECE;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.*;
 
 @Service
@@ -58,17 +55,11 @@ public class ModifyItem implements ModifyItemService {
 
         return new Item(
                 command.getItemName(),
-                getUnitOrInferPiece(command),
+                command.getUnit(),
                 command.getType(),
                 userRepository.getOne(Long.valueOf(user.getName())));
 
     }
-
-    private Unit getUnitOrInferPiece(CreateNewItemCommand command) {
-        if (command.getType().equals(DISH)) return PIECE;
-        return command.getUnit();
-    }
-
 
     @Transactional
     @Override

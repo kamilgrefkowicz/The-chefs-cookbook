@@ -27,6 +27,8 @@ public class MessageValueHolder {
 
     public static final String ITEMS_ADDED = "Dodano przedmioty do menu";
     public static final String ITEMS_REMOVED = "Usunięto przedmioty z menu";
+    public static final String MENU_CREATED = "Utworzono menu";
+    public static final String MENU_DELETED = "Usunięto menu";
 
 
 

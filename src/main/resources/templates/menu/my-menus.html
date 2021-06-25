@@ -11,44 +11,60 @@
 <body>
 <nav th:replace="fragments/layout :: topNavBar"></nav>
 
-<form th:action="@{/menu/new-menu}" th:method="get">
-    <input type="submit" th:value="Nowe">
-</form>
+<div class="container">
+    <div class="row py-4 px-4">
+        <div class="col-md-7">
+        <div th:if="${menuList.isEmpty()}">
+            <h3>Nie masz jeszcze żadnego menu. Kliknij przycisk po prawej aby to naprawić.</h3>
+        </div>
+        <div th:unless="${menuList.isEmpty()}">
+            <h2>Lista menu:</h2>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                <th>Nazwa menu</th>
+                <th>Ilość pozycji</th>
+                <th>Zobacz</th>
+                <th>Usuń</th>
+                </tr>
+                </thead>
 
-<div th:if="${menuList.isEmpty()}">
-    <p>Nie masz jeszcze żadnego menu. Kliknij przycisk powyżej aby to naprawić</p>
-</div>
-<div th:unless="${menuList.isEmpty()}">
-    <p>Moje menu:</p>
-    <table>
-        <thead>
-        <tr>Nazwa menu</tr>
-        <tr>Ilość pozycji</tr>
-        <tr>Zobacz</tr>
-        <tr>Usuń</tr>
-        </thead>
+                <tbody>
+                <tr th:each="menu : ${menuList}">
+                    <td th:text="*{menu.menuName}"></td>
+                    <td th:text="*{menu.items.size()}"></td>
+                    <td>
+                        <form th:action="@{/menu/view-menu}" th:method="get">
+                            <input type="hidden" th:attr="name='menuId'" th:value="*{menu.menuId}">
+                            <input type="submit" value="x" class="btn btn-secondary">
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/menu/delete-menu}" th:method="get" th:object="${deleteMenuCommand}">
+                            <input type="hidden" th:attr="name='menuId'" th:value="${menu.menuId}">
+                            <input type="submit" value="x" class="btn btn-danger">
+                        </form>
+                    </td>
+                </tr>
 
-        <tbody>
-        <tr th:each="menu : ${menuList}">
-            <td th:text="*{menu.menuName}"></td>
-            <td th:text="*{menu.items.size()}"></td>
-            <td>
-                <form th:action="@{/menu/view-menu}" th:method="get">
-                    <input type="hidden" th:attr="name='menuId'" th:value="*{menu.menuId}">
-                    <input type="submit" value ="x">
-                </form>
-            </td>
-            <td>
-                <form th:action="@{/menu/delete-menu}" th:method="get" th:object="${deleteMenuCommand}">
-                    <input type="hidden" th:attr="name='menuId'" th:value="${menu.menuId}">
-                    <input type="submit" value="x">
-                </form>
-            </td>
-        </tr>
+                </tbody>
+            </table>
+        </div>
 
-        </tbody>
-    </table>
-</div>
+        </div>
+
+        <div class="col-md-5">
+            <p class="lead">Po lewej znajduje się lista Twoich menu.</p>
+            <p>Stwórz menu i dodaj do niego dania, aby móc pobrać wygodny pdf</p>
+            <p>Możesz stworzyć nowe menu tutaj:</p>
+            <form th:action="@{/menu/new-menu}" th:method="get">
+                <input type="submit" value="Stwórz nowe menu!" class="btn btn-primary">
+            </form>
+        </div>
+
+
+
+
 
 
 </body>

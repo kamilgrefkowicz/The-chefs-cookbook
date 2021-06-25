@@ -11,13 +11,18 @@
 <body>
 <nav th:replace="fragments/layout :: topNavBar"></nav>
 
+<div class="container vh-100">
+    <div class="row align-items-center" style="height: 75%">
+        <div>
 
-<p th:text="'Czy na pewno chcesz usunąć menu: ' + ${object.menuName} + '?'"></p>
-<form th:action="@{/menu/delete-menu}" th:method="post" th:object="${deleteMenuCommand}">
-    <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
-    <input type="submit" th:value="Usuń">
-</form>
-
+        <h3 th:text="'Czy na pewno chcesz usunąć menu: ' + ${object.menuName} + '?'"></h3>
+        <form th:action="@{/menu/delete-menu}" th:method="post" th:object="${deleteMenuCommand}">
+            <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
+            <input type="submit" th:value="Usuń" class="btn btn-danger">
+        </form>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
