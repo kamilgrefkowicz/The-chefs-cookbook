@@ -86,10 +86,13 @@ public class MenuController extends ValidatedController<RichMenu> {
     @GetMapping("/add-items")
     public String showAddItemToMenuForm(Model model, @RequestParam Long menuId, Principal user) {
 
+        Response<RichMenu> queried = queryMenu.findById(menuId, user);
+        if (!querySuccessful(queried, model)) return ERROR;
+
         List<PoorItem> dishes = queryItem.findAllEligibleDishesForMenu(user, menuId);
 
+        model.addAttribute("object", queried.getData());
         model.addAttribute("dishes", dishes);
-        model.addAttribute("menuId", menuId);
 
         return MENU_ADD_ITEMS;
 

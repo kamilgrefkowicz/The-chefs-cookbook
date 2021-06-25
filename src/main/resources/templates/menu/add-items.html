@@ -9,18 +9,37 @@
     <title> INSERT </title>
 </head>
 <body>
+<div th:replace="fragments/layout :: topNavBar"></div>
+<div class="container">
+    <div class="row py-4 px-4">
+        <div class="col-md-7">
+            <h2>Wybierz pozycje, które chcesz dodać do menu:</h2>
+            <h3 th:text="${object.menuName}"></h3>
+            <div class="border p-2 my-2">
+                <div th:unless="${dishes.isEmpty()}">
+                    <form th:action="@{/menu/add-items}" th:method="post" th:object="${addItemsCommand}">
+                        <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
+                        <ul>
+                            <li th:each="item : ${dishes}">
+                                <input type="checkbox" th:field="*{itemIds}" th:value="${item.id}" th:text="${item.name}" class="form-check-input">
+                            </li>
+                        </ul>
+                        <input type="submit" value="Dodaj" class="btn btn-primary">
+                    </form>
+                </div>
+                <div th:if="${dishes.isEmpty()}">
+                    <p>Wygląda na to, że nie masz już dań, które nie są przydzielone do tego menu</p>
+                </div>
 
-<p>Wybierz pozycje, które chcesz dodać do menu:</p>
 
-<form th:action="@{/menu/add-items}" th:method="post" th:object="${addItemsCommand}">
-    <input type="hidden" th:attr="name='menuId'" th:value="${menuId}">
-    <ul>
-        <li th:each="item : ${dishes}">
-            <input type="checkbox" th:field="*{itemIds}" th:value="${item.id}" th:text="${item.name}">
-        </li>
-    </ul>
-    <input type="submit">
-</form>
+            </div>
 
+        </div>
+        <div class="col-md-5">
+
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

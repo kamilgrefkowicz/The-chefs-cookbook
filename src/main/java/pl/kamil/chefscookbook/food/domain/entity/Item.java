@@ -1,6 +1,8 @@
 package pl.kamil.chefscookbook.food.domain.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
 import pl.kamil.chefscookbook.menu.domain.Menu;
@@ -36,6 +38,7 @@ public class Item extends OwnedEntity {
 
     @OneToOne(mappedBy = "parentItem", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     private Recipe recipe;
 
 

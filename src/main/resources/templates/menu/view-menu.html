@@ -17,6 +17,7 @@
 
             <div class="font-weight-bold">
                 <h2 th:text="'Menu: ' + ${object.menuName}"></h2>
+                <div th:replace="fragments/messages :: backend-message"></div>
             </div>
             <div class="btn-group py-2 my-2">
                 <form th:action="@{/pdf/menu}" th:method="get">
@@ -33,11 +34,13 @@
                 powyżej, by to naprawić!</p></div>
             <div th:unless="${object.items.isEmpty()}">
 
-                <table>
+                <table class="table table-hover">
                     <thead>
-                    <tr>Nazwa dania</tr>
-                    <tr>Zobacz</tr>
-                    <tr>Usuń</tr>
+                    <tr>
+                        <th>Nazwa dania</th>
+                        <th>Zobacz</th>
+                        <th>Usuń</th>
+                    </tr>
 
                     </thead>
                     <tbody>
@@ -46,8 +49,9 @@
                         <td th:text="*{item.name}"></td>
                         <td>
                             <form th:action="@{/food/view-item}" th:method="get" th:object="${queryItemCommand}">
+                                <input type="hidden" th:attr="name='targetAmount'" th:value="1">
                                 <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
-                                <input type="submit" th:value="x">
+                                <input type="submit" th:value="x" class="btn btn-secondary">
                             </form>
                         </td>
                         <td>
@@ -55,7 +59,7 @@
                                   th:object="${removeItemFromMenuCommand}">
                                 <input type="hidden" th:attr="name='itemId'" th:value="${item.id}">
                                 <input type="hidden" th:attr="name='menuId'" th:value="${object.menuId}">
-                                <input type="submit" value="x">
+                                <input type="submit" value="x" class="btn btn-danger">
                             </form>
                         </td>
                     </tr>
