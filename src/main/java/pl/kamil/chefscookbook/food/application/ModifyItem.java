@@ -72,7 +72,11 @@ public class ModifyItem implements ModifyItemService {
         if (command.getChildItemId() == null) return Response.failure(CHOOSE_FROM_LIST);
 
         Item parentItem = authorize(command.getParentItemId(), user);
-        Item childItem = authorize(command.getChildItemId(), user);
+        Optional<Item> childItemOptional = itemRepository.findById(command.getChildItemId());
+        if (childItemOptional.isEmpty()) throw new NotFoundException();
+        Item childItem = childItemOptional.get();
+
+        if (!userSecurity.belongsToOrIsPublic(childItem, user)) throw new NotAuthorizedException();
 
         Response<Void> verifyLoops = checkForLoops(parentItem, childItem);
         if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());

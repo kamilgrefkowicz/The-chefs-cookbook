@@ -13,6 +13,7 @@ import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.food.domain.staticData.Unit;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.database.UserRepository;
@@ -25,8 +26,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
@@ -118,21 +118,29 @@ class ModifyItemTest {
     @Test
     void addingIngredientShouldCallRepositoryToRetrieveItems() {
         Principal principal = getPrincipal(1L);
+        Item parent = getItem(1L, INTERMEDIATE);
+        Item child = getItem(2L, INTERMEDIATE);
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(parent));
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(child));
+        passSecurity(true);
+        when(itemRepository.save(any())).thenReturn(parent);
 
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
 
-        verify(itemRepository).getOne(1L);
+        verify(itemRepository).findById(1L);
         verify(itemRepository).findById(2L);
     }
 
     @Test
     void addingIngredientShouldCallUserSecurityToValidateEligibility() {
         Principal principal = getPrincipal(3L);
-        Item parentItem = getItem(1L);
-        Item childItem = getItem(2L);
-        when(itemRepository.getOne(1L)).thenReturn(parentItem);
+        Item parentItem = getItem(1L, INTERMEDIATE);
+        Item childItem = getItem(2L, INTERMEDIATE);
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(parentItem));
         when(itemRepository.findById(2L)).thenReturn(Optional.of(childItem));
         when(userSecurity.belongsTo(any(), any())).thenReturn(true);
+        when(userSecurity.belongsToOrIsPublic(eq(childItem), any())).thenReturn(true);
+        when(itemRepository.save(any())).thenReturn(parentItem);
 
         modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
 
@@ -142,23 +150,24 @@ class ModifyItemTest {
     }
 
     @Test
-    void addingNonEligibleIngredientShouldReturnFailure() {
+    void addingNonEligibleIngredientShouldThrowNotAuthorizedException() {
         Principal principal = getPrincipal(1L);
-        when(userSecurity.belongsTo(any(), any())).thenReturn(false);
-        when(itemRepository.findById(2L)).thenReturn(Optional.of(new Item()));
+        Item owned = getItem(1L);
+        Item notOwnedChild = getItem(2L);
+        when(userSecurity.belongsTo(eq(owned), any())).thenReturn(true);
+        when(userSecurity.belongsToOrIsPublic(eq(notOwnedChild), any())).thenReturn(false);
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(owned));
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(notOwnedChild));
 
-        Response<ItemDto> modification = modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
+        assertThrows(NotAuthorizedException.class, () -> modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal));
 
-        assertFalse(modification.isSuccess());
-        assertThat(modification.getError(), equalTo(NOT_AUTHORIZED));
         verify(itemRepository, times(0)).save(any());
 
     }
     @Test
     void attemptingToMakeAnItemItsOwnIngredientShouldResultInShortLoopError() {
         Principal principal = getPrincipal(3L);
-        Item parentItem = getBasicItem("test");
-        when(itemRepository.getOne(1L)).thenReturn(parentItem);
+        Item parentItem = getBasicItem("");
         when(itemRepository.findById(1L)).thenReturn(Optional.of(parentItem));
         passSecurity(true);
 
@@ -171,11 +180,11 @@ class ModifyItemTest {
     @Test
     void attemptingToAddIngredientAlreadyDependingOnParentShouldResultInLongLoopError() {
         Principal principal = getPrincipal(3L);
-        Item childItem = getItem(1L, INTERMEDIATE);
         Item parentItem = getItem(2L, INTERMEDIATE);
-        childItem.addIngredient(parentItem, BigDecimal.ONE);
-        when(itemRepository.getOne(1L)).thenReturn(parentItem);
-        when(itemRepository.findById(2L)).thenReturn(Optional.of(childItem));
+        Item childItem = getItem(1L, INTERMEDIATE);
+        parentItem.addIngredient(childItem, BigDecimal.ONE);
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(parentItem));
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(childItem));
         passSecurity(true);
 
         Response<ItemDto> modification =modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
@@ -187,17 +196,17 @@ class ModifyItemTest {
     @Test
     void addingValidIngredientShouldCallRepositoryToSave() {
         Principal principal = getPrincipal(3L);
-        Item childItem = getItem(1L, INTERMEDIATE);
-        childItem.setName("child");
         Item parentItem = getItem(2L, INTERMEDIATE);
         parentItem.setName("parent");
+        Item childItem = getItem(1L, INTERMEDIATE);
+        childItem.setName("child");
         parentItem.setUserEntity(getUserEntity(1L));
-        when(itemRepository.getOne(1L)).thenReturn(parentItem);
-        when(itemRepository.findById(2L)).thenReturn(Optional.of(childItem));
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(parentItem));
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(childItem));
         passSecurity(true);
         when(itemRepository.save(any())).thenReturn(getItem(1L, INTERMEDIATE));
 
-        modifyItem.addIngredientToRecipe(new AddIngredientCommand(1L, 2L, BigDecimal.ONE), principal);
+        modifyItem.addIngredientToRecipe(new AddIngredientCommand(2L, 1L, BigDecimal.ONE), principal);
 
         verify(itemRepository).save(itemCaptor.capture());
         Item saved = itemCaptor.getValue();
@@ -208,11 +217,11 @@ class ModifyItemTest {
     @Test
     void addingValidIngredientShouldReturnSuccessfulResponse() {
         Principal principal = getPrincipal(3L);
-        Item childItem = getItem(1L, INTERMEDIATE);
         Item parentItem = getItem(2L, INTERMEDIATE);
+        Item childItem = getItem(1L, INTERMEDIATE);
         parentItem.setUserEntity(getUserEntity(1L));
-        when(itemRepository.getOne(1L)).thenReturn(parentItem);
-        when(itemRepository.findById(2L)).thenReturn(Optional.of(childItem));
+        when(itemRepository.findById(2L)).thenReturn(Optional.of(parentItem));
+        when(itemRepository.findById(1L)).thenReturn(Optional.of(childItem));
         passSecurity(true);
         Item returned = getItem(2L, INTERMEDIATE);
         returned.addIngredient(childItem, BigDecimal.ONE);
@@ -287,7 +296,7 @@ class ModifyItemTest {
         Item childItem = getItem(4L, BASIC);
         parentItem.addIngredient(childItem, BigDecimal.ONE);
         Ingredient ingredient = parentItem.getIngredients().stream().findFirst().get();
-        when(itemRepository.getOne(any())).thenReturn(parentItem);
+        when(itemRepository.findById(3L)).thenReturn(Optional.of(parentItem));
         when(ingredientRepository.getOne(any())).thenReturn(ingredient);
         passSecurity(true);
         when(itemRepository.save(any())).thenReturn(getItem(1L, DISH));
