@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook.menu.application;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
@@ -8,6 +9,8 @@ import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.database.UserRepository;
@@ -49,21 +52,20 @@ public class ModifyMenu implements ModifyMenuService {
 
     }
 
+    @SneakyThrows
     @Override
     @Transactional
     public Response<RichMenu> addItemsToMenu(AddItemsToMenuCommand command, Principal user) {
 
-        Response<Menu> securityPass = passSecurity(command.getMenuId(), user);
-        if (!securityPass.isSuccess()) return Response.failure(securityPass.getError());
-        Menu menu = securityPass.getData();
+        Menu menu = authorize(command.getMenuId(), user);
 
         Set<Item> itemsToAdd = new HashSet<>();
 
         for (Long id : command.getItemIds()) {
             Optional<Item> opt = itemRepository.findById(id);
-            if (opt.isEmpty()) return Response.failure(NOT_FOUND);
+            if (opt.isEmpty()) throw new NotFoundException();
             Item item = opt.get();
-            if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
+            if (!userSecurity.belongsTo(item, user)) throw new NotAuthorizedException();
             itemsToAdd.add(item);
         }
         menu.addItemsToMenu(itemsToAdd);
@@ -75,9 +77,7 @@ public class ModifyMenu implements ModifyMenuService {
     @Transactional
     public Response<RichMenu> removeItemFromMenu(RemoveItemFromMenuCommand command, Principal user) {
 
-        Response<Menu> securityPass = passSecurity(command.getMenuId(), user);
-        if (!securityPass.isSuccess()) return Response.failure(securityPass.getError());
-        Menu menu = securityPass.getData();
+        Menu menu = authorize(command.getMenuId(), user);
 
         Item toRemove = itemRepository.getOne(command.getItemId());
 
@@ -90,21 +90,20 @@ public class ModifyMenu implements ModifyMenuService {
     @Override
     public Response<Void> deleteMenu(DeleteMenuCommand command, Principal user) {
 
-        Response<Menu> securityPass = passSecurity(command.getMenuId(), user);
-        if (!securityPass.isSuccess()) return Response.failure(securityPass.getError());
-        Menu menu = securityPass.getData();
+        Menu menu = authorize(command.getMenuId(), user);
 
         menuRepository.delete(menu);
 
         return Response.success(null, MENU_DELETED);
     }
 
-    private Response<Menu> passSecurity(Long menuId, Principal user) {
+    @SneakyThrows
+    private Menu authorize(Long menuId, Principal user) {
         Optional<Menu> queried = menuRepository.findById(menuId);
-        if (queried.isEmpty()) return Response.failure(NOT_FOUND);
+        if (queried.isEmpty()) throw new NotFoundException();
         Menu menu = queried.get();
-        if (!userSecurity.belongsTo(menu, user)) return Response.failure(NOT_AUTHORIZED);
+        if (!userSecurity.belongsTo(menu, user)) throw new NotAuthorizedException();
 
-        return Response.success(menu);
+        return menu;
     }
 }

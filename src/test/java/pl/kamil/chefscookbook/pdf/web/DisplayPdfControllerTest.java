@@ -1,5 +1,6 @@
 package pl.kamil.chefscookbook.pdf.web;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -43,6 +44,7 @@ class DisplayPdfControllerTest {
     MockMvc mockMvc;
 
 
+    @SneakyThrows
     @Test
     void ifQueryUnsuccessfulSingleRecipePdfShouldReturnNoContent() throws Exception {
         when(queryItem.findById(any(), any())).thenReturn(Response.failure(""));
@@ -52,6 +54,7 @@ class DisplayPdfControllerTest {
 
                 .andExpect(status().isNoContent());
     }
+    @SneakyThrows
     @Test
     void successfulQueryShouldForwardItemToPdfService() throws Exception {
         RichItem item = getRichItem();
@@ -63,6 +66,7 @@ class DisplayPdfControllerTest {
 
         verify(pdfCreation).generatePdfForItem(item);
     }
+    @SneakyThrows
     @Test
     void successfulQueryForSingleRecipeShouldPackResponseCorrectly() throws Exception {
         ByteArrayOutputStream returned = new ByteArrayOutputStream();

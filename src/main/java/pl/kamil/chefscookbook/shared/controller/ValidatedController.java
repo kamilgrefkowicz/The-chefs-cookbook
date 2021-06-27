@@ -2,19 +2,23 @@ package pl.kamil.chefscookbook.shared.controller;
 
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.ERROR;
 
 public abstract class ValidatedController<T> {
 
-     protected boolean querySuccessful(Response<T> response, Model model) {
-        if (!response.isSuccess()) {
-            model.addAttribute(ERROR, response.getError());
-            return false;
-        }
-        return true;
+    @ExceptionHandler({NotFoundException.class, NotAuthorizedException.class})
+    public String handleException(Model model, Exception exception) {
+
+        String cause = exception.getCause().getMessage();
+        model.addAttribute("error", cause);
+        return ERROR;
     }
+
 
      protected boolean validationSuccessful(BindingResult bindingResult, Model model, T object) {
         if (bindingResult.hasErrors()) {

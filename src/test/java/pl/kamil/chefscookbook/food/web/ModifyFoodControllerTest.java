@@ -1,5 +1,6 @@
 package pl.kamil.chefscookbook.food.web;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,6 +17,7 @@ import pl.kamil.chefscookbook.food.application.port.ModifyItemService;
 import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
@@ -109,7 +111,7 @@ class ModifyFoodControllerTest {
     }
 
     @Test
-    void creatingBasicItemFromModifyItemPageShouldRedirectBack() throws Exception {
+    void creatingBasicItemFromModifyItemPageShouldRedirectBack() throws Exception, NotFoundException {
         RichItem redirectedFrom = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForNewBasicItem("abc", BASIC, 1L);
         when(queryItem.findById(eq(1L), any())).thenReturn(Response.success(redirectedFrom));
@@ -142,6 +144,7 @@ class ModifyFoodControllerTest {
                 .with(csrf());
     }
 
+    @SneakyThrows
     @Test
     void gettingModifyItemPageShouldReturnModelPopulatedWithCommandsNeededForForms() throws Exception {
         RichItem queried = getRichItem();
@@ -159,6 +162,7 @@ class ModifyFoodControllerTest {
     // technically, this event should not be possible from inside the ui.
     // implemented and tested only in case of shenanigans in manipulating requests.
     // repeated logic is not tested elsewhere
+    @SneakyThrows
     @Test
     void shenanigansWithAddingIngredientShouldResultInError() throws Exception {
         MockHttpServletRequestBuilder postRequest = getPostRequestForAddIngredient(BigDecimal.ONE);
@@ -169,6 +173,7 @@ class ModifyFoodControllerTest {
                 .andExpect(view().name(ERROR))
                 .andExpect(model().attributeExists("error"));
     }
+    @SneakyThrows
     @Test
     void negativeAmountForAddIngredientShouldReturnValidationError() throws Exception {
         MockHttpServletRequestBuilder postRequest = getPostRequestForAddIngredient(new BigDecimal(-1));
@@ -179,6 +184,7 @@ class ModifyFoodControllerTest {
                 .andExpect(view().name(ITEM_MODIFY));
         verifyNoInteractions(modifyItem);
     }
+    @SneakyThrows
     @Test
     void unsuccessfulAddIngredientShouldReturnItemBeforeChange() throws Exception {
         RichItem beforeChange = getRichItem();
@@ -191,6 +197,7 @@ class ModifyFoodControllerTest {
                 .andExpect(model().attribute("object", beforeChange))
                 .andExpect(view().name(ITEM_MODIFY));
     }
+    @SneakyThrows
     @Test
     void successfulAddIngredientShouldReturnChangedItem() throws Exception {
         RichItem beforeChange = getRichItem();
@@ -208,6 +215,7 @@ class ModifyFoodControllerTest {
 
 
 
+    @SneakyThrows
     @Test
     void successfulRemoveIngredientShouldReturnChangedItem() throws Exception {
         RichItem beforeChange = getRichItem();
@@ -225,6 +233,7 @@ class ModifyFoodControllerTest {
         .andExpect(model().attribute("object", afterChange));
         verify(modifyItem, times(1)).removeIngredientFromRecipe(any(), any());
     }
+    @SneakyThrows
     @Test
     void settingNegativeYieldShouldResultInValidationError() throws Exception {
         RichItem beforeChange = getRichItem();
@@ -237,6 +246,7 @@ class ModifyFoodControllerTest {
                 .andExpect(view().name(ITEM_MODIFY));
         verifyNoInteractions(modifyItem);
     }
+    @SneakyThrows
     @Test
     void settingValidYieldShouldReturnChangedItem() throws Exception {
         RichItem beforeChange = getRichItem();
@@ -249,6 +259,7 @@ class ModifyFoodControllerTest {
                 .andExpect(model().attribute("object", afterChange))
                 .andExpect(view().name(ITEM_MODIFY));
     }
+    @SneakyThrows
     @Test
     void settingDescriptionOver1000CharactersShouldResultInValidationError() throws Exception {
         RichItem beforeChange = getRichItem();
@@ -262,6 +273,7 @@ class ModifyFoodControllerTest {
                 .andExpect(view().name(ITEM_MODIFY));
         verifyNoInteractions(modifyItem);
     }
+    @SneakyThrows
     @Test
     void settingValidDescriptionShouldReturnChangedItem() throws Exception {
         RichItem beforeChange = getRichItem();
@@ -280,6 +292,7 @@ class ModifyFoodControllerTest {
         return new RichItem(new Item("", KILOGRAM, INTERMEDIATE, new UserEntity()));
     }
 
+    @SneakyThrows
     @Test
     void attemptingToDeleteItemShouldReturnWarningPage() throws Exception {
         List<PoorItem> list = new ArrayList<>();

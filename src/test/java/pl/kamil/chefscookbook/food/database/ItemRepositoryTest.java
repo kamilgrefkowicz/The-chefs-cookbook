@@ -3,6 +3,7 @@ package pl.kamil.chefscookbook.food.database;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
@@ -21,6 +22,7 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
 import static pl.kamil.chefscookbook.user.domain.MasterUserConfig.getMasterUser;
 
 @DataJpaTest
+@AutoConfigureTestDatabase
 class ItemRepositoryTest {
 
     @Autowired

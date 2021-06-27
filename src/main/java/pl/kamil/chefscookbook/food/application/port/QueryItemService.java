@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.constraints.DecimalMax;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 public interface QueryItemService {
 
-    Response<ItemDto> findById(Long itemId, Principal user);
+    Response<ItemDto> findById(Long itemId, Principal user) throws NotFoundException;
 
     Map<ItemDto, BigDecimal> getMapOfAllDependencies(QueryItemWithDependenciesCommand command);
 

@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook.food.web;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,11 +41,10 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
         model.addAttribute("deleteItemCommand", new DeleteItemCommand());
     }
 
+    @SneakyThrows
     @GetMapping("/modify-item")
     public String showModifyItemForm(Model model, @RequestParam Long itemId, Principal user) {
         Response<ItemDto> queried = queryItem.findById(itemId, user);
-
-        if (!querySuccessful(queried, model)) return ERROR;
 
         ItemDto object = queried.getData();
         model.addAttribute("object", object);
@@ -83,9 +83,9 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
         return redirectBackToModifyItemView(model, command, result, user, redirectItemId.get());
     }
 
+    @SneakyThrows
     private String redirectBackToModifyItemView(Model model, CreateNewItemCommand command, BindingResult result, Principal user, Long redirectItemId) {
         Response<ItemDto> queried = queryItem.findById(redirectItemId, user);
-        if (!querySuccessful(queried, model)) return ERROR;
         model.addAttribute("object", queried.getData());
         if (result.hasErrors()) return ITEM_MODIFY;
 
@@ -118,11 +118,10 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
     }
 
 
+    @SneakyThrows
     @PostMapping("/add-ingredient")
     public String addIngredient(Model model, @Valid AddIngredientCommand command, BindingResult bindingResult, Principal user) {
         Response<ItemDto> queried = queryItem.findById(command.getParentItemId(), user);
-
-        if (!querySuccessful(queried, model)) return ERROR;
 
         ItemDto object = queried.getData();
 
@@ -136,12 +135,11 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
 
     }
 
+    @SneakyThrows
     @PostMapping("/remove-ingredient")
     public String removeIngredient(Model model, RemoveIngredientFromRecipeCommand command, Principal user) {
 
         Response<ItemDto> queried = queryItem.findById(command.getParentItemId(), user);
-
-        if (!querySuccessful(queried, model)) return ERROR;
 
         ItemDto object = queried.getData();
 
@@ -151,11 +149,11 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
         return ITEM_MODIFY;
     }
 
+    @SneakyThrows
     @PostMapping("/set-yield")
     public String setYield(Model model, @Valid SetYieldCommand command, BindingResult bindingResult, Principal user) {
 
         Response<ItemDto> queried = queryItem.findById(command.getParentItemId(), user);
-        if (!querySuccessful(queried, model)) return ERROR;
 
         ItemDto object = queried.getData();
 
@@ -169,12 +167,11 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
     }
 
 
+    @SneakyThrows
     @PostMapping("/modify-description")
     public String updateDescription(Model model, @Valid UpdateDescriptionCommand command, BindingResult bindingResult, Principal user) {
 
         Response<ItemDto> queried = queryItem.findById(command.getParentItemId(), user);
-
-        if (!querySuccessful(queried, model)) return ERROR;
 
         ItemDto object = queried.getData();
 
@@ -186,11 +183,10 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
         return ITEM_MODIFY;
     }
 
+    @SneakyThrows
     @GetMapping("/delete-item")
     public String showConfirmPageForDelete(Model model, DeleteItemCommand command, Principal user) {
         Response<ItemDto> queried = queryItem.findById(command.getItemId(), user);
-
-        if (!querySuccessful(queried, model)) return ERROR;
 
         ItemDto object = queried.getData();
         List<PoorItem> itemsAffected = queryItem.findAllItemsAffectedByDelete(command.getItemId());
@@ -205,9 +201,9 @@ public class ModifyFoodController extends ValidatedController<ItemDto> {
     @PostMapping("/delete-item")
     public String deleteItem(Model model, DeleteItemCommand command, Principal user) {
 
-        modifyItem.deleteItem(command, user);
+        Response<Void> response = modifyItem.deleteItem(command, user);
         model.addAttribute("poorItemList", queryItem.findAllItemsBelongingToUser(user));
-        model.addAttribute("message");
+        model.addAttribute("message", response.getMessage());
 
         return ITEMS_LIST;
     }

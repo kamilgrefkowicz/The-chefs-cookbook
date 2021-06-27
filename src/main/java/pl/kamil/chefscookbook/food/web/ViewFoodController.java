@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook.food.web;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,16 +48,15 @@ public class ViewFoodController extends ValidatedController<ItemDto> {
         return ITEMS_LIST;
     }
 
+    @SneakyThrows
     @GetMapping("/view-item")
-    public String showItem(Model model, @Valid QueryItemWithDependenciesCommand command, BindingResult bindingResult, Principal user) {
+    public String showItem(Model model, @Valid QueryItemWithDependenciesCommand command, BindingResult bindingResult, Principal user)  {
 
         if (bindingResult.hasErrors()) {
             command.setTargetAmount(BigDecimal.ONE);
         }
 
         Response<ItemDto> queried = queryItem.findById(command.getItemId(), user);
-
-        if (!querySuccessful(queried, model)) return ERROR;
 
         model.addAttribute("object", queried.getData());
         model.addAttribute("targetAmount", command.getTargetAmount());

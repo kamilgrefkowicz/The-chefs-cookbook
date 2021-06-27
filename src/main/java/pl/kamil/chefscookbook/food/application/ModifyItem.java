@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook.food.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
@@ -9,6 +10,8 @@ import pl.kamil.chefscookbook.food.database.IngredientRepository;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.database.UserRepository;
@@ -61,19 +64,15 @@ public class ModifyItem implements ModifyItemService {
 
     }
 
+    @SneakyThrows
     @Transactional
     @Override
     public Response<ItemDto> addIngredientToRecipe(AddIngredientCommand command, Principal user) {
 
         if (command.getChildItemId() == null) return Response.failure(CHOOSE_FROM_LIST);
 
-        Item parentItem = itemRepository.getOne(command.getParentItemId());
-        Optional<Item> optionalChild = itemRepository.findById(command.getChildItemId());
-
-        if (optionalChild.isEmpty()) return Response.failure(NOT_FOUND);
-        Item childItem = optionalChild.get();
-
-        if (!isEligible(user, parentItem, childItem)) return Response.failure(NOT_AUTHORIZED);
+        Item parentItem = authorize(command.getParentItemId(), user);
+        Item childItem = authorize(command.getChildItemId(), user);
 
         Response<Void> verifyLoops = checkForLoops(parentItem, childItem);
         if (!verifyLoops.isSuccess()) return Response.failure(verifyLoops.getError());
@@ -109,13 +108,11 @@ public class ModifyItem implements ModifyItemService {
         return dependencies;
     }
 
+
     @Override
     @Transactional
     public Response<ItemDto> setYield(SetYieldCommand command, Principal user) {
-        Optional<Item> optional = itemRepository.findById(command.getParentItemId());
-        if (optional.isEmpty()) return Response.failure(NOT_FOUND);
-        Item item = optional.get();
-        if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
+        Item item = authorize(command.getParentItemId(), user);
 
         item.getRecipe().setRecipeYield(command.getItemYield());
         return successfulResponse(item, YIELD_SET);
@@ -124,10 +121,7 @@ public class ModifyItem implements ModifyItemService {
     @Override
     @Transactional
     public Response<ItemDto> updateDescription(UpdateDescriptionCommand command, Principal user) {
-        Optional<Item> optional = itemRepository.findById(command.getParentItemId());
-        if (optional.isEmpty()) return Response.failure(NOT_FOUND);
-        Item item = optional.get();
-        if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
+        Item item = authorize(command.getParentItemId(), user);
 
         item.getRecipe().setDescription(command.getDescription());
         return successfulResponse(item, DESCRIPTION_MODIFIED);
@@ -142,10 +136,7 @@ public class ModifyItem implements ModifyItemService {
     @Transactional
     public Response<Void> deleteItem(DeleteItemCommand command, Principal user) {
 
-        Optional<Item> optional = itemRepository.findById(command.getItemId());
-        if (optional.isEmpty()) return Response.failure(NOT_FOUND);
-        Item item = optional.get();
-        if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
+        authorize(command.getItemId(), user);
 
         removeThisItemFromAllDependencies(command.getItemId());
 
@@ -162,7 +153,7 @@ public class ModifyItem implements ModifyItemService {
     @Override
     @Transactional
     public Response<ItemDto> removeIngredientFromRecipe(RemoveIngredientFromRecipeCommand command, Principal user) {
-        Item parentItem = itemRepository.getOne(command.getParentItemId());
+        Item parentItem = authorize(command.getParentItemId(), user);
         Ingredient ingredientToRemove = ingredientRepository.getOne(command.getIngredientId());
 
         if (!isEligible(user, parentItem, ingredientToRemove.getChildItem()))
@@ -173,5 +164,13 @@ public class ModifyItem implements ModifyItemService {
         return successfulResponse(parentItem, INGREDIENT_REMOVED);
     }
 
+    @SneakyThrows
+    private Item authorize(Long itemId, Principal user) {
+        Optional<Item> optional = itemRepository.findById(itemId);
+        if (optional.isEmpty()) throw new NotFoundException();
+        Item item = optional.get();
+        if (!userSecurity.belongsTo(item, user)) throw new NotAuthorizedException();
+        return item;
+    }
 
 }

@@ -1,5 +1,6 @@
 package pl.kamil.chefscookbook.food.web;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -55,6 +56,7 @@ class ViewFoodControllerTest {
         verify(queryItem, times(1)).findAllItemsBelongingToUser(any());
     }
 
+    @SneakyThrows
     @Test
     void queryingItemForNegativeAmountShouldResultInValidationError() throws Exception {
         MockHttpServletRequestBuilder request = getGetRequestForViewItem(new BigDecimal(-1));
@@ -65,6 +67,7 @@ class ViewFoodControllerTest {
                 .andExpect(model().attributeHasErrors("queryItemWithDependenciesCommand"));
     }
 
+    @SneakyThrows
     @Test
     void queryIngItemForAmountWithOverFourDecimalPlacesShouldResultInValidationError() throws Exception {
         MockHttpServletRequestBuilder request = getGetRequestForViewItem(new BigDecimal("1.234567"));
@@ -75,6 +78,7 @@ class ViewFoodControllerTest {
                 .andExpect(model().attributeHasErrors("queryItemWithDependenciesCommand"));
     }
 
+    @SneakyThrows
     @Test
     void queryingItemForInvalidAmountShouldResetAmountToOne() throws Exception {
         MockHttpServletRequestBuilder request = getGetRequestForViewItem(new BigDecimal(-1));
@@ -85,6 +89,7 @@ class ViewFoodControllerTest {
 
                 .andExpect(model().attribute("targetAmount", BigDecimal.ONE));
     }
+    @SneakyThrows
     @Test
     void whenGettingViewItemDependencyMapsShouldBeSplitCorrectly() throws Exception {
         Map<ItemDto, BigDecimal> returnedMap = getMapWithOneBasicAndTwoIntermediates();

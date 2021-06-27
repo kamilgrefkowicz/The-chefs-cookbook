@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook.pdf.web;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ import pl.kamil.chefscookbook.food.application.port.QueryItemService;
 import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
 import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
 import pl.kamil.chefscookbook.pdf.application.port.PdfCreationService;
+import pl.kamil.chefscookbook.shared.controller.ValidatedController;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import java.security.Principal;
@@ -23,13 +25,14 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/pdf")
 @AllArgsConstructor
-public class DisplayPdfController  {
+public class DisplayPdfController extends ValidatedController<ItemDto> {
 
 private final PdfCreationService pdfCreation;
 private final QueryItemService queryItem;
 private final QueryMenuService queryMenu;
 
 
+    @SneakyThrows
     @GetMapping("/item")
     public ResponseEntity<Resource> getSingleRecipePdf(@RequestParam Long itemId, Principal user) {
 

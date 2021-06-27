@@ -1,5 +1,6 @@
 package pl.kamil.chefscookbook.food.application;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -130,6 +131,7 @@ class QueryItemTest {
         assertThat(queried, hasSize(1));
         assertThat(queried.get(0).getName(), equalTo("Not in menu"));
     }
+    @SneakyThrows
     @Test
     void findByIdShouldCallRepository() {
         Principal user = getUserWithIdOf1();
@@ -137,6 +139,7 @@ class QueryItemTest {
 
         verify(itemRepository).findById(1L);
     }
+    @SneakyThrows
     @Test
     void findByIdShouldReturnFailureIfNoItemWithId() {
         Principal user = getUserWithIdOf1();
@@ -147,6 +150,7 @@ class QueryItemTest {
         assertFalse(queried.isSuccess());
         assertThat(queried.getError(), equalTo(NOT_FOUND));
     }
+    @SneakyThrows
     @Test
     void findByIdShouldReturnFailureIfNotOwnerOfItem() {
         Principal user = getUserWithIdOf1();
@@ -158,6 +162,7 @@ class QueryItemTest {
         assertFalse(queried.isSuccess());
         assertThat(queried.getError(), equalTo(NOT_AUTHORIZED));
     }
+    @SneakyThrows
     @Test
     void validFindByIdQueryShouldReturnSuccessfulResponse() {
         Principal user = getUserWithIdOf1();

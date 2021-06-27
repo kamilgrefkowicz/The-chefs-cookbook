@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook.menu.application;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
@@ -10,6 +11,8 @@ import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
 import pl.kamil.chefscookbook.menu.database.MenuRepository;
 import pl.kamil.chefscookbook.menu.domain.Menu;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 
@@ -22,8 +25,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
-import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
 
 @Service
@@ -45,13 +46,8 @@ public class QueryMenu implements QueryMenuService {
     @Override
     @Transactional
     public Response<RichMenu> findById(Long menuId, Principal user) {
-        Optional<Menu> opt = menuRepository.findById(menuId);
 
-        if (opt.isEmpty()) return Response.failure(NOT_FOUND);
-
-        Menu menu = opt.get();
-        if (!userSecurity.belongsTo(menu, user))
-            return Response.failure(NOT_AUTHORIZED);
+       Menu menu = authorize(menuId, user);
 
         return Response.success(new RichMenu(menu));
 
@@ -59,15 +55,20 @@ public class QueryMenu implements QueryMenuService {
 
     @Override
     public Response<FullMenu> getFullMenu(Long menuId, Principal user) {
-        Optional<Menu> opt = menuRepository.findById(menuId);
-
-        if (opt.isEmpty()) return Response.failure(NOT_FOUND);
-
-        Menu menu = opt.get();
-        if (!userSecurity.belongsTo(menu, user))
-            return Response.failure(NOT_AUTHORIZED);
+        Menu menu = authorize(menuId, user);
 
         return Response.success(convertToFullMenu(menu));
+    }
+
+    @SneakyThrows
+    private Menu authorize (Long menuId, Principal user) {
+        Optional<Menu> optionalMenu = menuRepository.findById(menuId);
+        if (optionalMenu.isEmpty()) throw new NotFoundException();
+
+        Menu menu = optionalMenu.get();
+        if (!userSecurity.belongsTo(menu, user)) throw new NotAuthorizedException();
+
+        return menu;
     }
 
     private FullMenu convertToFullMenu(Menu menu) {

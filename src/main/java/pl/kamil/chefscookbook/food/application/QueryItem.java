@@ -1,6 +1,7 @@
 package pl.kamil.chefscookbook.food.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemAutocompleteDto;
 import pl.kamil.chefscookbook.food.application.dto.item.ItemDto;
@@ -10,6 +11,8 @@ import pl.kamil.chefscookbook.food.database.IngredientRepository;
 import pl.kamil.chefscookbook.food.database.ItemRepository;
 import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.jpa.BaseEntity;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
@@ -26,8 +29,6 @@ import java.util.stream.Collectors;
 
 import static pl.kamil.chefscookbook.food.application.dto.item.ItemDto.convertToDto;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
-import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
-import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -89,13 +90,17 @@ public class QueryItem implements QueryItemService {
         return !item.getMenus().stream().map(BaseEntity::getId).collect(Collectors.toSet()).contains(menuId);
     }
 
+    @SneakyThrows
     @Override
     @Transactional
-    public Response<ItemDto> findById(Long itemId, Principal user) {
+    public Response<ItemDto> findById(Long itemId, Principal user)   {
+
         Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if (optionalItem.isEmpty()) return Response.failure(NOT_FOUND);
+        if (optionalItem.isEmpty()) throw new NotFoundException();
+
         Item item = optionalItem.get();
-        if (!userSecurity.belongsTo(item, user)) return Response.failure(NOT_AUTHORIZED);
+        if (!userSecurity.belongsTo(item, user)) throw new NotAuthorizedException();
+
         return Response.success(convertToDto(item));
     }
 

@@ -75,8 +75,6 @@ public class MenuController extends ValidatedController<RichMenu> {
 
         Response<RichMenu> queried = queryMenu.findById(menuId, user);
 
-        if (!querySuccessful(queried, model)) return ERROR;
-
         model.addAttribute("object", queried.getData());
 
         return MENU_VIEW;
@@ -87,7 +85,6 @@ public class MenuController extends ValidatedController<RichMenu> {
     public String showAddItemToMenuForm(Model model, @RequestParam Long menuId, Principal user) {
 
         Response<RichMenu> queried = queryMenu.findById(menuId, user);
-        if (!querySuccessful(queried, model)) return ERROR;
 
         List<PoorItem> dishes = queryItem.findAllEligibleDishesForMenu(user, menuId);
 
@@ -103,8 +100,6 @@ public class MenuController extends ValidatedController<RichMenu> {
 
         Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
 
-        if (!querySuccessful(queried, model)) return ERROR;
-
         Response<RichMenu> modification = modifyMenu.addItemsToMenu(command, user);
 
         resolveModification(modification, model, queried.getData());
@@ -117,8 +112,6 @@ public class MenuController extends ValidatedController<RichMenu> {
 
         Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
 
-        if (!querySuccessful(queried, model)) return ERROR;
-
         Response<RichMenu> modification = modifyMenu.removeItemFromMenu(command, user);
 
         resolveModification(modification, model, queried.getData());
@@ -129,9 +122,7 @@ public class MenuController extends ValidatedController<RichMenu> {
     @GetMapping("/delete-menu")
     public String showDeleteMenuConfirmation(Model model, DeleteMenuCommand command, Principal user){
         Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
-
-        if (!querySuccessful(queried, model)) return ERROR;
-
+        
         model.addAttribute("object", queried.getData());
 
         return MENU_DELETE_CONFIRM;
