@@ -1,5 +1,6 @@
 package pl.kamil.chefscookbook.menu.web;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -15,6 +16,8 @@ import pl.kamil.chefscookbook.menu.application.dto.RichMenu;
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService;
 import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
 import pl.kamil.chefscookbook.menu.domain.Menu;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
@@ -33,6 +36,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static pl.kamil.chefscookbook.menu.application.port.ModifyMenuService.*;
+import static pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException.NOT_AUTHORIZED_MESSAGE;
+import static pl.kamil.chefscookbook.shared.exceptions.NotFoundException.NOT_FOUND_MESSAGE;
 import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 
 @WebMvcTest({MenuController.class})
@@ -105,9 +110,10 @@ class MenuControllerTest {
                 .andExpect(view().name(MENU_VIEW));
     }
 
+    @SneakyThrows
     @Test
-    void viewMenuRequestShouldQueryService() throws Exception {
-        when(queryMenu.findById(any(), any())).thenReturn(Response.failure(""));
+    void viewMenuRequestShouldQueryService() {
+        when(queryMenu.findById(any(), any())).thenReturn(Response.success(getRichMenu()));
 
         mockMvc.perform(get("/menu/view-menu")
                 .queryParam("menuId", String.valueOf(1L)));
@@ -115,20 +121,22 @@ class MenuControllerTest {
         verify(queryMenu).findById(eq(1L), any());
     }
 
+    @SneakyThrows
     @Test
-    void viewMenuWithUnsuccessfulQueryShouldReturnError() throws Exception {
-        when(queryMenu.findById(any(), any())).thenReturn(Response.failure("test error"));
+    void viewMenuWithUnsuccessfulQueryShouldReturnError() {
+        when(queryMenu.findById(any(), any())).thenThrow(new NotFoundException());
 
         mockMvc.perform(get("/menu/view-menu")
                 .queryParam("menuId", String.valueOf(1L)))
 
-                .andExpect(model().attribute("error", "test error"))
                 .andExpect(model().attributeDoesNotExist("object"))
+                .andExpect(model().attribute("error", NOT_FOUND_MESSAGE))
                 .andExpect(view().name(ERROR));
     }
 
+    @SneakyThrows
     @Test
-    void viewMenuWithSuccessfulQueryShouldReturnCorrectMaV() throws Exception {
+    void viewMenuWithSuccessfulQueryShouldReturnCorrectMaV() {
         RichMenu returned = getRichMenu();
         when(queryMenu.findById(any(), any())).thenReturn(Response.success(returned));
 
@@ -139,8 +147,9 @@ class MenuControllerTest {
                 .andExpect(view().name(MENU_VIEW));
     }
 
+    @SneakyThrows
     @Test
-    void gettingAddItemsPageShouldQueryItemServiceForEligibleDishes() throws Exception {
+    void gettingAddItemsPageShouldQueryItemServiceForEligibleDishes() {
         when(queryMenu.findById(eq(1L), any())).thenReturn(Response.success(getRichMenu()));
 
         mockMvc.perform(get("/menu/add-items")
@@ -149,8 +158,9 @@ class MenuControllerTest {
         verify(queryItem).findAllEligibleDishesForMenu(any(), eq(1L));
     }
 
+    @SneakyThrows
     @Test
-    void gettingAddItemsPageShouldPopulateModelWithQueriedDishes() throws Exception {
+    void gettingAddItemsPageShouldPopulateModelWithQueriedDishes() {
         when(queryMenu.findById(eq(1L), any())).thenReturn(Response.success(getRichMenu()));
 
         mockMvc.perform(get("/menu/add-items")
@@ -160,21 +170,23 @@ class MenuControllerTest {
                 .andExpect(view().name(MENU_ADD_ITEMS));
     }
 
+    @SneakyThrows
     @Test
         // the following few tests check security logic
         // technically what they test is impossible from inside the ui
         // repeated security logic is not tested elsewhere
-    void shenanigansWithMenuIdWhileAddingItemsShouldReturnAnError() throws Exception {
-        when(queryMenu.findById(any(), any())).thenReturn(Response.failure("test error"));
+    void shenanigansWithMenuIdWhileAddingItemsShouldReturnAnError() {
+        when(queryMenu.findById(any(), any())).thenThrow(new NotAuthorizedException());
 
         mockMvc.perform(getPostRequestForAddItems(1L, new Long[]{1L}))
 
-                .andExpect(model().attribute("error", "test error"))
+                .andExpect(model().attribute("error", NOT_AUTHORIZED_MESSAGE))
                 .andExpect(view().name(ERROR));
     }
 
+    @SneakyThrows
     @Test
-    void shenanigansWithItemIdsWhileAddingItemsShouldReturnAnError() throws Exception {
+    void shenanigansWithItemIdsWhileAddingItemsShouldReturnAnError() {
         when(queryMenu.findById(any(), any())).thenReturn(Response.success(getRichMenu()));
         when(modifyMenu.addItemsToMenu(any(), any())).thenReturn(Response.failure("test error"));
 
@@ -183,10 +195,12 @@ class MenuControllerTest {
                 .andExpect(model().attribute("error", "test error"))
                 .andExpect(view().name(MENU_VIEW));
     }
+
+    @SneakyThrows
     @Test
-    void successfulAddItemsShouldReturnCorrectMaV() throws Exception {
+    void successfulAddItemsShouldReturnCorrectMaV() {
         when(queryMenu.findById(any(), any())).thenReturn(Response.success(getRichMenu()));
-        Response<RichMenu> modified =  Response.success(getRichMenu());
+        Response<RichMenu> modified = Response.success(getRichMenu());
         RichMenu expected = modified.getData();
         when(modifyMenu.addItemsToMenu(any(), any())).thenReturn(modified);
 
@@ -195,8 +209,10 @@ class MenuControllerTest {
                 .andExpect(model().attribute("object", expected))
                 .andExpect(view().name(MENU_VIEW));
     }
+
+    @SneakyThrows
     @Test
-    void removeItemFromMenuShouldCallServiceToRemove() throws Exception {
+    void removeItemFromMenuShouldCallServiceToRemove() {
         when(queryMenu.findById(any(), any())).thenReturn(Response.success(getRichMenu()));
         when(modifyMenu.removeItemFromMenu(any(), any())).thenReturn(Response.success(getRichMenu()));
         RemoveItemFromMenuCommand expected = new RemoveItemFromMenuCommand(1L, 2L);
@@ -205,10 +221,12 @@ class MenuControllerTest {
 
         verify(modifyMenu).removeItemFromMenu(eq(expected), any());
     }
+
+    @SneakyThrows
     @Test
-    void successfulRemoveItemShouldReturnCorrectMaV() throws Exception {
+    void successfulRemoveItemShouldReturnCorrectMaV() {
         when(queryMenu.findById(any(), any())).thenReturn(Response.success(getRichMenu()));
-        Response<RichMenu> modified =  Response.success(getRichMenu());
+        Response<RichMenu> modified = Response.success(getRichMenu());
         RichMenu expected = modified.getData();
         when(modifyMenu.removeItemFromMenu(any(), any())).thenReturn(modified);
 
@@ -217,9 +235,11 @@ class MenuControllerTest {
                 .andExpect(model().attribute("object", expected))
                 .andExpect(view().name(MENU_VIEW));
     }
+
+    @SneakyThrows
     @Test
-    void deleteMenuAttemptShouldReturnCorrectMavForConfirmation() throws Exception {
-        Response<RichMenu> created =  Response.success(getRichMenu());
+    void deleteMenuAttemptShouldReturnCorrectMavForConfirmation() {
+        Response<RichMenu> created = Response.success(getRichMenu());
         RichMenu expected = created.getData();
         when(queryMenu.findById(any(), any())).thenReturn(created);
 
@@ -228,6 +248,7 @@ class MenuControllerTest {
                 .andExpect(model().attribute("object", expected))
                 .andExpect(view().name(MENU_DELETE_CONFIRM));
     }
+
     @Test
     void menuDeletionShouldCallServiceToDelete() throws Exception {
         DeleteMenuCommand expected = new DeleteMenuCommand(3L);
@@ -236,6 +257,7 @@ class MenuControllerTest {
 
         verify(modifyMenu).deleteMenu(eq(expected), any());
     }
+
     @Test
     void menuDeletionShouldRedirectBackToMenuList() throws Exception {
         List<RichMenu> expected = new ArrayList<>();
@@ -293,11 +315,11 @@ class MenuControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("menuId", String.valueOf(menuId))
                 .with(csrf());
-        addItemsFromArray(request,"itemIds", itemIds);
+        addItemsFromArray(request, "itemIds", itemIds);
         return request;
     }
 
-    private void addItemsFromArray(MockHttpServletRequestBuilder builder,String paramName,  Long[] array) {
+    private void addItemsFromArray(MockHttpServletRequestBuilder builder, String paramName, Long[] array) {
         Arrays.stream(array).forEach(id -> builder.param(paramName, String.valueOf(id)));
     }
 }

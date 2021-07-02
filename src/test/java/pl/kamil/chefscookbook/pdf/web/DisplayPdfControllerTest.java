@@ -16,6 +16,8 @@ import pl.kamil.chefscookbook.menu.application.dto.FullMenu;
 import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
 import pl.kamil.chefscookbook.menu.domain.Menu;
 import pl.kamil.chefscookbook.pdf.application.port.PdfCreationService;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
 
@@ -81,6 +83,7 @@ class DisplayPdfControllerTest {
                 .andExpect(header().string("Content-Disposition", "attachment; filename=\"" + item.getName() +".pdf" + "\""))
                 .andExpect(content().bytes(expected));
     }
+    @SneakyThrows
     @Test
     void ifQueryUnsuccessfulMenuPdfShouldReturnNoContent() throws Exception {
         when(queryMenu.getFullMenu(any(), any())).thenReturn(Response.failure(""));
@@ -90,6 +93,7 @@ class DisplayPdfControllerTest {
 
                 .andExpect(status().isNoContent());
     }
+    @SneakyThrows
     @Test
     void successfulQueryShouldForwardMenuToPdfService() throws Exception {
         FullMenu menu = getFullMenu();
@@ -102,7 +106,7 @@ class DisplayPdfControllerTest {
         verify(pdfCreation).generatePdfForMenu(menu);
     }
     @Test
-    void successfulQueryForMenuShouldPackResponseCorrectly() throws Exception {
+    void successfulQueryForMenuShouldPackResponseCorrectly() throws Exception, NotFoundException, NotAuthorizedException {
         ByteArrayOutputStream returned = new ByteArrayOutputStream();
         FullMenu menu = getFullMenu();
         when(queryMenu.getFullMenu(any(), any())).thenReturn(Response.success(menu));

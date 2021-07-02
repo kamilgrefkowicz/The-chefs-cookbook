@@ -16,6 +16,8 @@ import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService.DeleteMenu
 import pl.kamil.chefscookbook.menu.application.port.ModifyMenuService.RemoveItemFromMenuCommand;
 import pl.kamil.chefscookbook.menu.application.port.QueryMenuService;
 import pl.kamil.chefscookbook.shared.controller.ValidatedController;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 
 import javax.validation.Valid;
@@ -71,7 +73,7 @@ public class MenuController extends ValidatedController<RichMenu> {
     }
 
     @GetMapping("/view-menu")
-    public String showMenu(Model model, @RequestParam Long menuId, Principal user) {
+    public String showMenu(Model model, @RequestParam Long menuId, Principal user) throws NotFoundException, NotAuthorizedException {
 
         Response<RichMenu> queried = queryMenu.findById(menuId, user);
 
@@ -82,7 +84,7 @@ public class MenuController extends ValidatedController<RichMenu> {
 
 
     @GetMapping("/add-items")
-    public String showAddItemToMenuForm(Model model, @RequestParam Long menuId, Principal user) {
+    public String showAddItemToMenuForm(Model model, @RequestParam Long menuId, Principal user) throws NotFoundException, NotAuthorizedException {
 
         Response<RichMenu> queried = queryMenu.findById(menuId, user);
 
@@ -96,7 +98,7 @@ public class MenuController extends ValidatedController<RichMenu> {
     }
 
     @PostMapping("/add-items")
-    public String addItemsToMenu(Model model, AddItemsToMenuCommand command, Principal user) {
+    public String addItemsToMenu(Model model, AddItemsToMenuCommand command, Principal user) throws NotFoundException, NotAuthorizedException {
 
         Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
 
@@ -108,7 +110,7 @@ public class MenuController extends ValidatedController<RichMenu> {
     }
 
     @PostMapping("/remove-item")
-    public String removeItemFromMenu(Model model, RemoveItemFromMenuCommand command, Principal user) {
+    public String removeItemFromMenu(Model model, RemoveItemFromMenuCommand command, Principal user) throws NotFoundException, NotAuthorizedException {
 
         Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
 
@@ -120,7 +122,7 @@ public class MenuController extends ValidatedController<RichMenu> {
 
     }
     @GetMapping("/delete-menu")
-    public String showDeleteMenuConfirmation(Model model, DeleteMenuCommand command, Principal user){
+    public String showDeleteMenuConfirmation(Model model, DeleteMenuCommand command, Principal user) throws NotFoundException, NotAuthorizedException {
         Response<RichMenu> queried = queryMenu.findById(command.getMenuId(), user);
         
         model.addAttribute("object", queried.getData());

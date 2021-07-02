@@ -1,7 +1,6 @@
 package pl.kamil.chefscookbook.menu.application;
 
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import pl.kamil.chefscookbook.food.application.dto.item.PoorItem;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
@@ -45,7 +44,7 @@ public class QueryMenu implements QueryMenuService {
 
     @Override
     @Transactional
-    public Response<RichMenu> findById(Long menuId, Principal user) {
+    public Response<RichMenu> findById(Long menuId, Principal user) throws NotFoundException, NotAuthorizedException {
 
        Menu menu = authorize(menuId, user);
 
@@ -54,14 +53,14 @@ public class QueryMenu implements QueryMenuService {
     }
 
     @Override
-    public Response<FullMenu> getFullMenu(Long menuId, Principal user) {
+    public Response<FullMenu> getFullMenu(Long menuId, Principal user) throws NotFoundException, NotAuthorizedException {
         Menu menu = authorize(menuId, user);
 
         return Response.success(convertToFullMenu(menu));
     }
 
-    @SneakyThrows
-    private Menu authorize (Long menuId, Principal user) {
+
+    private Menu authorize (Long menuId, Principal user) throws NotFoundException, NotAuthorizedException {
         Optional<Menu> optionalMenu = menuRepository.findById(menuId);
         if (optionalMenu.isEmpty()) throw new NotFoundException();
 

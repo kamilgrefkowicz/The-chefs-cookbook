@@ -50,6 +50,7 @@ private final QueryMenuService queryMenu;
                 .body(resource);
 
     }
+    @SneakyThrows
     @GetMapping("/menu")
     public ResponseEntity<Resource> getMenuPdf(@RequestParam Long menuId, Principal user) {
 

@@ -1,5 +1,6 @@
 package pl.kamil.chefscookbook.menu.application;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -64,6 +65,7 @@ class QueryMenuTest {
         assertThat(menus.get(0).getMenuId(), equalTo(1L));
         assertThat(menus.get(1).getMenuId(), equalTo(2L));
     }
+    @SneakyThrows
     @Test
     void findMenuByIdShouldCallRepositoryToFind() {
         Principal principal = getPrincipalWithIdOf1();
@@ -74,6 +76,7 @@ class QueryMenuTest {
 
         verify(menuRepository).findById(1L);
     }
+    @SneakyThrows
     @Test
     void validFindMenuQueryShouldReturnCorrectResponse() {
         Principal principal = getPrincipalWithIdOf1();
@@ -90,6 +93,7 @@ class QueryMenuTest {
         assertThat(data.getMenuName(), equalTo("test"));
         assertThat(data.getMenuId(), equalTo(3L));
     }
+    @SneakyThrows
     @Test
     void gettingFullMenuOnEmptyMenuShouldReturnThreeEmptySets() {
         Principal principal = getPrincipalWithIdOf1();
@@ -104,6 +108,7 @@ class QueryMenuTest {
         assertThat(data.getIntermediates(), hasSize(0));
         assertThat(data.getDishes(), hasSize(0));
     }
+    @SneakyThrows
     @Test
     void gettingFullMenuShouldCorrectlyMapAllItems() {
         Menu menu = getComplexMenuWithTwoOfEachType();

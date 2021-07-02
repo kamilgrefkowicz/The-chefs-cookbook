@@ -17,6 +17,8 @@ import pl.kamil.chefscookbook.food.domain.entity.Ingredient;
 import pl.kamil.chefscookbook.food.domain.entity.Item;
 import pl.kamil.chefscookbook.food.domain.staticData.Type;
 import pl.kamil.chefscookbook.menu.domain.Menu;
+import pl.kamil.chefscookbook.shared.exceptions.NotAuthorizedException;
+import pl.kamil.chefscookbook.shared.exceptions.NotFoundException;
 import pl.kamil.chefscookbook.shared.response.Response;
 import pl.kamil.chefscookbook.user.application.port.UserSecurityService;
 import pl.kamil.chefscookbook.user.domain.UserEntity;
@@ -27,15 +29,13 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.*;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
-import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_AUTHORIZED;
-import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 class QueryItemTest {
@@ -135,32 +135,28 @@ class QueryItemTest {
     @Test
     void findByIdShouldCallRepository() {
         Principal user = getUserWithIdOf1();
-        queryItem.findById(1L, user);
+
+        assertThrows(NotFoundException.class, () -> queryItem.findById(1L, user));
 
         verify(itemRepository).findById(1L);
     }
     @SneakyThrows
     @Test
-    void findByIdShouldReturnFailureIfNoItemWithId() {
+    void findByIdShouldThrowIfNoItemWithIdPresent() {
         Principal user = getUserWithIdOf1();
         when(itemRepository.findById(any())).thenReturn(Optional.empty());
 
-        Response<ItemDto> queried= queryItem.findById(1L, user);
+        assertThrows(NotFoundException.class, () -> queryItem.findById(1L, user));
 
-        assertFalse(queried.isSuccess());
-        assertThat(queried.getError(), equalTo(NOT_FOUND));
     }
     @SneakyThrows
     @Test
-    void findByIdShouldReturnFailureIfNotOwnerOfItem() {
+    void findByIdShouldThrowIfNotOwnerOfItem() {
         Principal user = getUserWithIdOf1();
         when(itemRepository.findById(any())).thenReturn( Optional.of(new Item()));
         when(userSecurity.belongsTo(any(), any())).thenReturn(false);
 
-        Response<ItemDto> queried= queryItem.findById(1L, user);
-
-        assertFalse(queried.isSuccess());
-        assertThat(queried.getError(), equalTo(NOT_AUTHORIZED));
+        assertThrows(NotAuthorizedException.class, () -> queryItem.findById(1L, user));
     }
     @SneakyThrows
     @Test

@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.BASIC;
 import static pl.kamil.chefscookbook.food.domain.staticData.Type.INTERMEDIATE;
 import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
+import static pl.kamil.chefscookbook.shared.exceptions.NotFoundException.NOT_FOUND_MESSAGE;
 import static pl.kamil.chefscookbook.shared.string_values.MessageValueHolder.ITEM_NAME_TAKEN;
 import static pl.kamil.chefscookbook.shared.string_values.UrlValueHolder.*;
 
@@ -164,18 +165,18 @@ class ModifyFoodControllerTest {
     // repeated logic is not tested elsewhere
     @SneakyThrows
     @Test
-    void shenanigansWithAddingIngredientShouldResultInError() throws Exception {
+    void shenanigansWithAddingIngredientShouldResultInError()  {
         MockHttpServletRequestBuilder postRequest = getPostRequestForAddIngredient(BigDecimal.ONE);
-        when(queryItem.findById(any(), any())).thenReturn(Response.failure("error"));
+        when(queryItem.findById(any(), any())).thenThrow(new NotFoundException());
 
         mockMvc.perform(postRequest)
 
                 .andExpect(view().name(ERROR))
-                .andExpect(model().attributeExists("error"));
+                .andExpect(model().attribute("error", NOT_FOUND_MESSAGE));
     }
     @SneakyThrows
     @Test
-    void negativeAmountForAddIngredientShouldReturnValidationError() throws Exception {
+    void negativeAmountForAddIngredientShouldReturnValidationError()   {
         MockHttpServletRequestBuilder postRequest = getPostRequestForAddIngredient(new BigDecimal(-1));
         when(queryItem.findById(any(), any())).thenReturn(Response.success(getRichItem()));
 
@@ -186,7 +187,7 @@ class ModifyFoodControllerTest {
     }
     @SneakyThrows
     @Test
-    void unsuccessfulAddIngredientShouldReturnItemBeforeChange() throws Exception {
+    void unsuccessfulAddIngredientShouldReturnItemBeforeChange()   {
         RichItem beforeChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForAddIngredient(new BigDecimal(1));
         when(queryItem.findById(any(), any())).thenReturn(Response.success(beforeChange));
@@ -261,7 +262,7 @@ class ModifyFoodControllerTest {
     }
     @SneakyThrows
     @Test
-    void settingDescriptionOver1000CharactersShouldResultInValidationError() throws Exception {
+    void settingDescriptionOver1000CharactersShouldResultInValidationError()   {
         RichItem beforeChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForModifyDescription(getLongDescription());
         when(queryItem.findById(any(), any())).thenReturn(Response.success(beforeChange));
@@ -275,7 +276,7 @@ class ModifyFoodControllerTest {
     }
     @SneakyThrows
     @Test
-    void settingValidDescriptionShouldReturnChangedItem() throws Exception {
+    void settingValidDescriptionShouldReturnChangedItem()   {
         RichItem beforeChange = getRichItem();
         RichItem afterChange = getRichItem();
         MockHttpServletRequestBuilder postRequest = getPostRequestForModifyDescription("aa");
@@ -294,7 +295,7 @@ class ModifyFoodControllerTest {
 
     @SneakyThrows
     @Test
-    void attemptingToDeleteItemShouldReturnWarningPage() throws Exception {
+    void attemptingToDeleteItemShouldReturnWarningPage()   {
         List<PoorItem> list = new ArrayList<>();
         RichItem affected = new RichItem();
         MockHttpServletRequestBuilder getRequest = MockMvcRequestBuilders.get("/food/delete-item")
@@ -314,9 +315,11 @@ class ModifyFoodControllerTest {
                 .param("itemId", String.valueOf(1L))
                 .with(csrf());
         when(queryItem.findAllItemsBelongingToUser(any())).thenReturn(Collections.emptyList());
+        when(modifyItem.deleteItem(any(), any())).thenReturn(Response.success(null, "test"));
 
         mockMvc.perform(postRequest)
                 .andExpect(model().attributeExists("poorItemList"))
+                .andExpect(model().attribute("message", "test"))
                 .andExpect(view().name(ITEMS_LIST));
         verify(modifyItem, times(1)).deleteItem(any(),any());
     }
