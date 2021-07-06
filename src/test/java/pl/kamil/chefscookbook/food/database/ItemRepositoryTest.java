@@ -22,7 +22,7 @@ import static pl.kamil.chefscookbook.food.domain.staticData.Unit.KILOGRAM;
 import static pl.kamil.chefscookbook.user.domain.MasterUserConfig.getMasterUser;
 
 @DataJpaTest
-@AutoConfigureTestDatabase
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ItemRepositoryTest {
 
     @Autowired
