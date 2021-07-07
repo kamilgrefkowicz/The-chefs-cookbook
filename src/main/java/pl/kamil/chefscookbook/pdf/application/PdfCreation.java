@@ -51,7 +51,7 @@ public class PdfCreation implements PdfCreationService {
         font = PdfFontFactory.createFont(FontConstants.HELVETICA, PdfEncodings.CP1250, true);
 
         document.setFont(font);
-        generateRecipeContent.execute(document, item);
+        document.add(generateRecipeContent.execute(item));
 
 
         document.close();
@@ -76,13 +76,14 @@ public class PdfCreation implements PdfCreationService {
 
         Map<RichItem, Integer> tableOfContentsValues = new LinkedHashMap<>();
 
-        generateTitlePage.execute(document, menu);
+        document.add(generateTitlePage.execute(menu));
 
         generateRecipePages(document, tableOfContentsValues, menu.getIntermediates());
         generateRecipePages(document, tableOfContentsValues, menu.getDishes());
 
-        generateListOfBasicIngredients.execute(document, menu.getBasics());
-        generateTableOfContents.execute(document, tableOfContentsValues);
+        document.add(generateListOfBasicIngredients.execute(menu.getBasics()));
+
+        document.add(generateTableOfContents.execute(tableOfContentsValues));
 
         document.close();
 
@@ -96,13 +97,15 @@ public class PdfCreation implements PdfCreationService {
     }
 
 
-    private void generateRecipePages(Document document, Map<RichItem, Integer> tableOfContents, Set<RichItem> intermediates) {
-        for (RichItem item : intermediates) {
-            tableOfContents.put(item, generateRecipeContent.execute(document, item));
+    private void generateRecipePages(Document document, Map<RichItem, Integer> tableOfContents, Set<RichItem> items) {
+        for (RichItem item : items) {
+            tableOfContents.put(item, document.getPdfDocument().getNumberOfPages());
+            document.add(generateRecipeContent.execute(item));
         }
         document.add(new AreaBreak());
     }
-    public class PageHandler implements IEventHandler {
+
+     class PageHandler implements IEventHandler {
 
         @Override
         public void handleEvent(Event event) {

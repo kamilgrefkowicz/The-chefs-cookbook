@@ -1,6 +1,5 @@
 package pl.kamil.chefscookbook.pdf.application;
 
-import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.List;
 import com.itextpdf.layout.element.Paragraph;
@@ -22,13 +21,12 @@ public class GenerateRecipeContent implements GenerateRecipeContentUseCase {
     private final float[] columnWidths = {254F, 254F};
 
     @Override
-    public int execute(Document document, RichItem item) {
+    public Div execute(RichItem item) {
 
         Div template = new Div();
         template.setKeepTogether(true);
 
         template.add(generateItemNameRow(item));
-        int currentPage = document.getPdfDocument().getNumberOfPages();
         template.add(generateYieldRowForIntermediates(item));
 
         Paragraph paragraph = new Paragraph();
@@ -41,8 +39,7 @@ public class GenerateRecipeContent implements GenerateRecipeContentUseCase {
         template.add(table);
         template.add(new Paragraph("").setFontSize(40));
 
-        document.add(template);
-        return currentPage;
+        return template;
     }
 
 

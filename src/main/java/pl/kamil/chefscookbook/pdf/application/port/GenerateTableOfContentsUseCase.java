@@ -1,11 +1,11 @@
 package pl.kamil.chefscookbook.pdf.application.port;
 
-import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Div;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 
 import java.util.Map;
 
 public interface GenerateTableOfContentsUseCase {
 
-    void execute (Document document, Map<RichItem, Integer> tableOfContentsValues);
+    Div execute (Map<RichItem, Integer> tableOfContentsValues);
 }

@@ -1,8 +1,6 @@
 package pl.kamil.chefscookbook.pdf.application;
 
-import com.itextpdf.kernel.color.Color;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.AreaBreak;
+import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
@@ -18,15 +16,19 @@ public class GenerateListOfBasicIngredients implements GenerateListOfBasicIngred
     private final float[] columnWidths = {130F, 130F, 130F};
 
     @Override
-    public void execute(Document document, Set<PoorItem> basics) {
+    public Div execute(Set<PoorItem> basics) {
+
+        Div template = new Div();
+        template.setKeepTogether(true);
 
         Paragraph header = getHeaderParagraph();
 
         Table tableOfBasics = getTableOfBasics(basics);
 
-        document.add(header);
-        document.add(tableOfBasics);
+        template.add(header);
+        template.add(tableOfBasics);
 
+        return template;
     }
 
     private Table getTableOfBasics(Set<PoorItem> basics) {

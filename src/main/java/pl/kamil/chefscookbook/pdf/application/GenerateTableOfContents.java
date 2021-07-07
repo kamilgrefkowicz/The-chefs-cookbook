@@ -1,7 +1,7 @@
 package pl.kamil.chefscookbook.pdf.application;
 
-import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
+import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
@@ -18,15 +18,19 @@ public class GenerateTableOfContents implements GenerateTableOfContentsUseCase {
 
 
     @Override
-    public void execute(Document document, Map<RichItem, Integer> tableOfContentsValues) {
+    public Div execute(Map<RichItem, Integer> tableOfContentsValues) {
+
+        Div template = new Div();
 
         Paragraph heading = getHeadingParagraph();
 
         Table tableOfContents = generateTableOfContents(tableOfContentsValues);
 
-        document.add(new AreaBreak());
-        document.add(heading);
-        document.add(tableOfContents);
+        template.add(new AreaBreak());
+        template.add(heading);
+        template.add(tableOfContents);
+
+        return template;
     }
 
     private Table generateTableOfContents(Map<RichItem, Integer> tableOfContents) {

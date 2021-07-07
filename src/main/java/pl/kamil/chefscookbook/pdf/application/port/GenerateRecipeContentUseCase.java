@@ -1,10 +1,10 @@
 package pl.kamil.chefscookbook.pdf.application.port;
 
-import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Div;
 import pl.kamil.chefscookbook.food.application.dto.item.RichItem;
 
 public interface GenerateRecipeContentUseCase {
 
 
-    int execute(Document document, RichItem item);
+    Div execute(RichItem item);
 }

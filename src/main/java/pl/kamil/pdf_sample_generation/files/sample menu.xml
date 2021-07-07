@@ -1,5 +1,6 @@
 <root>
 <Document>
+<Div>
 <P bBox="[36 760.54 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Test menu</Span>
@@ -12,6 +13,7 @@ Test menu</Span>
 <Span>
 Wygenerowane przez Chefs CookBook</Span>
 </P>
+</Div>
 <Div>
 <P bBox="[36 774.02 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
@@ -1228,6 +1230,7 @@ this is a test; this is a test; this is a test; this is a test; </Span>
 </Span>
 </P>
 </Div>
+<Div>
 <P bBox="[36 760.54 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Podstawowe sk&#322;adniki u&#380;ywane w menu:</Span>
@@ -1434,6 +1437,8 @@ basic29</Span>
 </TD>
 </TR>
 </Table>
+</Div>
+<Div>
 <P bBox="[36 768.03 559 806 ]" o="/Layout" spaceAfter="4" spaceBefore="4" textAlign="/Center">
 <Span>
 Spis tre&#347;ci:</Span>
@@ -1758,5 +1763,6 @@ s.6</Span>
 </TD>
 </TR>
 </Table>
+</Div>
 </Document>
 </root>
